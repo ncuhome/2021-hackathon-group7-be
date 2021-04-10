@@ -1,0 +1,7 @@
+{
+  "host": "localhost",
+  "port": "16379",
+  "db": 0,
+  "prefix": "hackthon:"
+}
+

@@ -1,0 +1,16 @@
+version: '3'
+services:
+  app:
+    network_mode: host
+    environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      JWT_SIGN_KEY: ${JWT_SIGN_KEY}
+      EMAIL_PASSWORD: ${EMAIL_PASSWORD}
+    image: "2021-hackthon"
+    container_name: "2021-hackthon"
+    build: .
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime
