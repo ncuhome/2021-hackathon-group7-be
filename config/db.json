@@ -1,6 +1,6 @@
 {
     "host": "localhost",
     "port": "13306",
-    "db_name": "hackthon",
+    "db_name": "hackathon",
     "param": "charset=utf8mb4&parseTime=true&loc=Local"
 }

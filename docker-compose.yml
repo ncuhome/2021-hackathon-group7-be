@@ -8,8 +8,8 @@ services:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
       JWT_SIGN_KEY: ${JWT_SIGN_KEY}
       EMAIL_PASSWORD: ${EMAIL_PASSWORD}
-    image: "2021-hackthon"
-    container_name: "2021-hackthon"
+    image: "2021-hackathon"
+    container_name: "2021-hackathon"
     build: .
     restart: always
     volumes:
