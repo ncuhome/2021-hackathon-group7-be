@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"nspyf/model"
 	"nspyf/model/dao"
+	"nspyf/service"
 	"strconv"
 	"time"
 )
@@ -29,12 +30,12 @@ func token(c *gin.Context) { // token验证
 	token := c.Request.Header.Get("Token")
 	claims, err := model.Jwt.ParseToken(token)
 	if err != nil {
-		RespondError(c, 3)
+		RespondError(c, service.TokenError)
 		return
 	}
 
 	if claims == nil {
-		RespondError(c, 3)
+		RespondError(c, service.TokenError)
 		return
 	}
 
@@ -43,16 +44,16 @@ func token(c *gin.Context) { // token验证
 	user := &dao.UserDao{}
 	id, err := strconv.Atoi(claims.Subject)
 	if err != nil {
-		RespondError(c, 3)
+		RespondError(c, service.TokenError)
 		return
 	}
 	err = user.GetProfile(uint(id))
 	if err != nil {
-		RespondError(c, 3)
+		RespondError(c, service.TokenError)
 		return
 	}
 	if user.Profile.LoginStatus != claims.Id {
-		RespondError(c, 3)
+		RespondError(c, service.TokenError)
 		return
 	}
 
@@ -68,7 +69,7 @@ func limitIP(interval time.Duration, limit int) gin.HandlerFunc {
 		ip := c.ClientIP()
 		if limiter.LogAndCheck(ip, limit) == false {
 			message := fmt.Sprintf("请求频繁，请%v后重试", interval.String())
-			RespondErrorWith(c, 17, message)
+			RespondErrorWith(c, service.RequestRateError, message)
 			return
 		}
 		c.Next()

@@ -37,13 +37,13 @@ func SendBindEmailKey(req *dto.Email, id uint) uint {
 	}
 	_ = user.Retrieve()
 	if user.Email != "" {
-		return 8
+		return EmailRepeated
 	}
 
 	key, err := util.RandDecStr(6)
 	if err != nil {
-		fmt.Println(err)
-		return 1
+		model.ErrLog.Println(err)
+		return ServerError
 	}
 
 	content := fmt.Sprintf(BindEmailFormat, req.Email, user.Username, key)
@@ -60,8 +60,8 @@ func SendBindEmailKey(req *dto.Email, id uint) uint {
 		content,
 	)
 	if err != nil {
-		fmt.Println(err)
-		return 9
+		model.ErrLog.Println(err)
+		return EmailSendingError
 	}
 
 	//确保邮箱有效再设缓存
@@ -76,16 +76,16 @@ func SendBindEmailKey(req *dto.Email, id uint) uint {
 	}
 	err = cacheObj.DelData()
 	if err != nil {
-		fmt.Println(err)
-		return 1
+		model.ErrLog.Println(err)
+		return ServerError
 	}
 	err = cacheObj.SetData(10 * time.Minute)
 	if err != nil {
-		fmt.Println(err)
-		return 1
+		model.ErrLog.Println(err)
+		return ServerError
 	}
 
-	return 0
+	return SuccessCode
 }
 
 func BindEmail(req *dto.EmailBind, id uint) uint {
@@ -94,7 +94,7 @@ func BindEmail(req *dto.EmailBind, id uint) uint {
 	}
 	_ = user.Retrieve()
 	if user.Email != "" {
-		return 8
+		return EmailRepeated
 	}
 
 	data := &dao.EmailBindCache{}
@@ -106,18 +106,18 @@ func BindEmail(req *dto.EmailBind, id uint) uint {
 
 	if err != nil {
 		if err == dao.CacheNil {
-			return 10
+			return CodeError
 		} else {
-			fmt.Println(err)
-			return 2
+			model.ErrLog.Println(err)
+			return CommitDataError
 		}
 	}
 
 	if req.Key != data.Key {
-		return 11
+		return CodeError
 	}
 	if req.Email != data.Email {
-		return 12
+		return CodeError
 	}
 
 	//判断邮箱是否被其它用户绑定
@@ -126,14 +126,14 @@ func BindEmail(req *dto.EmailBind, id uint) uint {
 	}
 	_ = userByEmail.Retrieve()
 	if userByEmail.ID != 0 {
-		return 13
+		return EmailUsed
 	}
 
 	//删缓存
 	err = cacheObj.DelData()
 	if err != nil {
-		fmt.Println(err)
-		return 1
+		model.ErrLog.Println(err)
+		return ServerError
 	}
 
 	//将邮箱写入数据库
@@ -145,11 +145,11 @@ func BindEmail(req *dto.EmailBind, id uint) uint {
 	}
 	err = user.Update(newUser)
 	if err != nil {
-		fmt.Println(err)
-		return 1
+		model.ErrLog.Println(err)
+		return ServerError
 	}
 
-	return 0
+	return SuccessCode
 }
 
 func RemoveEmail(id uint) uint {
@@ -160,10 +160,10 @@ func RemoveEmail(id uint) uint {
 		"Email": "",
 	})
 	if err != nil {
-		fmt.Println(err)
-		return 1
+		model.ErrLog.Println(err)
+		return ServerError
 	}
-	return 0
+	return SuccessCode
 }
 
 func SendPasswordEmailKey(req *dto.Email) uint {
@@ -172,13 +172,13 @@ func SendPasswordEmailKey(req *dto.Email) uint {
 	}
 	_ = user.Retrieve()
 	if user.ID == 0 {
-		return 15
+		return EmailNotBinding
 	}
 
 	key, err := util.RandHexStr(16)
 	if err != nil {
-		fmt.Println(err)
-		return 1
+		model.ErrLog.Println(err)
+		return ServerError
 	}
 	url := SetPasswordByEmailPage + "?key=" + key
 	content := fmt.Sprintf(PasswordEmailFormat, req.Email, user.Username, url, url)
@@ -195,8 +195,8 @@ func SendPasswordEmailKey(req *dto.Email) uint {
 		content,
 	)
 	if err != nil {
-		fmt.Println(err)
-		return 9
+		model.ErrLog.Println(err)
+		return EmailSendingError
 	}
 
 	//确保邮箱有效再设缓存
@@ -210,13 +210,13 @@ func SendPasswordEmailKey(req *dto.Email) uint {
 	}
 	err = cacheObj.DelData()
 	if err != nil {
-		fmt.Println(err)
-		return 1
+		model.ErrLog.Println(err)
+		return ServerError
 	}
 	err = cacheObj.SetData(10 * time.Minute)
 	if err != nil {
-		fmt.Println(err)
-		return 1
+		model.ErrLog.Println(err)
+		return ServerError
 	}
 
 	return 0
@@ -236,17 +236,17 @@ func SetPasswordByEmail(req *dto.SetPasswordByEmailReq) uint {
 	err := cacheObj.GetData()
 	if err != nil {
 		if err == dao.CacheNil {
-			return 16
+			return CodeError
 		}
-		fmt.Println(err)
-		return 1
+		model.ErrLog.Println(err)
+		return ServerError
 	}
 
 	//删缓存
 	err = cacheObj.DelData()
 	if err != nil {
-		fmt.Println(err)
-		return 1
+		model.ErrLog.Println(err)
+		return ServerError
 	}
 
 	return updatePassword(req.NewPassword, data.ID)

@@ -2,7 +2,6 @@ package service
 
 import (
 	"encoding/hex"
-	"fmt"
 	"nspyf/model"
 	"nspyf/model/dao"
 	"nspyf/model/dto"
@@ -12,11 +11,11 @@ import (
 
 func Register(req *dto.Register) uint {
 	code := CheckUsername(req.Username)
-	if code != 0 {
+	if code != SuccessCode {
 		return code
 	}
 	code = CheckPassword(req.Password)
-	if code != 0 {
+	if code != SuccessCode {
 		return code
 	}
 
@@ -25,13 +24,13 @@ func Register(req *dto.Register) uint {
 	}
 	_ = user.Retrieve()
 	if user.ID != 0 {
-		return 6
+		return UsernameRepeated
 	}
 
 	salt, err := util.RandHexStr(64)
 	if err != nil {
-		fmt.Println(err)
-		return 1
+		model.ErrLog.Println(err)
+		return ServerError
 	}
 
 	password := hex.EncodeToString(util.SHA512([]byte(req.Password + salt)))
@@ -44,10 +43,10 @@ func Register(req *dto.Register) uint {
 	}
 	err = user.Create()
 	if err != nil {
-		fmt.Println(err)
-		return 1
+		model.ErrLog.Println(err)
+		return ServerError
 	}
-	return 0
+	return SuccessCode
 }
 
 func Login(req *dto.Login) (*map[string]interface{}, uint) {
@@ -68,18 +67,18 @@ func Login(req *dto.Login) (*map[string]interface{}, uint) {
 	}
 	_ = user.Retrieve()
 	if user.ID == 0 {
-		return nil, 7
+		return nil, LoginError
 	}
 
 	password := hex.EncodeToString(util.SHA512([]byte(req.Password + user.Salt)))
 	if user.Password != password {
-		return nil, 7
+		return nil, LoginError
 	}
 
 	token, err := model.Jwt.GenerateToken(strconv.Itoa(int(user.ID)), user.LoginStatus)
 	if err != nil {
-		fmt.Println(err)
-		return nil, 1
+		model.ErrLog.Println(err)
+		return nil, ServerError
 	}
 
 	data := &map[string]interface{}{
@@ -88,39 +87,39 @@ func Login(req *dto.Login) (*map[string]interface{}, uint) {
 		"username": user.Username,
 	}
 
-	return data, 0
+	return data, SuccessCode
 }
 
 func CheckUsername(username string) uint {
 	usernameLen := len(username)
 	if usernameLen < 2 || usernameLen > 16 {
-		return 4
+		return CommitDataError
 	}
 	for i := 0; i < usernameLen; i++ {
 		if (username[i] < 'a' || 'z' < username[i]) && (username[i] < 'A' || 'Z' < username[i]) && (username[i] < '0' || '9' < username[i]) {
-			return 4
+			return CommitDataError
 		}
 	}
-	return 0
+	return SuccessCode
 }
 
 func CheckPassword(password string) uint {
 	passwordLen := len(password)
 	if passwordLen < 8 || passwordLen > 32 {
-		return 5
+		return CommitDataError
 	}
 	//[33,126]覆盖了大小写字母、数字、普通可见符号
 	for i := 0; i < passwordLen; i++ {
 		if password[i] < 33 || password[i] > 126 {
-			return 5
+			return CommitDataError
 		}
 	}
-	return 0
+	return SuccessCode
 }
 
 func SetPassword(req *dto.SetPassword, id uint) uint {
 	code := CheckPassword(req.NewPassword)
-	if code != 0 {
+	if code != SuccessCode {
 		return code
 	}
 
@@ -129,12 +128,12 @@ func SetPassword(req *dto.SetPassword, id uint) uint {
 	}
 	err := user.Retrieve()
 	if err != nil {
-		return 1
+		return ServerError
 	}
 
 	shaPassword := hex.EncodeToString(util.SHA512([]byte(req.Password + user.Salt)))
 	if user.Password != shaPassword {
-		return 14
+		return OldPasswordError
 	}
 
 	return updatePassword(req.NewPassword, id)
@@ -144,14 +143,14 @@ func SetPassword(req *dto.SetPassword, id uint) uint {
 func updatePassword(newPassword string, id uint) uint {
 	saltStr, err := util.RandHexStr(64)
 	if err != nil {
-		fmt.Println(err)
-		return 1
+		model.ErrLog.Println(err)
+		return ServerError
 	}
 	shaNewPassword := hex.EncodeToString(util.SHA512([]byte(newPassword + saltStr)))
 	loginStatus, err := util.RandHexStr(8)
 	if err != nil {
-		fmt.Println(err)
-		return 1
+		model.ErrLog.Println(err)
+		return ServerError
 	}
 
 	user := &dao.User{
@@ -163,8 +162,8 @@ func updatePassword(newPassword string, id uint) uint {
 		"LoginStatus": loginStatus,
 	})
 	if err != nil {
-		fmt.Println(err)
-		return 1
+		model.ErrLog.Println(err)
+		return ServerError
 	}
 
 	//删用户缓存
@@ -173,8 +172,8 @@ func updatePassword(newPassword string, id uint) uint {
 	}
 	err = profile.DelCache()
 	if err != nil {
-		fmt.Println(err)
+		model.ErrLog.Println(err)
 	}
 
-	return 0
+	return SuccessCode
 }
