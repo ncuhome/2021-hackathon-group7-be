@@ -9,9 +9,10 @@ import (
 func main() {
 	dao.DBInit("./config/db.json")
 	dao.CacheInit("./config/cache.json")
+	controller.GinInit("./config/gin.json")
 	model.JwtInit("./config/jwt.json")
 	model.EmailInit("./config/email.json")
-	controller.GinInit("./config/gin.json")
+	model.LogInit("./logs/err.txt")
 
 	controller.Run()
 	return

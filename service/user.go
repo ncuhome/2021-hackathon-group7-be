@@ -2,7 +2,6 @@ package service
 
 import (
 	"encoding/hex"
-	"fmt"
 	"nspyf/model"
 	"nspyf/model/dao"
 	"nspyf/model/dto"
@@ -30,7 +29,7 @@ func Register(req *dto.Register) uint {
 
 	salt, err := util.RandHexStr(64)
 	if err != nil {
-		fmt.Println(err)
+		model.ErrLog.Println(err)
 		return 1
 	}
 
@@ -44,7 +43,7 @@ func Register(req *dto.Register) uint {
 	}
 	err = user.Create()
 	if err != nil {
-		fmt.Println(err)
+		model.ErrLog.Println(err)
 		return 1
 	}
 	return 0
@@ -78,7 +77,7 @@ func Login(req *dto.Login) (*map[string]interface{}, uint) {
 
 	token, err := model.Jwt.GenerateToken(strconv.Itoa(int(user.ID)), user.LoginStatus)
 	if err != nil {
-		fmt.Println(err)
+		model.ErrLog.Println(err)
 		return nil, 1
 	}
 
@@ -144,13 +143,13 @@ func SetPassword(req *dto.SetPassword, id uint) uint {
 func updatePassword(newPassword string, id uint) uint {
 	saltStr, err := util.RandHexStr(64)
 	if err != nil {
-		fmt.Println(err)
+		model.ErrLog.Println(err)
 		return 1
 	}
 	shaNewPassword := hex.EncodeToString(util.SHA512([]byte(newPassword + saltStr)))
 	loginStatus, err := util.RandHexStr(8)
 	if err != nil {
-		fmt.Println(err)
+		model.ErrLog.Println(err)
 		return 1
 	}
 
@@ -163,7 +162,7 @@ func updatePassword(newPassword string, id uint) uint {
 		"LoginStatus": loginStatus,
 	})
 	if err != nil {
-		fmt.Println(err)
+		model.ErrLog.Println(err)
 		return 1
 	}
 
@@ -173,7 +172,7 @@ func updatePassword(newPassword string, id uint) uint {
 	}
 	err = profile.DelCache()
 	if err != nil {
-		fmt.Println(err)
+		model.ErrLog.Println(err)
 	}
 
 	return 0

@@ -42,7 +42,7 @@ func SendBindEmailKey(req *dto.Email, id uint) uint {
 
 	key, err := util.RandDecStr(6)
 	if err != nil {
-		fmt.Println(err)
+		model.ErrLog.Println(err)
 		return 1
 	}
 
@@ -60,7 +60,7 @@ func SendBindEmailKey(req *dto.Email, id uint) uint {
 		content,
 	)
 	if err != nil {
-		fmt.Println(err)
+		model.ErrLog.Println(err)
 		return 9
 	}
 
@@ -76,12 +76,12 @@ func SendBindEmailKey(req *dto.Email, id uint) uint {
 	}
 	err = cacheObj.DelData()
 	if err != nil {
-		fmt.Println(err)
+		model.ErrLog.Println(err)
 		return 1
 	}
 	err = cacheObj.SetData(10 * time.Minute)
 	if err != nil {
-		fmt.Println(err)
+		model.ErrLog.Println(err)
 		return 1
 	}
 
@@ -108,7 +108,7 @@ func BindEmail(req *dto.EmailBind, id uint) uint {
 		if err == dao.CacheNil {
 			return 10
 		} else {
-			fmt.Println(err)
+			model.ErrLog.Println(err)
 			return 2
 		}
 	}
@@ -132,7 +132,7 @@ func BindEmail(req *dto.EmailBind, id uint) uint {
 	//删缓存
 	err = cacheObj.DelData()
 	if err != nil {
-		fmt.Println(err)
+		model.ErrLog.Println(err)
 		return 1
 	}
 
@@ -145,7 +145,7 @@ func BindEmail(req *dto.EmailBind, id uint) uint {
 	}
 	err = user.Update(newUser)
 	if err != nil {
-		fmt.Println(err)
+		model.ErrLog.Println(err)
 		return 1
 	}
 
@@ -160,7 +160,7 @@ func RemoveEmail(id uint) uint {
 		"Email": "",
 	})
 	if err != nil {
-		fmt.Println(err)
+		model.ErrLog.Println(err)
 		return 1
 	}
 	return 0
@@ -177,7 +177,7 @@ func SendPasswordEmailKey(req *dto.Email) uint {
 
 	key, err := util.RandHexStr(16)
 	if err != nil {
-		fmt.Println(err)
+		model.ErrLog.Println(err)
 		return 1
 	}
 	url := SetPasswordByEmailPage + "?key=" + key
@@ -195,7 +195,7 @@ func SendPasswordEmailKey(req *dto.Email) uint {
 		content,
 	)
 	if err != nil {
-		fmt.Println(err)
+		model.ErrLog.Println(err)
 		return 9
 	}
 
@@ -210,12 +210,12 @@ func SendPasswordEmailKey(req *dto.Email) uint {
 	}
 	err = cacheObj.DelData()
 	if err != nil {
-		fmt.Println(err)
+		model.ErrLog.Println(err)
 		return 1
 	}
 	err = cacheObj.SetData(10 * time.Minute)
 	if err != nil {
-		fmt.Println(err)
+		model.ErrLog.Println(err)
 		return 1
 	}
 
@@ -238,14 +238,14 @@ func SetPasswordByEmail(req *dto.SetPasswordByEmailReq) uint {
 		if err == dao.CacheNil {
 			return 16
 		}
-		fmt.Println(err)
+		model.ErrLog.Println(err)
 		return 1
 	}
 
 	//删缓存
 	err = cacheObj.DelData()
 	if err != nil {
-		fmt.Println(err)
+		model.ErrLog.Println(err)
 		return 1
 	}
 
