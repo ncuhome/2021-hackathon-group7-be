@@ -1,6 +1,6 @@
 #!/bin/bash 
 #pyf
 
-cp /root/secret/.env ./.env
+cp /root/secret/hackathon.env ./.env
 docker-compose build
 docker-compose up -d
