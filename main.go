@@ -12,7 +12,7 @@ func main() {
 	controller.GinInit("./config/gin.json")
 	model.JwtInit("./config/jwt.json")
 	model.EmailInit("./config/email.json")
-	model.LogInit("./logs/err.txt")
+	model.LogInit()
 
 	controller.Run()
 	return

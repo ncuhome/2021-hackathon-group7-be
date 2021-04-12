@@ -41,12 +41,21 @@ func EmailInit(path string) {
 	return
 }
 
-func LogInit(path string) {
+func LogInit() {
+	path := "./logs/err.txt"
+	_, err := os.Stat("./logs")
+	if err != nil {
+		err := os.Mkdir("logs", os.ModePerm)
+		if err != nil {
+			panic(err)
+		}
+	}
+
 	file, err := os.OpenFile(path,os.O_RDWR | os.O_CREATE | os.O_APPEND,666)
 	if err != nil {
 		panic(err)
 	}
 
-	ErrLog = log.New(file,"ERR",log.LstdFlags | log.Llongfile)
+	ErrLog = log.New(file,"ERR: ",log.LstdFlags | log.Llongfile)
 	return
 }
