@@ -27,6 +27,8 @@ func Run() {
 	a.POST("/email/binding-key", minute2, SendBindEmailKey)
 	a.POST("/email/binding", minute20, BindEmail)
 
+	a.PUT("/user-info", minute20, PutUserInfo)
+
 	a.DELETE("/email/binding", minute20, RemoveEmail)
 
 	err := g.Run(":" + GinConfigObj.Port)

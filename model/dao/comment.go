@@ -4,7 +4,7 @@ import "gorm.io/gorm"
 
 type Comment struct {
 	gorm.Model
-	Content			string	`json:",omitempty" gorm:"type:varchar(65535);not null"`
+	Content			string	`json:",omitempty" gorm:"type:varchar(10000);not null"`
 	UserID			uint	`json:",omitempty" gorm:"index;not null"`
 	ActivityID		uint	`json:",omitempty" gorm:"index;not null"`
 	OrganizationID	uint	`json:",omitempty" gorm:"not null"`

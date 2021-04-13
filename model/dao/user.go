@@ -33,13 +33,6 @@ func (s *User) CreateUser() error {
 	return DB.Create(s).Error
 }
 func (s *User) Create() error {
-	userInfo := &UserInfo{
-		Nickname:     "",
-		Avatar:       "",
-		Digest:       "",
-		Verification: "",
-	}
-
 	tx := DB.Begin()
 	defer func() {
 		if r := recover(); r != nil {
@@ -51,11 +44,18 @@ func (s *User) Create() error {
 		return err
 	}
 
-	if err := userInfo.Create(); err != nil {
+	if err := s.CreateUser(); err != nil {
 		tx.Rollback()
 		return err
 	}
-	if err := s.CreateUser(); err != nil {
+	userInfo := &UserInfo{
+		UserID:		  s.ID,
+		Nickname:     "",
+		Avatar:       "",
+		Digest:       "",
+		Verification: "",
+	}
+	if err := userInfo.Create(); err != nil {
 		tx.Rollback()
 		return err
 	}
