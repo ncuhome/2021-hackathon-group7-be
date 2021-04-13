@@ -29,8 +29,38 @@ type UserDao struct {
 	Profile *UserProfile
 }
 
-func (s *User) Create() error {
+func (s *User) CreateUser() error {
 	return DB.Create(s).Error
+}
+func (s *User) Create() error {
+	userInfo := &UserInfo{
+		Nickname:     "",
+		Avatar:       "",
+		Digest:       "",
+		Verification: "",
+	}
+
+	tx := DB.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+
+	if err := tx.Error; err != nil {
+		return err
+	}
+
+	if err := userInfo.Create(); err != nil {
+		tx.Rollback()
+		return err
+	}
+	if err := s.CreateUser(); err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit().Error
 }
 
 func (s *User) Retrieve() error {
