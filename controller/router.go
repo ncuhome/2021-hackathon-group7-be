@@ -14,6 +14,8 @@ func Run() {
 	g := gin.New()
 	g.Use(gin.Logger(), gin.Recovery(), cors)
 
+	g.GET("/user-info",minute20, GetUserInfo)
+
 	g.POST("/register", hour30, Register)
 	g.POST("/login", hour30, Login)
 	g.POST("/email/password-key", minute2, SendPasswordEmailKey)
