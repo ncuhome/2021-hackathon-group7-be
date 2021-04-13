@@ -1,5 +1,4 @@
 # 2021-hackathon-backend
-2021-hackathon-backend
 
 # 用户信息API文档
 

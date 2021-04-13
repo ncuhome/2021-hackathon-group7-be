@@ -1,5 +1,4 @@
 # 2021-hackathon-backend
-2021-hackathon-backend
 
 ## 工程结构
 + .github
