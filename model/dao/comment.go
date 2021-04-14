@@ -42,5 +42,8 @@ func (s *Comment) Delete() error {
 }
 
 func (s *CommentList) RetrieveByActivity(id uint, pre uint) error {
+	if pre == 0 {
+		return DB.Model(&Comment{}).Where("activity_id = ?", id).Order("id DESC").Limit(10).Find(&(s.Data)).Error
+	}
 	return DB.Model(&Comment{}).Where("activity_id = ? and id < ?", id, pre).Order("id DESC").Limit(10).Find(&(s.Data)).Error
 }

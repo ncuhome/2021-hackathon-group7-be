@@ -44,10 +44,6 @@ func GetCommentByActivity(c *gin.Context) {
 		return
 	}
 
-	if preInt == 0 {
-		preInt = 100000000
-	}
-
 	data, code := service.GetCommentByActivity(uint(idInt),uint(preInt))
 	if code != service.SuccessCode {
 		RespondError(c, code)
