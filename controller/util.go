@@ -16,10 +16,10 @@ var HttpStatus = map[uint]int{
 var Message = map[uint]string{
 	service.ServerError:  "服务端错误",
 	service.CommitDataError:  "提交的数据错误",
-	service.TokenError:  "登录状态无效",
+	service.TokenError:  "无权访问",
 	service.UsernameRepeated:  "用户名已经被注册",
 	service.LoginError: "用户名或密码错误",
-	service.EmailRepeated:" 已经绑定了邮箱",
+	service.EmailRepeated:"已经绑定了邮箱",
 	service.EmailSendingError: "邮件发送失败",
 	service.CodeError: "验证码错误",
 	service.EmailUsed: "邮箱已被其它用户绑定",
