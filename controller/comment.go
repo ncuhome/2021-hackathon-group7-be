@@ -53,3 +53,26 @@ func GetCommentByActivity(c *gin.Context) {
 	RespondSuccess(c, data)
 	return
 }
+
+func GetCommentByUser(c *gin.Context) {
+	idInt, err := strconv.Atoi(c.Query("id"))
+	if err != nil || idInt <= 0 {
+		RespondError(c, service.CommitDataError)
+		return
+	}
+
+	preInt, err := strconv.Atoi(c.DefaultQuery("pre","0"))
+	if err != nil || preInt < 0 {
+		RespondError(c, service.CommitDataError)
+		return
+	}
+
+	data, code := service.GetCommentByUser(uint(idInt),uint(preInt))
+	if code != service.SuccessCode {
+		RespondError(c, code)
+		return
+	}
+
+	RespondSuccess(c, data)
+	return
+}

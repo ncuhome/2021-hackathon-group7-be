@@ -47,3 +47,10 @@ func (s *CommentList) RetrieveByActivity(id uint, pre uint) error {
 	}
 	return DB.Model(&Comment{}).Where("activity_id = ? and id < ?", id, pre).Order("id DESC").Limit(10).Find(&(s.Data)).Error
 }
+
+func (s *CommentList) RetrieveByUser(id uint, pre uint) error {
+	if pre == 0 {
+		return DB.Model(&Comment{}).Where("user_id = ?", id).Order("id DESC").Limit(10).Find(&(s.Data)).Error
+	}
+	return DB.Model(&Comment{}).Where("user_id = ? and id < ?", id, pre).Order("id DESC").Limit(10).Find(&(s.Data)).Error
+}
