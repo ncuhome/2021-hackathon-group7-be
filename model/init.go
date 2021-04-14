@@ -23,6 +23,7 @@ var EmailConfigObj EmailConfig
 var Jwt JWT
 var Email GoMail
 var ErrLog *log.Logger
+var Admin map[string]string
 
 func JwtInit(path string) {
 	if err := util.ReadJSON(path, &JwtConfigObj); err != nil {
@@ -57,5 +58,12 @@ func LogInit() {
 	}
 
 	ErrLog = log.New(file,"ERR: ",log.LstdFlags | log.Llongfile)
+	return
+}
+
+func AdminInit(path string) {
+	if err := util.ReadJSON(path, &Admin); err != nil {
+		panic(err)
+	}
 	return
 }

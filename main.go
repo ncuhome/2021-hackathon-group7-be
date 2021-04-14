@@ -12,6 +12,7 @@ func main() {
 	controller.GinInit("./config/gin.json")
 	model.JwtInit("./config/jwt.json")
 	model.EmailInit("./config/email.json")
+	model.AdminInit("./config/admin.json")
 	model.LogInit()
 
 	controller.Run()
