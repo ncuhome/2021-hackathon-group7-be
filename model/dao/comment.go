@@ -1,13 +1,27 @@
 package dao
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+	"time"
+)
 
 type Comment struct {
 	gorm.Model
 	Content			string	`json:",omitempty" gorm:"type:varchar(10000);not null"`
 	UserID			uint	`json:",omitempty" gorm:"index;not null"`
 	ActivityID		uint	`json:",omitempty" gorm:"index;not null"`
-	OrganizationID	uint	`json:",omitempty" gorm:"not null"`
+}
+
+type CommentRespond struct {
+	ID				uint		`json:"id"`
+	CreatedAt 		time.Time	`json:"created_at"`
+	Content			string		`json:"content"`
+	UserID			uint		`json:"user_id"`
+	ActivityID		uint		`json:"activity_id"`
+}
+
+type CommentList struct {
+	Data []CommentRespond
 }
 
 func (s *Comment) Create() error {
@@ -25,4 +39,8 @@ func (s *Comment) Update(change interface{}) error {
 // 必须传id
 func (s *Comment) Delete() error {
 	return DB.Model(s).Delete(s).Error
+}
+
+func (s *CommentList) RetrieveByActivity(id uint, pre uint) error {
+	return DB.Model(&Comment{}).Where("activity_id = ? and id < ?", id, pre).Order("id DESC").Limit(10).Find(&(s.Data)).Error
 }

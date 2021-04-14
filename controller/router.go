@@ -15,6 +15,7 @@ func Run() {
 	g.Use(gin.Logger(), gin.Recovery(), cors)
 
 	g.GET("/user-info",minute20, GetUserInfo)
+	g.GET("/activity/comment", minute20, GetCommentByActivity)
 
 	g.POST("/register", hour30, Register)
 	g.POST("/login", hour30, Login)
@@ -28,6 +29,7 @@ func Run() {
 	a.POST("/password", minute20, SetPassword)
 	a.POST("/email/binding-key", minute2, SendBindEmailKey)
 	a.POST("/email/binding", minute20, BindEmail)
+	a.POST("/comment", minute20, PostComment)
 
 	a.PUT("/user-info", minute20, PutUserInfo)
 	a.PUT("/verification", minute20, PutV)
