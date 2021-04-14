@@ -47,3 +47,27 @@ func GetUserInfo(c *gin.Context) {
 	RespondSuccess(c, data)
 	return
 }
+
+func PutV(c *gin.Context) {
+	req := &dto.PutV{}
+	err := c.ShouldBind(req)
+	if err != nil {
+		RespondError(c, service.CommitDataError)
+		return
+	}
+
+	id, err := GetClaimsSubAsID(c)
+	if err != nil {
+		RespondError(c, service.TokenError)
+		return
+	}
+
+	code := service.PutV(req, id)
+	if code != service.SuccessCode {
+		RespondError(c, code)
+		return
+	}
+
+	RespondSuccess(c, nil)
+	return
+}

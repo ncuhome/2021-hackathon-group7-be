@@ -5,6 +5,7 @@ import (
 	"nspyf/model"
 	"nspyf/model/dao"
 	"nspyf/model/dto"
+	"strconv"
 )
 
 func PutUserInfo(req *dto.UserInfo, id uint) (*map[string]interface{}, uint) {
@@ -45,4 +46,24 @@ func GetUserInfo(id uint) (*map[string]interface{}, uint) {
 		"verification":userInfo.Verification,
 	}
 	return data, SuccessCode
+}
+
+func PutV(req *dto.PutV, id uint) uint {
+	idStr := strconv.Itoa(int(id))
+	if model.Admin[idStr] != "right-add-v" {
+		return TokenError
+	}
+
+	userInfo := &dao.UserInfo{
+		UserID: req.ID,
+	}
+	newInfo := &map[string]interface{}{
+		"verification": req.Verification,
+	}
+	err := userInfo.Update(newInfo)
+	if err != nil {
+		model.ErrLog.Println(err)
+		return ServerError
+	}
+	return SuccessCode
 }

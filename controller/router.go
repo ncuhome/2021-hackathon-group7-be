@@ -30,6 +30,7 @@ func Run() {
 	a.POST("/email/binding", minute20, BindEmail)
 
 	a.PUT("/user-info", minute20, PutUserInfo)
+	a.PUT("/verification", minute20, PutV)
 
 	a.DELETE("/email/binding", minute20, RemoveEmail)
 

@@ -1,7 +1,12 @@
 package dto
 
 type UserInfo struct {
-	Nickname		string	`json:",omitempty" gorm:"type:varchar(64);index"`
-	Avatar			string	`json:",omitempty" gorm:"type:varchar(255);"`
-	Digest			string	`json:",omitempty" gorm:"type:varchar(65535);"`
+	Nickname		string	`json:"nickname"`
+	Avatar			string	`json:"avatar"`
+	Digest			string	`json:"digest"`
+}
+
+type PutV struct {
+	ID				uint	`json:"id"  binding:"required"`
+	Verification	string	`json:"verification"`
 }
