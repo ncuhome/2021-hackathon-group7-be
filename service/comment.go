@@ -31,7 +31,7 @@ func GetCommentByActivity(id uint,pre uint) (*map[string]interface{},uint) {
 		}
 	}
 	data := &map[string]interface{}{
-		"data": commentList.Data,
+		"list": commentList.Data,
 	}
 	return data, SuccessCode
 }
@@ -45,7 +45,7 @@ func GetCommentByUser(id uint,pre uint) (*map[string]interface{},uint) {
 		}
 	}
 	data := &map[string]interface{}{
-		"data": commentList.Data,
+		"list": commentList.Data,
 	}
 	return data, SuccessCode
 }
