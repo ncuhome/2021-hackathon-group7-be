@@ -13,6 +13,8 @@ func main() {
 	model.JwtInit("./config/jwt.json")
 	model.EmailInit("./config/email.json")
 	model.AdminInit("./config/admin.json")
+	//model.PictureInit("/etc/share/nginx/html/picture/")
+	model.OssInit()
 	model.LogInit()
 
 	controller.Run()
