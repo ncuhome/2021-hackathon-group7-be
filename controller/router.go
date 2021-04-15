@@ -22,6 +22,7 @@ func Run() {
 	g.POST("/login", hour30, Login)
 	g.POST("/email/password-key", minute2, SendPasswordEmailKey)
 	g.POST("/email/password", minute20, SetPasswordByEmail)
+	g.POST("/picture", minute20, PostPicture)
 
 	a := g.Group("/auth", token)
 
