@@ -10,14 +10,32 @@ import (
 	"unicode/utf8"
 )
 
-func CreateActivity(req *dto.Activities) uint {
-	len := utf8.RuneCountInString(req.Content)
-	minn := math.Min(60, float64(len))
+func CheckV(id uint) uint {
+	userInfo := &dao.UserInfo{
+		UserID: id,
+	}
+	err := userInfo.Retrieve()
+	if err != nil {
+		return ServerError
+	}
+	if userInfo.Verification != "v" {
+		return TokenError
+	}
+	return SuccessCode
+}
+
+func CreateActivity(req *dto.Activities, id uint) uint {
+	code := CheckV(id)
+	if code != SuccessCode {
+		return code
+	}
+	contentLen := utf8.RuneCountInString(req.Content)
+	minn := math.Min(60, float64(contentLen))
 	dig := string([]rune(req.Content)[:int(minn)])
 	activity := dao.Activity{
 		Title:     req.Title,
 		Content:   req.Content,
-		UserId:    req.UserId,
+		UserId:    id,
 		StartTime: req.StartTime,
 		EndTime:   req.EndTime,
 		Place:     req.Place,
@@ -147,7 +165,7 @@ func GetActivitiesByPlace(place string) (interface{}, uint) {
 	return DataReturn, SuccessCode
 }
 
-func GetActivitiesByHost(host string) (interface{}, uint) {
+func GetActivitiesByHost(host uint) (interface{}, uint) {
 	activity := &dao.Activity{
 		UserId: host,
 	}

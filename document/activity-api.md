@@ -1,5 +1,6 @@
 # 2021-hackathon-backend
 
+# 活动API文档
 
 ## 方法描述：用户创建新活动
 
@@ -13,7 +14,6 @@ URL地址：/auth/activity
 | ---  | ---  | ---  |
 |  title  |  string  |  活动题目 |
 |  content  |  string  |  活动内容  |
-|  id  |  uint  |  活动举办者id |
 |  start_time  |  int（时间戳）  |  开始时间 |
 |  end_time  |  int（时间戳）  |  结束时间 |
 |  place  |  string  |  活动举办地 |
@@ -24,7 +24,6 @@ URL地址：/auth/activity
 {
     "title":"activity",
     "content":"this is an activity",
-    "id":12,
     "start_time":1641505804,
     "end_time":1641506804,
     "place":"classroom1",
@@ -64,7 +63,7 @@ URL地址：/activities/all
 | ---  | ---  | ---  |
 |  code  |  int  |  状态码  |
 |  message  |  string  |  状态码描述  |
-|  data  |  JSON  |  评论列表，具体字段参见示例  |
+|  data  |  JSON  |  具体看样例  |
 
 响应体示例
 
@@ -186,7 +185,7 @@ URL地址：/activities/all
 ## 方法描述：获取活动详情
 
 
-URL地址：/activities/detailed
+URL地址：/activities/detail
 
 请求方法：GET
 
@@ -200,7 +199,7 @@ URL地址：/activities/detailed
 请求示例
 
 ```
-/user/detailed?id=1
+/user/detail?id=1
 ```
 
 响应体：
@@ -210,7 +209,7 @@ URL地址：/activities/detailed
 | ---  | ---  | ---  |
 |  code  |  int  |  状态码  |
 |  message  |  string  |  状态码描述  |
-|  data  |  JSON  |  评论列表，具体字段参见示例  |
+|  data  |  JSON  |  具体看样例  |
 
 响应体示例
 
@@ -261,7 +260,7 @@ URL地址：/activities/place
 | ---  | ---  | ---  |
 |  code  |  int  |  状态码  |
 |  message  |  string  |  状态码描述  |
-|  data  |  JSON  |  评论列表，具体字段参见示例  |
+|  data  |  JSON  |  具体看样例  |
 
 响应体示例
 
@@ -348,8 +347,6 @@ URL地址：/activities/host
 
 请求体：
 
-**form-data**
-
 | Key | Value | 说明 |
 | ---  | ---  | ---  |
 |  host  |  int  | 主办方id |
@@ -366,7 +363,7 @@ URL地址：/activities/host
 | ---  | ---  | ---  |
 |  code  |  int  |  状态码  |
 |  message  |  string  |  状态码描述  |
-|  data  |  JSON  |  含文件名，具体看样例  |
+|  data  |  JSON  |  具体看样例  |
 
 响应体示例
 

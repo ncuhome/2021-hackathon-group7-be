@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"nspyf/model/dto"
 	"nspyf/service"
+	"strconv"
 )
 
 func CreateActivity(c *gin.Context) {
@@ -15,7 +16,13 @@ func CreateActivity(c *gin.Context) {
 		return
 	}
 
-	code := service.CreateActivity(req)
+	id, err := GetClaimsSubAsID(c)
+	if err != nil {
+		RespondError(c, service.TokenError)
+		return
+	}
+
+	code := service.CreateActivity(req, id)
 
 	if code != 0 {
 		RespondError(c, code)
@@ -63,8 +70,13 @@ func GetActivitiesByPlace(c *gin.Context) {
 }
 
 func GetActivitiesByHost(c *gin.Context) {
-	host := c.PostForm("host")
-	respond, code := service.GetActivitiesByHost(host)
+	hostInt, err := strconv.Atoi(c.PostForm("host"))
+	if err != nil || hostInt <= 0 {
+		RespondError(c, service.CommitDataError)
+		return
+	}
+
+	respond, code := service.GetActivitiesByHost(uint(hostInt))
 	if code != 0 {
 		RespondError(c, code)
 		return

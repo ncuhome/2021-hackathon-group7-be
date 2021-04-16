@@ -15,9 +15,9 @@ const (
 
 type Activity struct {
 	gorm.Model
+	UserId    uint
 	Title     string `gorm:"varchar(128)"`
 	Content   string `gorm:"text"`
-	UserId    string `gorm:"varchar(128)"`
 	StartTime string `gorm:"varchar(64)"`
 	EndTime   string `gorm:"varchar(64)"`
 	Place     string `gorm:"varchar(128)"`

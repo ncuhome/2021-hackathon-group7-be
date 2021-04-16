@@ -25,7 +25,7 @@ func Run() {
 	g.POST("/picture", minute20, PostPicture)
 
 	g.GET("/activities/all", minute20, GetAllActivities)
-	g.GET("/activities/detailed", minute20, GetActivity)
+	g.GET("/activities/detail", minute20, GetActivity)
 	g.GET("/activities/place", minute20, GetActivitiesByPlace)
 	g.GET("/activities/host", minute20, GetActivitiesByHost)
 
