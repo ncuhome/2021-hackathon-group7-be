@@ -50,9 +50,9 @@ func (s *Activity) GetActivity() (Activity, error) {
 
 //按地点获取活动
 func (s *Activity) GetActivitiesByPlace() ([]Activity, error) {
-	time := time.Now().Unix()
+	tim := time.Now().Unix()
 	var t []Activity
-	err := DB.Model(s).Where(s).Where("end_time > ?", time).Order("start_time DESC").Find(&t).Error
+	err := DB.Model(s).Where(s).Where("end_time > ?", tim).Order("start_time DESC").Find(&t).Error
 	return t, err
 }
 
@@ -68,7 +68,7 @@ func (s *Activity) GetActivitiesByHost() ([]Activity, error) {
 func (s *Activity) SetCacheActivity() error {
 	fmt.Println(s)
 	b := strconv.Itoa(int(s.ID))
-	key := CacheConfigObj.Prefix + "activity" + string(b)
+	key := CacheConfigObj.Prefix + "activity" + b
 	DataBytes, err := json.Marshal(s)
 	if err != nil {
 		return err
@@ -79,7 +79,7 @@ func (s *Activity) SetCacheActivity() error {
 }
 
 func (s *Activity) SetCacheActivityList() error {
-	key := CacheConfigObj.Prefix + "activitylist"
+	key := CacheConfigObj.Prefix + "activity_list"
 	data, err := s.GetAllActivities()
 	if err != nil {
 		return err
@@ -97,7 +97,7 @@ func (s *Activity) SetCacheActivityList() error {
 }
 
 func (s *Activity) SetCachePlaceList() error {
-	key := CacheConfigObj.Prefix + "activityplace"
+	key := CacheConfigObj.Prefix + "activity_place"
 	data, err := s.GetActivitiesByPlace()
 	if err != nil {
 		return err
@@ -115,7 +115,7 @@ func (s *Activity) SetCachePlaceList() error {
 }
 
 func (s *Activity) SetCacheHostList() error {
-	key := CacheConfigObj.Prefix + "activityhost"
+	key := CacheConfigObj.Prefix + "activity_host"
 	data, err := s.GetActivitiesByHost()
 	if err != nil {
 		return err
@@ -135,7 +135,7 @@ func (s *Activity) SetCacheHostList() error {
 //获取
 
 func (s *Activity) GetCacheActivity() (interface{}, error) {
-	key := CacheConfigObj.Prefix + "activity" + string(strconv.Itoa(int(s.ID)))
+	key := CacheConfigObj.Prefix + "activity" + strconv.Itoa(int(s.ID))
 
 	value, err := Cache.Get(key).Result()
 	if err != nil {
@@ -152,7 +152,7 @@ func (s *Activity) GetCacheActivity() (interface{}, error) {
 }
 
 func (s *Activity) GetCacheAllActivities() ([]string, error) {
-	key := CacheConfigObj.Prefix + "activitylist"
+	key := CacheConfigObj.Prefix + "activity_list"
 	members, err := Cache.SCard(key).Result()
 	if err != nil {
 		return nil, err
@@ -166,7 +166,7 @@ func (s *Activity) GetCacheAllActivities() ([]string, error) {
 }
 
 func (s *Activity) GetCacheActivitiesByPlace() ([]string, error) {
-	key := CacheConfigObj.Prefix + "activityplace"
+	key := CacheConfigObj.Prefix + "activity_place"
 	members, err := Cache.SCard(key).Result()
 	if err != nil {
 		return nil, err
@@ -180,7 +180,7 @@ func (s *Activity) GetCacheActivitiesByPlace() ([]string, error) {
 }
 
 func (s *Activity) GetCacheActivitiesByHost() ([]string, error) {
-	key := CacheConfigObj.Prefix + "activityhost"
+	key := CacheConfigObj.Prefix + "activity_host"
 	members, err := Cache.SCard(key).Result()
 	if err != nil {
 		return nil, err
@@ -195,7 +195,7 @@ func (s *Activity) GetCacheActivitiesByHost() ([]string, error) {
 
 //删除缓存
 func (s *Activity) DelCacheList(name string) error {
-	key := CacheConfigObj.Prefix + "activity" + name
+	key := CacheConfigObj.Prefix + "activity_" + name
 	_, err := Cache.Del(key).Result()
 	return err
 }

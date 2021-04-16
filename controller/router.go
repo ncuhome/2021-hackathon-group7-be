@@ -24,6 +24,11 @@ func Run() {
 	g.POST("/email/password", minute20, SetPasswordByEmail)
 	g.POST("/picture", minute20, PostPicture)
 
+	g.GET("/activities/all", minute20, GetAllActivities)
+	g.GET("/activities/detailed", minute20, GetActivity)
+	g.GET("/activities/place", minute20, GetActivitiesByPlace)
+	g.GET("/activities/host", minute20, GetActivitiesByHost)
+
 	a := g.Group("/auth", token)
 
 	a.GET("/token", minute20, Verify)
@@ -38,11 +43,7 @@ func Run() {
 
 	a.DELETE("/email/binding", minute20, RemoveEmail)
 
-	a.POST("/activities/create", CreateActivity)
-	a.GET("/activities/all", GetAllActivities)
-	a.GET("activities/activity", GetActivity)
-	a.GET("activities/place", GetActivitiesByPlace)
-	a.GET("activities/host", GetActivitiesByHost)
+	a.POST("/activity", minute20, CreateActivity)
 
 	err := g.Run(":" + GinConfigObj.Port)
 	if err != nil {
