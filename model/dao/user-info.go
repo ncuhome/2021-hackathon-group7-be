@@ -30,8 +30,8 @@ type UserInfoProfile struct {
 }
 
 type UserInfoDao struct {
-	Info *UserInfo
-	Digest *UserInfoDigest
+	Info    *UserInfo
+	Digest  *UserInfoDigest
 	Profile *UserInfoProfile
 }
 

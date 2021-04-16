@@ -25,7 +25,7 @@ type UserData struct {
 }
 
 type UserDao struct {
-	User    *User
+	User *User
 	Data *UserData
 }
 

@@ -40,8 +40,8 @@ func GetCommentByActivity(id uint, pre uint) (*map[string]interface{}, uint) {
 		}
 	}
 
-	commentUsers := make([]*map[string]interface{},0)
-	for _,v := range commentList.Data {
+	commentUsers := make([]*map[string]interface{}, 0)
+	for _, v := range commentList.Data {
 		userInfoDao := &dao.UserInfoDao{}
 		err := userInfoDao.GetDigest(v.UserID)
 		if err != nil {
@@ -50,7 +50,7 @@ func GetCommentByActivity(id uint, pre uint) (*map[string]interface{}, uint) {
 
 		commentUser := &map[string]interface{}{
 			"comment": v,
-			"user": userInfoDao.Digest,
+			"user":    userInfoDao.Digest,
 		}
 		commentUsers = append(commentUsers, commentUser)
 	}
@@ -70,8 +70,8 @@ func GetCommentByUser(id uint, pre uint) (*map[string]interface{}, uint) {
 		}
 	}
 
-	commentUsers := make([]*map[string]interface{},0)
-	for _,v := range commentList.Data {
+	commentUsers := make([]*map[string]interface{}, 0)
+	for _, v := range commentList.Data {
 		userInfoDao := &dao.UserInfoDao{}
 		err := userInfoDao.GetDigest(v.UserID)
 		if err != nil {
@@ -80,7 +80,7 @@ func GetCommentByUser(id uint, pre uint) (*map[string]interface{}, uint) {
 
 		commentUser := &map[string]interface{}{
 			"comment": v,
-			"user": userInfoDao.Digest,
+			"user":    userInfoDao.Digest,
 		}
 		commentUsers = append(commentUsers, commentUser)
 	}
