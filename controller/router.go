@@ -14,7 +14,7 @@ func Run() {
 	g := gin.New()
 	g.Use(gin.Logger(), gin.Recovery(), cors)
 
-	g.GET("/user-info",minute20, GetUserInfo)
+	g.GET("/user-info", minute20, GetUserInfo)
 	g.GET("/activity/comment", minute20, GetCommentByActivity)
 	g.GET("/user/comment", minute20, GetCommentByUser)
 
@@ -37,6 +37,12 @@ func Run() {
 	a.PUT("/verification", minute20, PutV)
 
 	a.DELETE("/email/binding", minute20, RemoveEmail)
+
+	a.POST("/activities/create", CreateActivity)
+	a.GET("/activities/all", GetAllActivities)
+	a.GET("activities/activity", GetActivity)
+	a.GET("activities/place", GetActivitiesByPlace)
+	a.GET("activities/host", GetActivitiesByHost)
 
 	err := g.Run(":" + GinConfigObj.Port)
 	if err != nil {
