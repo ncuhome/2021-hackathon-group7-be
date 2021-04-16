@@ -43,7 +43,7 @@ func Run() {
 
 	a.DELETE("/email/binding", minute20, RemoveEmail)
 
-	g.POST("/activity", minute20, CreateActivity)
+	a.POST("/activity", minute20, CreateActivity)
 
 	err := g.Run(":" + GinConfigObj.Port)
 	if err != nil {
