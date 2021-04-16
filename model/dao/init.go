@@ -57,7 +57,6 @@ func DBInit(path string) {
 		panic(err)
 	}
 
-	DB = DB.Debug()
 	return
 }
 

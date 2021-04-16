@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gin-gonic/gin"
 	"tudo/controller"
 	"tudo/model"
 	"tudo/model/dao"
@@ -17,6 +18,7 @@ func main() {
 	model.OssInit()
 	model.LogInit()
 
+	gin.SetMode(gin.ReleaseMode)
 	controller.Run()
 	return
 }
