@@ -54,7 +54,17 @@ URL地址：/activities/all
 
 请求方法：GET
 
-请求参数：无
+请求参数：
+
+| 字段   | 说明 |
+| ---    | ---  |
+|  pre  |  上一页的最后一个（最小的）评论id，第一页则填0  |
+
+请求示例
+
+```
+/activities/all？pre=1
+```
 
 响应体：
 
@@ -246,11 +256,12 @@ URL地址：/activities/place
 | 字段 | 说明 |
 | ---  | ---  |
 |  place  |  活动地点 |
+|  pre    | 上一页最小id,第一页填0|
 
 请求示例
 
 ```
-/activity/place?place=1
+/activity/place?place=1 pre=0
 ```
 
 响应体：
@@ -350,11 +361,12 @@ URL地址：/activities/host
 | Key | Value | 说明 |
 | ---  | ---  | ---  |
 |  host  |  int  | 主办方id |
+|  pre   |  int  | 上一页最小id，第一页为0|
 
 请求体示例
 
 ```
-/activities/host？host=1
+/activities/host？host=1 pre=0
 ```
 
 响应体：

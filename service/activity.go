@@ -41,10 +41,12 @@ func CreateActivity(req *dto.Activities, id uint) uint {
 		Place:     req.Place,
 		Digest:    dig,
 	}
+
 	err := activity.Create()
 	if err != nil {
 		return ServerError
 	}
+	fmt.Println(666)
 	_ = activity.SetCacheActivity()
 	err = activity.DelCacheList("list")
 	if err != nil {
@@ -61,13 +63,16 @@ func CreateActivity(req *dto.Activities, id uint) uint {
 	return SuccessCode
 }
 
-func GetAllActivities() (interface{}, uint) {
+func GetAllActivities(pre int) (interface{}, uint) {
 	activity := &dao.Activity{}
 	var data []interface{}
 	var DataReturn interface{}
-	list, err := activity.GetCacheAllActivities()
+	list, err := activity.GetCacheAllActivities(pre)
+	fmt.Println(list)
+	fmt.Println(err)
 	if err == nil {
-		for _, t := range list {
+		for i := len(list) - 1; i >= 0; i-- {
+			t := list[i]
 			temp, err := strconv.Atoi(t)
 			activity.ID = uint(temp)
 			s, err := activity.GetCacheActivity()
@@ -87,8 +92,9 @@ func GetAllActivities() (interface{}, uint) {
 		DataReturn = data
 
 	} else {
-		err = activity.SetCacheActivityList()
-		DataReturn, err = activity.GetAllActivities()
+		err = activity.SetCacheActivityList(pre)
+		fmt.Println(888)
+		DataReturn, err = activity.GetAllActivities(pre)
 		if err != nil {
 			fmt.Println(err)
 			return nil, ServerError
@@ -119,7 +125,7 @@ func GetActivity(id string) (interface{}, uint) {
 	}
 
 	data1, err := activity.GetActivity()
-	data1.SetCacheActivity()
+	_ = data1.SetCacheActivity()
 	if err != nil {
 		fmt.Println(err)
 		return data1, ServerError
@@ -127,13 +133,13 @@ func GetActivity(id string) (interface{}, uint) {
 	return data1, SuccessCode
 }
 
-func GetActivitiesByPlace(place string) (interface{}, uint) {
+func GetActivitiesByPlace(place string, pre int) (interface{}, uint) {
 	activity := &dao.Activity{
 		Place: place,
 	}
 	var data []interface{}
 	var DataReturn interface{}
-	list, err := activity.GetCacheActivitiesByPlace()
+	list, err := activity.GetCacheActivitiesByPlace(pre)
 	if err == nil {
 		for _, t := range list {
 			temp, err := strconv.Atoi(t)
@@ -142,7 +148,7 @@ func GetActivitiesByPlace(place string) (interface{}, uint) {
 
 			if err != nil {
 				p, err := activity.GetActivity()
-				p.SetCacheActivity()
+				_ = p.SetCacheActivity()
 				if err != nil {
 					return nil, ServerError
 				}
@@ -155,8 +161,8 @@ func GetActivitiesByPlace(place string) (interface{}, uint) {
 		DataReturn = data
 
 	} else {
-		err = activity.SetCachePlaceList()
-		DataReturn, err = activity.GetActivitiesByPlace()
+		err = activity.SetCachePlaceList(pre)
+		DataReturn, err = activity.GetActivitiesByPlace(pre)
 		if err != nil {
 			fmt.Println(err)
 			return nil, ServerError
@@ -165,13 +171,13 @@ func GetActivitiesByPlace(place string) (interface{}, uint) {
 	return DataReturn, SuccessCode
 }
 
-func GetActivitiesByHost(host uint) (interface{}, uint) {
+func GetActivitiesByHost(host uint, pre int) (interface{}, uint) {
 	activity := &dao.Activity{
 		UserId: host,
 	}
 	var data []interface{}
 	var DataReturn interface{}
-	list, err := activity.GetCacheActivitiesByHost()
+	list, err := activity.GetCacheActivitiesByHost(pre)
 	if err == nil {
 		for _, t := range list {
 			temp, err := strconv.Atoi(t)
@@ -180,7 +186,7 @@ func GetActivitiesByHost(host uint) (interface{}, uint) {
 
 			if err != nil {
 				p, err := activity.GetActivity()
-				p.SetCacheActivity()
+				_ = p.SetCacheActivity()
 				if err != nil {
 					return nil, ServerError
 				}
@@ -193,8 +199,8 @@ func GetActivitiesByHost(host uint) (interface{}, uint) {
 		DataReturn = data
 
 	} else {
-		err = activity.SetCacheHostList()
-		DataReturn, err = activity.GetActivitiesByHost()
+		err = activity.SetCacheHostList(pre)
+		DataReturn, err = activity.GetActivitiesByHost(pre)
 		if err != nil {
 			fmt.Println(err)
 			return nil, ServerError

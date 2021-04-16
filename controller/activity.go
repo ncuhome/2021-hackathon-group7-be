@@ -34,7 +34,13 @@ func CreateActivity(c *gin.Context) {
 }
 
 func GetAllActivities(c *gin.Context) {
-	respond, code := service.GetAllActivities()
+	pre, err := strconv.Atoi(c.DefaultQuery("pre", "0"))
+	if err != nil || pre < 0 {
+		RespondError(c, service.CommitDataError)
+		return
+	}
+
+	respond, code := service.GetAllActivities(pre)
 
 	if code != 0 {
 		RespondError(c, code)
@@ -58,8 +64,13 @@ func GetActivity(c *gin.Context) {
 }
 
 func GetActivitiesByPlace(c *gin.Context) {
-	place := c.PostForm("place")
-	respond, code := service.GetActivitiesByPlace(place)
+	place := c.Query("place")
+	pre, err := strconv.Atoi(c.DefaultQuery("pre", "0"))
+	if err != nil || pre < 0 {
+		RespondError(c, service.CommitDataError)
+		return
+	}
+	respond, code := service.GetActivitiesByPlace(place, pre)
 	if code != 0 {
 		RespondError(c, code)
 		return
@@ -70,13 +81,18 @@ func GetActivitiesByPlace(c *gin.Context) {
 }
 
 func GetActivitiesByHost(c *gin.Context) {
-	hostInt, err := strconv.Atoi(c.PostForm("host"))
+	hostInt, err := strconv.Atoi(c.Query("host"))
 	if err != nil || hostInt <= 0 {
 		RespondError(c, service.CommitDataError)
 		return
 	}
+	pre, err := strconv.Atoi(c.DefaultQuery("pre", "0"))
+	if err != nil || pre < 0 {
+		RespondError(c, service.CommitDataError)
+		return
+	}
 
-	respond, code := service.GetActivitiesByHost(uint(hostInt))
+	respond, code := service.GetActivitiesByHost(uint(hostInt), pre)
 	if code != 0 {
 		RespondError(c, code)
 		return
