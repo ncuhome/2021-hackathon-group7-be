@@ -2,10 +2,10 @@ package service
 
 import (
 	"encoding/hex"
-	"nspyf/model"
-	"nspyf/model/dao"
-	"nspyf/model/dto"
-	"nspyf/util"
+	"tudo/model"
+	"tudo/model/dao"
+	"tudo/model/dto"
+	"tudo/util"
 	"strconv"
 )
 

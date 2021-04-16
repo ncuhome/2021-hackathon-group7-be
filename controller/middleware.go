@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"nspyf/model"
-	"nspyf/model/dao"
-	"nspyf/service"
+	"tudo/model"
+	"tudo/model/dao"
+	"tudo/service"
 	"strconv"
 	"time"
 )

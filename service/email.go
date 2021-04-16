@@ -2,10 +2,10 @@ package service
 
 import (
 	"fmt"
-	"nspyf/model"
-	"nspyf/model/dao"
-	"nspyf/model/dto"
-	"nspyf/util"
+	"tudo/model"
+	"tudo/model/dao"
+	"tudo/model/dto"
+	"tudo/util"
 	"strconv"
 	"time"
 )

@@ -3,7 +3,7 @@ package controller
 import (
 	"errors"
 	"github.com/gin-gonic/gin"
-	"nspyf/service"
+	"tudo/service"
 	"strconv"
 )
 

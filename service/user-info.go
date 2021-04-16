@@ -2,9 +2,9 @@ package service
 
 import (
 	"gorm.io/gorm"
-	"nspyf/model"
-	"nspyf/model/dao"
-	"nspyf/model/dto"
+	"tudo/model"
+	"tudo/model/dao"
+	"tudo/model/dto"
 	"strconv"
 )
 

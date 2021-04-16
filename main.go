@@ -1,10 +1,9 @@
 package main
 
 import (
-	_ "github.com/joho/godotenv/autoload"
-	"nspyf/controller"
-	"nspyf/model"
-	"nspyf/model/dao"
+	"tudo/controller"
+	"tudo/model"
+	"tudo/model/dao"
 )
 
 func main() {

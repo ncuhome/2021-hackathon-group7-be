@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"gorm.io/gorm"
 	"math"
-	"nspyf/model/dao"
-	"nspyf/model/dto"
+	"tudo/model/dao"
+	"tudo/model/dto"
 	"strconv"
 	"unicode/utf8"
 )

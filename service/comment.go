@@ -2,8 +2,8 @@ package service
 
 import (
 	"gorm.io/gorm"
-	"nspyf/model/dao"
-	"nspyf/model/dto"
+	"tudo/model/dao"
+	"tudo/model/dto"
 )
 
 func PostComment(req *dto.PostComment, id uint) uint {

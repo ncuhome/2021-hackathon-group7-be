@@ -2,7 +2,7 @@ package model
 
 import (
 	"log"
-	"nspyf/util"
+	"tudo/util"
 	"os"
 )
 

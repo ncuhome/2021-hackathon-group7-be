@@ -2,8 +2,8 @@ package service
 
 import (
 	"io"
-	"nspyf/model"
-	"nspyf/util"
+	"tudo/model"
+	"tudo/util"
 )
 
 func PostPicture(file io.Reader,name string) (*map[string]string, uint) {
