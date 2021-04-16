@@ -49,7 +49,7 @@ func (s *User) Create() error {
 		return err
 	}
 	userInfo := &UserInfo{
-		UserID:		  s.ID,
+		UserID:       s.ID,
 		Nickname:     "",
 		Avatar:       "",
 		Digest:       "",

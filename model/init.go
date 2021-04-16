@@ -2,8 +2,8 @@ package model
 
 import (
 	"log"
-	"tudo/util"
 	"os"
+	"tudo/util"
 )
 
 type JwtConfig struct {
@@ -24,7 +24,7 @@ var Jwt JWT
 var Email GoMail
 var ErrLog *log.Logger
 var Admin map[string]string
-var PictureObj	*Picture
+var PictureObj *Picture
 var OssObj *OssType
 
 func JwtInit(path string) {
@@ -54,12 +54,12 @@ func LogInit() {
 		}
 	}
 
-	file, err := os.OpenFile(path,os.O_RDWR | os.O_CREATE | os.O_APPEND,666)
+	file, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_APPEND, 666)
 	if err != nil {
 		panic(err)
 	}
 
-	ErrLog = log.New(file,"ERR: ",log.LstdFlags | log.Llongfile)
+	ErrLog = log.New(file, "ERR: ", log.LstdFlags|log.Llongfile)
 	return
 }
 
@@ -78,16 +78,16 @@ func PictureInit(path string) {
 			panic(err)
 		}
 	}
-	PictureObj.Path=path
+	PictureObj.Path = path
 	return
 }
 
 func OssInit() {
 	OssObj = &OssType{
-		Endpoint: os.Getenv("OSS_ENDPOINT"),
-		AccessKeyID: os.Getenv("OSS_ACCESS_KEY_ID"),
+		Endpoint:        os.Getenv("OSS_ENDPOINT"),
+		AccessKeyID:     os.Getenv("OSS_ACCESS_KEY_ID"),
 		AccessKeySecret: os.Getenv("OSS_ACCESS_KEY_SECRET"),
-		Bucket: os.Getenv("OSS_BUCKET"),
+		Bucket:          os.Getenv("OSS_BUCKET"),
 	}
 	return
 }

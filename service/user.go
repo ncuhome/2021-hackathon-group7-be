@@ -2,11 +2,11 @@ package service
 
 import (
 	"encoding/hex"
+	"strconv"
 	"tudo/model"
 	"tudo/model/dao"
 	"tudo/model/dto"
 	"tudo/util"
-	"strconv"
 )
 
 func Register(req *dto.Register) uint {

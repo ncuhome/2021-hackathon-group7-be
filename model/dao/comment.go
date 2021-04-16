@@ -7,17 +7,17 @@ import (
 
 type Comment struct {
 	gorm.Model
-	Content			string	`json:",omitempty" gorm:"type:varchar(10000);not null"`
-	UserID			uint	`json:",omitempty" gorm:"index;not null"`
-	ActivityID		uint	`json:",omitempty" gorm:"index;not null"`
+	Content    string `json:",omitempty" gorm:"type:varchar(10000);not null"`
+	UserID     uint   `json:",omitempty" gorm:"index;not null"`
+	ActivityID uint   `json:",omitempty" gorm:"index;not null"`
 }
 
 type CommentRespond struct {
-	ID				uint		`json:"id"`
-	CreatedAt 		time.Time	`json:"created_at"`
-	Content			string		`json:"content"`
-	UserID			uint		`json:"user_id"`
-	ActivityID		uint		`json:"activity_id"`
+	ID         uint      `json:"id"`
+	CreatedAt  time.Time `json:"created_at"`
+	Content    string    `json:"content"`
+	UserID     uint      `json:"user_id"`
+	ActivityID uint      `json:"activity_id"`
 }
 
 type CommentList struct {
