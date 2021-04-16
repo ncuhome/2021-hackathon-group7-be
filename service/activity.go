@@ -25,28 +25,28 @@ func CreateActivity(req *dto.Activities) uint {
 	}
 	err := activity.Create()
 	if err != nil {
-		return 1
+		return ServerError
 	}
 	_ = activity.SetCacheActivity()
 	err = activity.DelCacheList("list")
 	if err != nil {
-		return 1
+		return ServerError
 	}
 	err = activity.DelCacheList("place")
 	if err != nil {
-		return 1
+		return ServerError
 	}
 	err = activity.DelCacheList("host")
 	if err != nil {
-		return 1
+		return ServerError
 	}
-	return 0
+	return SuccessCode
 }
 
 func GetAllActivities() (interface{}, uint) {
 	activity := &dao.Activity{}
 	var data []interface{}
-	var datareturn interface{}
+	var DataReturn interface{}
 	list, err := activity.GetCacheAllActivities()
 	if err == nil {
 		for _, t := range list {
@@ -56,9 +56,9 @@ func GetAllActivities() (interface{}, uint) {
 
 			if err != nil {
 				p, err := activity.GetActivity()
-				p.SetCacheActivity()
+				_ = p.SetCacheActivity()
 				if err != nil {
-					return nil, 1
+					return nil, ServerError
 				}
 				data = append(data, p)
 			} else {
@@ -66,17 +66,17 @@ func GetAllActivities() (interface{}, uint) {
 			}
 
 		}
-		datareturn = data
+		DataReturn = data
 
 	} else {
 		err = activity.SetCacheActivityList()
-		datareturn, err = activity.GetAllActivities()
+		DataReturn, err = activity.GetAllActivities()
 		if err != nil {
 			fmt.Println(err)
-			return nil, 1
+			return nil, ServerError
 		}
 	}
-	return datareturn, 0
+	return DataReturn, SuccessCode
 }
 
 func GetActivity(id string) (interface{}, uint) {
@@ -85,7 +85,7 @@ func GetActivity(id string) (interface{}, uint) {
 
 	if err != nil {
 		fmt.Println(err)
-		return dao.Activity{}, 1
+		return dao.Activity{}, ServerError
 	}
 
 	ID := uint(temp)
@@ -97,16 +97,16 @@ func GetActivity(id string) (interface{}, uint) {
 
 	data, err := activity.GetCacheActivity()
 	if err == nil {
-		return data, 0
+		return data, SuccessCode
 	}
 
 	data1, err := activity.GetActivity()
 	data1.SetCacheActivity()
 	if err != nil {
 		fmt.Println(err)
-		return data1, 1
+		return data1, ServerError
 	}
-	return data1, 0
+	return data1, SuccessCode
 }
 
 func GetActivitiesByPlace(place string) (interface{}, uint) {
@@ -114,7 +114,7 @@ func GetActivitiesByPlace(place string) (interface{}, uint) {
 		Place: place,
 	}
 	var data []interface{}
-	var datareturn interface{}
+	var DataReturn interface{}
 	list, err := activity.GetCacheActivitiesByPlace()
 	if err == nil {
 		for _, t := range list {
@@ -126,7 +126,7 @@ func GetActivitiesByPlace(place string) (interface{}, uint) {
 				p, err := activity.GetActivity()
 				p.SetCacheActivity()
 				if err != nil {
-					return nil, 1
+					return nil, ServerError
 				}
 				data = append(data, p)
 			} else {
@@ -134,17 +134,17 @@ func GetActivitiesByPlace(place string) (interface{}, uint) {
 			}
 
 		}
-		datareturn = data
+		DataReturn = data
 
 	} else {
 		err = activity.SetCachePlaceList()
-		datareturn, err = activity.GetActivitiesByPlace()
+		DataReturn, err = activity.GetActivitiesByPlace()
 		if err != nil {
 			fmt.Println(err)
-			return nil, 1
+			return nil, ServerError
 		}
 	}
-	return datareturn, 0
+	return DataReturn, SuccessCode
 }
 
 func GetActivitiesByHost(host string) (interface{}, uint) {
@@ -152,7 +152,7 @@ func GetActivitiesByHost(host string) (interface{}, uint) {
 		UserId: host,
 	}
 	var data []interface{}
-	var datareturn interface{}
+	var DataReturn interface{}
 	list, err := activity.GetCacheActivitiesByHost()
 	if err == nil {
 		for _, t := range list {
@@ -164,7 +164,7 @@ func GetActivitiesByHost(host string) (interface{}, uint) {
 				p, err := activity.GetActivity()
 				p.SetCacheActivity()
 				if err != nil {
-					return nil, 1
+					return nil, ServerError
 				}
 				data = append(data, p)
 			} else {
@@ -172,15 +172,15 @@ func GetActivitiesByHost(host string) (interface{}, uint) {
 			}
 
 		}
-		datareturn = data
+		DataReturn = data
 
 	} else {
 		err = activity.SetCacheHostList()
-		datareturn, err = activity.GetActivitiesByHost()
+		DataReturn, err = activity.GetActivitiesByHost()
 		if err != nil {
 			fmt.Println(err)
-			return nil, 1
+			return nil, ServerError
 		}
 	}
-	return datareturn, 0
+	return DataReturn, SuccessCode
 }

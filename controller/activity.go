@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"nspyf/model/dto"
 	"nspyf/service"
@@ -12,7 +11,7 @@ func CreateActivity(c *gin.Context) {
 	err := c.ShouldBind(req)
 
 	if err != nil {
-		RespondError(c, 11)
+		RespondError(c, service.CommitDataError)
 		return
 	}
 
@@ -40,7 +39,6 @@ func GetAllActivities(c *gin.Context) {
 
 func GetActivity(c *gin.Context) {
 	id := c.PostForm("id")
-	fmt.Println(id, 5)
 	respond, code := service.GetActivity(id)
 
 	if code != 0 {
