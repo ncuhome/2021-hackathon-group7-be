@@ -30,8 +30,24 @@ func GetCommentByActivity(id uint, pre uint) (*map[string]interface{}, uint) {
 			return nil, ServerError
 		}
 	}
+
+	commentUsers := make([]*map[string]interface{},0)
+	for _,v := range commentList.Data {
+		userInfoDao := &dao.UserInfoDao{}
+		err := userInfoDao.GetDigest(v.UserID)
+		if err != nil {
+			return nil, ServerError
+		}
+
+		commentUser := &map[string]interface{}{
+			"comment": v,
+			"user": userInfoDao.InfoDigest,
+		}
+		commentUsers = append(commentUsers, commentUser)
+	}
+
 	data := &map[string]interface{}{
-		"list": commentList.Data,
+		"list": commentUsers,
 	}
 	return data, SuccessCode
 }
