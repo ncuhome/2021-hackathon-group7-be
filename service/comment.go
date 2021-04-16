@@ -41,7 +41,7 @@ func GetCommentByActivity(id uint, pre uint) (*map[string]interface{}, uint) {
 
 		commentUser := &map[string]interface{}{
 			"comment": v,
-			"user": userInfoDao.InfoDigest,
+			"user": userInfoDao.Digest,
 		}
 		commentUsers = append(commentUsers, commentUser)
 	}
@@ -71,7 +71,7 @@ func GetCommentByUser(id uint, pre uint) (*map[string]interface{}, uint) {
 
 		commentUser := &map[string]interface{}{
 			"comment": v,
-			"user": userInfoDao.InfoDigest,
+			"user": userInfoDao.Digest,
 		}
 		commentUsers = append(commentUsers, commentUser)
 	}
