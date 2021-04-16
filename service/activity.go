@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"gorm.io/gorm"
 	"math"
-	"nspyf/model/dao"
-	"nspyf/model/dto"
 	"strconv"
+	"tudo/model/dao"
+	"tudo/model/dto"
 	"unicode/utf8"
 )
 

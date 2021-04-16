@@ -2,10 +2,10 @@ package service
 
 import (
 	"gorm.io/gorm"
-	"nspyf/model"
-	"nspyf/model/dao"
-	"nspyf/model/dto"
 	"strconv"
+	"tudo/model"
+	"tudo/model/dao"
+	"tudo/model/dto"
 )
 
 func PutUserInfo(req *dto.UserInfo, id uint) (*map[string]interface{}, uint) {
@@ -13,9 +13,9 @@ func PutUserInfo(req *dto.UserInfo, id uint) (*map[string]interface{}, uint) {
 		UserID: id,
 	}
 	newInfo := &map[string]interface{}{
-		"nickname":req.Nickname,
-		"avatar": req.Avatar,
-		"digest":req.Digest,
+		"nickname": req.Nickname,
+		"avatar":   req.Avatar,
+		"digest":   req.Digest,
 	}
 	err := userInfo.Update(newInfo)
 	if err != nil {
@@ -40,10 +40,10 @@ func GetUserInfo(id uint) (*map[string]interface{}, uint) {
 	}
 
 	data := &map[string]interface{}{
-		"nickname":userInfo.Nickname,
-		"avatar": userInfo.Avatar,
-		"digest":userInfo.Digest,
-		"verification":userInfo.Verification,
+		"nickname":     userInfo.Nickname,
+		"avatar":       userInfo.Avatar,
+		"digest":       userInfo.Digest,
+		"verification": userInfo.Verification,
 	}
 	return data, SuccessCode
 }

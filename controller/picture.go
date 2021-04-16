@@ -2,7 +2,7 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"nspyf/service"
+	"tudo/service"
 )
 
 func PostPicture(c *gin.Context) {

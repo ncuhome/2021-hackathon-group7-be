@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"nspyf/model"
-	"nspyf/model/dao"
-	"nspyf/service"
 	"strconv"
 	"time"
+	"tudo/model"
+	"tudo/model/dao"
+	"tudo/service"
 )
 
 func cors(c *gin.Context) { // 预检

@@ -2,12 +2,12 @@ package service
 
 import (
 	"fmt"
-	"nspyf/model"
-	"nspyf/model/dao"
-	"nspyf/model/dto"
-	"nspyf/util"
 	"strconv"
 	"time"
+	"tudo/model"
+	"tudo/model/dao"
+	"tudo/model/dto"
+	"tudo/util"
 )
 
 const (
@@ -28,7 +28,7 @@ const (
 		"若非链接形式，请复制该链接粘贴到浏览器网址栏访问<br>" +
 		"若链接过期请到忘记密码相关页面重新发送<br>" +
 		"该邮件由系统发出，请勿回复"
-	SetPasswordByEmailPage = "https://nspyf.top/password"
+	SetPasswordByEmailPage = "https://nspyf.top/tudo/password"
 )
 
 func SendBindEmailKey(req *dto.Email, id uint) uint {

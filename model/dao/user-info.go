@@ -4,11 +4,11 @@ import "gorm.io/gorm"
 
 type UserInfo struct {
 	gorm.Model
-	UserID			uint	`json:",omitempty" gorm:"index;not null"`
-	Nickname		string	`json:",omitempty" gorm:"type:varchar(64);index"`
-	Avatar			string	`json:",omitempty" gorm:"type:varchar(255);"`
-	Digest			string	`json:",omitempty" gorm:"type:varchar(10000);"`
-	Verification	string	`json:",omitempty" gorm:"type:varchar(255);index"`
+	UserID       uint   `json:",omitempty" gorm:"index;not null"`
+	Nickname     string `json:",omitempty" gorm:"type:varchar(64);index"`
+	Avatar       string `json:",omitempty" gorm:"type:varchar(255);"`
+	Digest       string `json:",omitempty" gorm:"type:varchar(10000);"`
+	Verification string `json:",omitempty" gorm:"type:varchar(255);index"`
 }
 
 func (s *UserInfo) Create() error {

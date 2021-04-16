@@ -1,10 +1,10 @@
 package main
 
 import (
-	_ "github.com/joho/godotenv/autoload"
-	"nspyf/controller"
-	"nspyf/model"
-	"nspyf/model/dao"
+	"github.com/gin-gonic/gin"
+	"tudo/controller"
+	"tudo/model"
+	"tudo/model/dao"
 )
 
 func main() {
@@ -18,6 +18,7 @@ func main() {
 	model.OssInit()
 	model.LogInit()
 
+	gin.SetMode(gin.ReleaseMode)
 	controller.Run()
 	return
 }
