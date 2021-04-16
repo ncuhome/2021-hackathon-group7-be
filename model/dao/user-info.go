@@ -43,8 +43,21 @@ func (s *UserInfo) Retrieve() error {
 	return DB.Model(s).Where(s).First(s).Error
 }
 
+// 需提供UserID字段
 func (s *UserInfo) Update(change interface{}) error {
-	return DB.Model(s).Where(s).Updates(change).Error
+	err := DB.Model(s).Where(s).Updates(change).Error
+	if err != nil {
+		return err
+	}
+	userInfoDigest := &UserInfoDigest{
+		UserID: s.UserID,
+	}
+	_ = userInfoDigest.DelCache()
+	userInfoProfile := &UserInfoProfile{
+		UserID: s.UserID,
+	}
+	_ = userInfoProfile.DelCache()
+	return nil
 }
 
 func (s *UserInfo) GetData(data interface{}) error {
@@ -103,7 +116,7 @@ func (s *UserInfoDao) GetDigest(id uint) error {
 	s.Digest = new(UserInfoDigest)
 	if s.Digest.GetCache(id) != nil {
 		s.Info = new(UserInfo)
-		s.Info.ID = id
+		s.Info.UserID = id
 		err := s.Info.GetData(s.Digest)
 		if err != nil {
 			return err
@@ -117,7 +130,7 @@ func (s *UserInfoDao) GetProfile(id uint) error {
 	s.Profile = new(UserInfoProfile)
 	if s.Profile.GetCache(id) != nil {
 		s.Info = new(UserInfo)
-		s.Info.ID = id
+		s.Info.UserID = id
 		err := s.Info.GetData(s.Profile)
 		if err != nil {
 			return err
