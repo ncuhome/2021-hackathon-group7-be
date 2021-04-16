@@ -13,9 +13,18 @@ func PostComment(req *dto.PostComment, id uint) uint {
 		ActivityID: req.ActivityID,
 	}
 
-	// TODO 判断活动是否存在
+	// 判断活动是否存在
+	activity := &dao.Activity{}
+	activity.ID = req.ActivityID
+	_, err := activity.GetActivity()
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return CommitDataError
+		}
+		return ServerError
+	}
 
-	err := comment.Create()
+	err = comment.Create()
 	if err != nil {
 		return ServerError
 	}
