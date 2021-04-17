@@ -76,7 +76,7 @@ func GetUserByV(pre uint) (*map[string]interface{}, uint) {
 	}
 
 	data := &map[string]interface{}{
-		"list": list,
+		"list": list.Data,
 	}
 	return data, SuccessCode
 }
