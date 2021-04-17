@@ -2,8 +2,8 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"nspyf/model/dto"
-	"nspyf/service"
+	"tudo/model/dto"
+	"tudo/service"
 )
 
 func Register(c *gin.Context) {

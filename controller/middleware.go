@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"nspyf/model"
-	"nspyf/model/dao"
-	"nspyf/service"
 	"strconv"
 	"time"
+	"tudo/model"
+	"tudo/model/dao"
+	"tudo/service"
 )
 
 func cors(c *gin.Context) { // 预检
@@ -47,12 +47,12 @@ func token(c *gin.Context) { // token验证
 		RespondError(c, service.TokenError)
 		return
 	}
-	err = user.GetProfile(uint(id))
+	err = user.GetData(uint(id))
 	if err != nil {
 		RespondError(c, service.TokenError)
 		return
 	}
-	if user.Profile.LoginStatus != claims.Id {
+	if user.Data.LoginStatus != claims.Id {
 		RespondError(c, service.TokenError)
 		return
 	}

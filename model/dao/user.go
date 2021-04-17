@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	UserProfileCacheTime = 10 * time.Minute
+	UserDataCacheTime = 10 * time.Minute
 )
 
 type User struct {
@@ -19,14 +19,14 @@ type User struct {
 	LoginStatus string `json:",omitempty" gorm:"type:varchar(16);not null"`
 }
 
-type UserProfile struct {
+type UserData struct {
 	ID          uint
 	LoginStatus string
 }
 
 type UserDao struct {
-	User    *User
-	Profile *UserProfile
+	User *User
+	Data *UserData
 }
 
 func (s *User) CreateUser() error {
@@ -49,7 +49,7 @@ func (s *User) Create() error {
 		return err
 	}
 	userInfo := &UserInfo{
-		UserID:		  s.ID,
+		UserID:       s.ID,
 		Nickname:     "",
 		Avatar:       "",
 		Digest:       "",
@@ -72,19 +72,19 @@ func (s *User) Update(change interface{}) error {
 }
 
 // data传入引用用于接受数据
-func (s *User) GetProfile(data interface{}) error {
+func (s *User) GetData(data interface{}) error {
 	return DB.Model(s).Where(s).First(data).Error
 }
 
-func (s *UserProfile) SetCache() error {
+func (s *UserData) SetCache() error {
 	cacheObj := &JsonCache{
 		Data: s,
 		ID:   strconv.Itoa(int(s.ID)),
 	}
-	return cacheObj.SetData(UserProfileCacheTime)
+	return cacheObj.SetData(UserDataCacheTime)
 }
 
-func (s *UserProfile) GetCache(id uint) error {
+func (s *UserData) GetCache(id uint) error {
 	cacheObj := &JsonCache{
 		Data: s,
 		ID:   strconv.Itoa(int(id)),
@@ -92,7 +92,7 @@ func (s *UserProfile) GetCache(id uint) error {
 	return cacheObj.GetData()
 }
 
-func (s *UserProfile) DelCache() error {
+func (s *UserData) DelCache() error {
 	cacheObj := &JsonCache{
 		Data: s,
 		ID:   strconv.Itoa(int(s.ID)),
@@ -100,16 +100,16 @@ func (s *UserProfile) DelCache() error {
 	return cacheObj.DelData()
 }
 
-func (s *UserDao) GetProfile(id uint) error {
-	s.Profile = new(UserProfile)
-	if s.Profile.GetCache(id) != nil {
+func (s *UserDao) GetData(id uint) error {
+	s.Data = new(UserData)
+	if s.Data.GetCache(id) != nil {
 		s.User = new(User)
 		s.User.ID = id
-		err := s.User.GetProfile(s.Profile)
+		err := s.User.GetData(s.Data)
 		if err != nil {
 			return err
 		}
-		_ = s.Profile.SetCache()
+		_ = s.Data.SetCache()
 	}
 	return nil
 }

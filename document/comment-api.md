@@ -77,82 +77,52 @@ URL地址：/activity/comment
 
 响应体示例
 
-**说明：如果要获取下一页，参数pre=12**
-
 ```
 {
     "code": 0,
     "data": {
         "list": [
             {
-                "id": 21,
-                "created_at": "2021-04-14T15:03:26.274+08:00",
-                "content": "hello12",
-                "user_id": 1,
-                "activity_id": 1
+                "comment": {
+                    "id": 3,
+                    "created_at": "2021-04-14T15:02:52.433+08:00",
+                    "content": "hello2",
+                    "user_id": 1,
+                    "activity_id": 1
+                },
+                "user": {
+                    "user_id": 3,
+                    "nickname": "你好",
+                    "avatar": "https://",
+                    "verification": "v"
+                }
             },
             {
-                "id": 20,
-                "created_at": "2021-04-14T15:03:25.798+08:00",
-                "content": "hello12",
-                "user_id": 1,
-                "activity_id": 1
+                "comment": {
+                    "id": 2,
+                    "created_at": "2021-04-14T15:02:49.091+08:00",
+                    "content": "hello1",
+                    "user_id": 1,
+                    "activity_id": 1
+                },
+                "user": {
+                    "user_id": 3,
+                    "nickname": "你好",
+                    "avatar": "https://",
+                    "verification": "v"
+                }
             },
             {
-                "id": 19,
-                "created_at": "2021-04-14T15:03:25.388+08:00",
-                "content": "hello12",
-                "user_id": 1,
-                "activity_id": 1
-            },
-            {
-                "id": 18,
-                "created_at": "2021-04-14T15:03:24.917+08:00",
-                "content": "hello12",
-                "user_id": 1,
-                "activity_id": 1
-            },
-            {
-                "id": 17,
-                "created_at": "2021-04-14T15:03:24.432+08:00",
-                "content": "hello12",
-                "user_id": 1,
-                "activity_id": 1
-            },
-            {
-                "id": 16,
-                "created_at": "2021-04-14T15:03:23.938+08:00",
-                "content": "hello12",
-                "user_id": 1,
-                "activity_id": 1
-            },
-            {
-                "id": 15,
-                "created_at": "2021-04-14T15:03:23.457+08:00",
-                "content": "hello12",
-                "user_id": 1,
-                "activity_id": 1
-            },
-            {
-                "id": 14,
-                "created_at": "2021-04-14T15:03:22.978+08:00",
-                "content": "hello12",
-                "user_id": 1,
-                "activity_id": 1
-            },
-            {
-                "id": 13,
-                "created_at": "2021-04-14T15:03:22.564+08:00",
-                "content": "hello12",
-                "user_id": 1,
-                "activity_id": 1
-            },
-            {
-                "id": 12,
-                "created_at": "2021-04-14T15:03:19.689+08:00",
-                "content": "hello11",
-                "user_id": 1,
-                "activity_id": 1
+                "comment": {
+                    "id": 1,
+                    "created_at": "2021-04-14T13:43:02.041+08:00",
+                    "content": "hello",
+                    "user_id": 2,
+                    "activity_id": 1
+                },
+                "user": {
+                    "user_id": 4
+                }
             }
         ]
     },
@@ -192,82 +162,40 @@ URL地址：/user/comment
 
 响应体示例
 
-**说明：如果要获取下一页，参数pre=12**
-
 ```
 {
     "code": 0,
     "data": {
         "list": [
             {
-                "id": 21,
-                "created_at": "2021-04-14T15:03:26.274+08:00",
-                "content": "hello12",
-                "user_id": 1,
-                "activity_id": 1
+                "comment": {
+                    "id": 3,
+                    "created_at": "2021-04-14T15:02:52.433+08:00",
+                    "content": "hello2",
+                    "user_id": 1,
+                    "activity_id": 1
+                },
+                "user": {
+                    "user_id": 3,
+                    "nickname": "你好",
+                    "avatar": "https://",
+                    "verification": "v"
+                }
             },
             {
-                "id": 20,
-                "created_at": "2021-04-14T15:03:25.798+08:00",
-                "content": "hello12",
-                "user_id": 1,
-                "activity_id": 1
-            },
-            {
-                "id": 19,
-                "created_at": "2021-04-14T15:03:25.388+08:00",
-                "content": "hello12",
-                "user_id": 1,
-                "activity_id": 1
-            },
-            {
-                "id": 18,
-                "created_at": "2021-04-14T15:03:24.917+08:00",
-                "content": "hello12",
-                "user_id": 1,
-                "activity_id": 1
-            },
-            {
-                "id": 17,
-                "created_at": "2021-04-14T15:03:24.432+08:00",
-                "content": "hello12",
-                "user_id": 1,
-                "activity_id": 1
-            },
-            {
-                "id": 16,
-                "created_at": "2021-04-14T15:03:23.938+08:00",
-                "content": "hello12",
-                "user_id": 1,
-                "activity_id": 1
-            },
-            {
-                "id": 15,
-                "created_at": "2021-04-14T15:03:23.457+08:00",
-                "content": "hello12",
-                "user_id": 1,
-                "activity_id": 1
-            },
-            {
-                "id": 14,
-                "created_at": "2021-04-14T15:03:22.978+08:00",
-                "content": "hello12",
-                "user_id": 1,
-                "activity_id": 1
-            },
-            {
-                "id": 13,
-                "created_at": "2021-04-14T15:03:22.564+08:00",
-                "content": "hello12",
-                "user_id": 1,
-                "activity_id": 1
-            },
-            {
-                "id": 12,
-                "created_at": "2021-04-14T15:03:19.689+08:00",
-                "content": "hello11",
-                "user_id": 1,
-                "activity_id": 1
+                "comment": {
+                    "id": 2,
+                    "created_at": "2021-04-14T15:02:49.091+08:00",
+                    "content": "hello1",
+                    "user_id": 1,
+                    "activity_id": 1
+                },
+                "user": {
+                    "user_id": 3,
+                    "nickname": "你好",
+                    "avatar": "https://",
+                    "verification": "v"
+                }
             }
         ]
     },

@@ -5,8 +5,8 @@ import (
 	"github.com/go-redis/redis"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"nspyf/util"
 	"os"
+	"tudo/util"
 )
 
 const (
@@ -52,12 +52,11 @@ func DBInit(path string) {
 	if err != nil {
 		panic(err)
 	}
-	err = DB.AutoMigrate(&User{},&UserInfo{},&Comment{})
+	err = DB.AutoMigrate(&User{}, &UserInfo{}, &Comment{})
 	if err != nil {
 		panic(err)
 	}
 
-	DB = DB.Debug()
 	return
 }
 

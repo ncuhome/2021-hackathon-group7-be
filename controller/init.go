@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"nspyf/util"
+	"tudo/util"
 )
 
 type GinConfig struct {

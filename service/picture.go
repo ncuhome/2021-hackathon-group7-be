@@ -2,14 +2,14 @@ package service
 
 import (
 	"io"
-	"nspyf/model"
-	"nspyf/util"
+	"tudo/model"
+	"tudo/util"
 )
 
-func PostPicture(file io.Reader,name string) (*map[string]string, uint) {
+func PostPicture(file io.Reader, name string) (*map[string]string, uint) {
 	randStr, err := util.RandHexStr(4)
 	if err != nil {
-		return nil,ServerError
+		return nil, ServerError
 	}
 
 	filename := randStr + name
@@ -17,7 +17,7 @@ func PostPicture(file io.Reader,name string) (*map[string]string, uint) {
 	//err = model.PictureObj.Post(file, filename)
 	err = model.OssObj.PutBytes(file, filename)
 	if err != nil {
-		return nil,ServerError
+		return nil, ServerError
 	}
 
 	data := &map[string]string{

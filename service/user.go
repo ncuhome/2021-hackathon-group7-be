@@ -2,11 +2,11 @@ package service
 
 import (
 	"encoding/hex"
-	"nspyf/model"
-	"nspyf/model/dao"
-	"nspyf/model/dto"
-	"nspyf/util"
 	"strconv"
+	"tudo/model"
+	"tudo/model/dao"
+	"tudo/model/dto"
+	"tudo/util"
 )
 
 func Register(req *dto.Register) uint {
@@ -167,10 +167,10 @@ func updatePassword(newPassword string, id uint) uint {
 	}
 
 	//删用户缓存
-	profile := &dao.UserProfile{
+	Data := &dao.UserData{
 		ID: id,
 	}
-	err = profile.DelCache()
+	err = Data.DelCache()
 	if err != nil {
 		model.ErrLog.Println(err)
 	}

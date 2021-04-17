@@ -2,9 +2,9 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"nspyf/model/dto"
-	"nspyf/service"
 	"strconv"
+	"tudo/model/dto"
+	"tudo/service"
 )
 
 func CreateActivity(c *gin.Context) {

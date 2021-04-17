@@ -6,11 +6,11 @@ import (
 )
 
 type Picture struct {
-	Path	string
+	Path string
 }
 
-func (s *Picture) Post(data io.Reader,fileName string) error {
-	file, err := os.Create(s.Path+fileName)
+func (s *Picture) Post(data io.Reader, fileName string) error {
+	file, err := os.Create(s.Path + fileName)
 	if err != nil {
 		return err
 	}

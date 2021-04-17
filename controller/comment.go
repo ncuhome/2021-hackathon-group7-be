@@ -2,9 +2,9 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"nspyf/model/dto"
-	"nspyf/service"
 	"strconv"
+	"tudo/model/dto"
+	"tudo/service"
 )
 
 func PostComment(c *gin.Context) {
@@ -38,13 +38,13 @@ func GetCommentByActivity(c *gin.Context) {
 		return
 	}
 
-	preInt, err := strconv.Atoi(c.DefaultQuery("pre","0"))
+	preInt, err := strconv.Atoi(c.DefaultQuery("pre", "0"))
 	if err != nil || preInt < 0 {
 		RespondError(c, service.CommitDataError)
 		return
 	}
 
-	data, code := service.GetCommentByActivity(uint(idInt),uint(preInt))
+	data, code := service.GetCommentByActivity(uint(idInt), uint(preInt))
 	if code != service.SuccessCode {
 		RespondError(c, code)
 		return
@@ -61,13 +61,13 @@ func GetCommentByUser(c *gin.Context) {
 		return
 	}
 
-	preInt, err := strconv.Atoi(c.DefaultQuery("pre","0"))
+	preInt, err := strconv.Atoi(c.DefaultQuery("pre", "0"))
 	if err != nil || preInt < 0 {
 		RespondError(c, service.CommitDataError)
 		return
 	}
 
-	data, code := service.GetCommentByUser(uint(idInt),uint(preInt))
+	data, code := service.GetCommentByUser(uint(idInt), uint(preInt))
 	if code != service.SuccessCode {
 		RespondError(c, code)
 		return
