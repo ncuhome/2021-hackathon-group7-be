@@ -29,6 +29,10 @@ type UserInfoProfile struct {
 	Verification string `json:"verification,omitempty"`
 }
 
+type UserInfoProfileList struct {
+	Data []UserInfoProfile
+}
+
 type UserInfoDao struct {
 	Info    *UserInfo
 	Digest  *UserInfoDigest
@@ -138,4 +142,11 @@ func (s *UserInfoDao) GetProfile(id uint) error {
 		_ = s.Profile.SetCache()
 	}
 	return nil
+}
+
+func (s *UserInfoProfileList) RetrieveByV(pre uint) error {
+	if pre == 0 {
+		return DB.Model(&UserInfo{}).Where("verification = ?", "v").Order("id ASC").Limit(10).Find(&(s.Data)).Error
+	}
+	return DB.Model(&UserInfo{}).Where("verification = ? and id < ?", "v", pre).Order("id ASC").Limit(10).Find(&(s.Data)).Error
 }

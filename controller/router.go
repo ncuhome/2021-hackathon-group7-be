@@ -17,6 +17,7 @@ func Run() {
 	g.GET("/user-info", minute40, GetUserInfo)
 	g.GET("/activity/comment", minute40, GetCommentByActivity)
 	g.GET("/user/comment", minute40, GetCommentByUser)
+	g.GET("/verification/user", minute40, GetUserByV)
 
 	g.POST("/register", hour30, Register)
 	g.POST("/login", hour30, Login)

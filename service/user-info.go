@@ -65,3 +65,18 @@ func PutV(req *dto.PutV, id uint) uint {
 	}
 	return SuccessCode
 }
+
+func GetUserByV(pre uint) (*map[string]interface{}, uint) {
+	list := &dao.UserInfoProfileList{}
+	err := list.RetrieveByV(pre)
+	if err != nil {
+		if err != gorm.ErrRecordNotFound {
+			return nil, ServerError
+		}
+	}
+
+	data := &map[string]interface{}{
+		"list": list.Data,
+	}
+	return data, SuccessCode
+}
