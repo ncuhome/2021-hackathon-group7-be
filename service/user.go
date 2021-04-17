@@ -177,3 +177,18 @@ func updatePassword(newPassword string, id uint) uint {
 
 	return SuccessCode
 }
+
+
+func GetEmail(id uint) (*map[string]interface{}, uint) {
+	user := &dao.User{}
+	user.ID = id
+	err := user.Retrieve()
+	if err != nil {
+		return nil, ServerError
+	}
+
+	data := &map[string]interface{}{
+		"email": user.Email,
+	}
+	return data, SuccessCode
+}

@@ -33,6 +33,7 @@ func Run() {
 	a := g.Group("/auth", token)
 
 	a.GET("/token", minute40, Verify)
+	a.GET("/email", minute40, GetEmail)
 
 	a.POST("/password", minute40, SetPassword)
 	a.POST("/email/binding-key", minute2, SendBindEmailKey)
