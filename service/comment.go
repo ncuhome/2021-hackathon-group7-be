@@ -13,9 +13,18 @@ func PostComment(req *dto.PostComment, id uint) uint {
 		ActivityID: req.ActivityID,
 	}
 
-	// TODO 判断活动是否存在
+	// 判断活动是否存在
+	activity := &dao.Activity{}
+	activity.ID = req.ActivityID
+	_, err := activity.GetActivity()
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return CommitDataError
+		}
+		return ServerError
+	}
 
-	err := comment.Create()
+	err = comment.Create()
 	if err != nil {
 		return ServerError
 	}
@@ -30,8 +39,24 @@ func GetCommentByActivity(id uint, pre uint) (*map[string]interface{}, uint) {
 			return nil, ServerError
 		}
 	}
+
+	commentUsers := make([]*map[string]interface{}, 0)
+	for _, v := range commentList.Data {
+		userInfoDao := &dao.UserInfoDao{}
+		err := userInfoDao.GetDigest(v.UserID)
+		if err != nil {
+			return nil, ServerError
+		}
+
+		commentUser := &map[string]interface{}{
+			"comment": v,
+			"user":    userInfoDao.Digest,
+		}
+		commentUsers = append(commentUsers, commentUser)
+	}
+
 	data := &map[string]interface{}{
-		"list": commentList.Data,
+		"list": commentUsers,
 	}
 	return data, SuccessCode
 }
@@ -44,8 +69,24 @@ func GetCommentByUser(id uint, pre uint) (*map[string]interface{}, uint) {
 			return nil, ServerError
 		}
 	}
+
+	commentUsers := make([]*map[string]interface{}, 0)
+	for _, v := range commentList.Data {
+		userInfoDao := &dao.UserInfoDao{}
+		err := userInfoDao.GetDigest(v.UserID)
+		if err != nil {
+			return nil, ServerError
+		}
+
+		commentUser := &map[string]interface{}{
+			"comment": v,
+			"user":    userInfoDao.Digest,
+		}
+		commentUsers = append(commentUsers, commentUser)
+	}
+
 	data := &map[string]interface{}{
-		"list": commentList.Data,
+		"list": commentUsers,
 	}
 	return data, SuccessCode
 }

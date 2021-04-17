@@ -167,10 +167,10 @@ func updatePassword(newPassword string, id uint) uint {
 	}
 
 	//删用户缓存
-	profile := &dao.UserProfile{
+	Data := &dao.UserData{
 		ID: id,
 	}
-	err = profile.DelCache()
+	err = Data.DelCache()
 	if err != nil {
 		model.ErrLog.Println(err)
 	}

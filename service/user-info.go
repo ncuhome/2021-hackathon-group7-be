@@ -26,11 +26,9 @@ func PutUserInfo(req *dto.UserInfo, id uint) (*map[string]interface{}, uint) {
 }
 
 func GetUserInfo(id uint) (*map[string]interface{}, uint) {
-	userInfo := &dao.UserInfo{
-		UserID: id,
-	}
+	userInfoDao := &dao.UserInfoDao{}
 
-	err := userInfo.Retrieve()
+	err := userInfoDao.GetProfile(id)
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return nil, CommitDataError
@@ -40,10 +38,10 @@ func GetUserInfo(id uint) (*map[string]interface{}, uint) {
 	}
 
 	data := &map[string]interface{}{
-		"nickname":     userInfo.Nickname,
-		"avatar":       userInfo.Avatar,
-		"digest":       userInfo.Digest,
-		"verification": userInfo.Verification,
+		"nickname":     userInfoDao.Profile.Nickname,
+		"avatar":       userInfoDao.Profile.Avatar,
+		"digest":       userInfoDao.Profile.Digest,
+		"verification": userInfoDao.Profile.Verification,
 	}
 	return data, SuccessCode
 }
