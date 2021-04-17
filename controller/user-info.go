@@ -71,3 +71,20 @@ func PutV(c *gin.Context) {
 	RespondSuccess(c, nil)
 	return
 }
+
+func GetUserByV(c *gin.Context) {
+	preInt, err := strconv.Atoi(c.DefaultQuery("pre", "0"))
+	if err != nil || preInt < 0 {
+		RespondError(c, service.CommitDataError)
+		return
+	}
+
+	data, code := service.GetUserByV(uint(preInt))
+	if code != service.SuccessCode {
+		RespondError(c, code)
+		return
+	}
+
+	RespondSuccess(c, data)
+	return
+}

@@ -137,3 +137,56 @@ URL地址：/auth/verification
     "message": "成功"
 }
 ```
+
+## 方法描述：分页获取认证用户
+
+**说明：每页十条**
+
+URL地址：/verification/user
+
+请求方法：GET
+
+请求参数：
+
+| 字段 | 说明 |
+| ---  | ---  |
+|  pre |  上一页的最后一个（最小的）用户id，如果是获取第一页则填0  |
+
+请求示例
+
+```
+/verification/user?pre=0
+```
+
+响应体：
+
+
+| 字段 | 类型 | 说明 |
+| ---  | ---  | ---  |
+|  code  |  int  |  状态码  |
+|  message  |  string  |  状态码描述  |
+|  data  |  JSON  |  具体字段参见示例  |
+
+响应体示例
+
+```
+{
+    "code": 0,
+    "data": {
+        "list": [
+            {
+                "user_id": 3,
+                "nickname": "你好",
+                "avatar": "123",
+                "Digest": "测试AAAAA",
+                "verification": "v"
+            },
+            {
+                "user_id": 4,
+                "verification": "v"
+            }
+        ]
+    },
+    "message": "成功"
+}
+```
