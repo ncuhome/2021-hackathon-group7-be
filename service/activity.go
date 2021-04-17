@@ -68,8 +68,6 @@ func GetAllActivities(pre int) (interface{}, uint) {
 	var data []interface{}
 	var DataReturn interface{}
 	list, err := activity.GetCacheAllActivities(pre)
-	fmt.Println(list)
-	fmt.Println(err)
 	if err == nil {
 		for i := len(list) - 1; i >= 0; i-- {
 			t := list[i]
@@ -93,7 +91,6 @@ func GetAllActivities(pre int) (interface{}, uint) {
 
 	} else {
 		err = activity.SetCacheActivityList(pre)
-		fmt.Println(888)
 		DataReturn, err = activity.GetAllActivities(pre)
 		if err != nil {
 			fmt.Println(err)
@@ -141,7 +138,8 @@ func GetActivitiesByPlace(place string, pre int) (interface{}, uint) {
 	var DataReturn interface{}
 	list, err := activity.GetCacheActivitiesByPlace(pre)
 	if err == nil {
-		for _, t := range list {
+		for i := len(list) - 1; i >= 0; i-- {
+			t := list[i]
 			temp, err := strconv.Atoi(t)
 			activity.ID = uint(temp)
 			s, err := activity.GetCacheActivity()
@@ -179,7 +177,8 @@ func GetActivitiesByHost(host uint, pre int) (interface{}, uint) {
 	var DataReturn interface{}
 	list, err := activity.GetCacheActivitiesByHost(pre)
 	if err == nil {
-		for _, t := range list {
+		for i := len(list) - 1; i >= 0; i-- {
+			t := list[i]
 			temp, err := strconv.Atoi(t)
 			activity.ID = uint(temp)
 			s, err := activity.GetCacheActivity()
