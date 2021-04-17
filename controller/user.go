@@ -177,3 +177,20 @@ func SetPasswordByEmail(c *gin.Context) {
 	RespondSuccess(c, nil)
 	return
 }
+
+func GetEmail(c *gin.Context) {
+	id, err := GetClaimsSubAsID(c)
+	if err != nil {
+		RespondError(c, service.TokenError)
+		return
+	}
+
+	data, code := service.GetEmail(id)
+	if code != service.SuccessCode {
+		RespondError(c, code)
+		return
+	}
+
+	RespondSuccess(c, data)
+	return
+}
