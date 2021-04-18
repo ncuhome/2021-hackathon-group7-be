@@ -14,8 +14,8 @@ URL地址：/auth/activity
 | ---  | ---  | ---  |
 |  title  |  string  |  活动题目 |
 |  content  |  string  |  活动内容  |
-|  start_time  |  int（时间戳）  |  开始时间 |
-|  end_time  |  int（时间戳）  |  结束时间 |
+|  start_time  |  string  |  开始时间 |
+|  end_time  |  string  |  结束时间 |
 |  place  |  string  |  活动举办地 |
 
 请求体示例
