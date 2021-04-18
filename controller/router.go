@@ -7,9 +7,9 @@ import (
 
 func Run() {
 	// 注意，handler使用同一个limit，会共同受到限制
-	minute40 := limitIP(time.Minute, 40)
-	minute2 := limitIP(time.Minute, 2)
-	hour30 := limitIP(time.Hour, 30)
+	minute40 := limitIP(time.Minute, 1e8)
+	minute2 := limitIP(time.Minute, 1e8)
+	hour30 := limitIP(time.Hour, 1e8)
 
 	g := gin.New()
 	g.Use(gin.Logger(), gin.Recovery(), cors)
