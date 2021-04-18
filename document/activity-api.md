@@ -24,8 +24,8 @@ URL地址：/auth/activity
 {
     "title":"activity",
     "content":"this is an activity",
-    "start_time":1641505804,
-    "end_time":1641506804,
+    "start_time":"1641505804",
+    "end_time":"1641506804",
     "place":"classroom1",
 }
 ```
