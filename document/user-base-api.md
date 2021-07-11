@@ -104,7 +104,7 @@ URL地址：/login
 
 | 字段 | 类型 | 说明 |
 | ---  | ---  | ---  |
-|  user  |  string  |  用户名或邮箱,required |
+|  user  |  string  |  学号或邮箱,required |
 |  password  |  string  |  密码,required  |
 
 请求体示例
@@ -133,6 +133,48 @@ URL地址：/login
         "id": 1,
         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTUzNTU3NDUsImp0aSI6IjAiLCJzdWIiOiIxIn0.Y038jQ__Dhfz0sFxegB8CcMEAJgt2Svum_0DdFeUiLg",
         "username": "nspyf"
+    },
+    "message": "成功"
+}
+```
+
+## 方法描述：云家园token登录
+
+URL地址：/login/ncuos-token
+
+请求方法：POST
+
+请求体：
+
+| 字段 | 类型 | 说明 |
+| ---  | ---  | ---  |
+|  token  |  string  |  云家园token,required |
+
+请求体示例
+
+```
+{
+    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.xxxxxx"
+}
+```
+
+响应体：
+
+| 字段 | 类型 | 说明 |
+| ---  | ---  | ---  |
+|  code  |  int  |  状态码  |
+|  message  |  string  |  状态码描述  |
+|  data  |  JSON  |  具体看示例  |
+
+响应体示例
+
+```
+{
+    "code": 0,
+    "data": {
+        "id": 1,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MTUzNTU3NDUsImp0aSI6IjAiLCJzdWIiOiIxIn0.Y038jQ__Dhfz0sFxegB8CcMEAJgt2Svum_0DdFeUiLg",
+        "username": "5601120012"
     },
     "message": "成功"
 }

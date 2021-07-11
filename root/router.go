@@ -23,6 +23,7 @@ func Run() {
 	g.POST("/register", hour30, controller.Register)
 	g.POST("/register/email-key", minute4, controller.SendRegisterEmailKey)
 	g.POST("/login", hour30, controller.Login)
+	g.POST("/login/ncuos-token", hour30, controller.NCUOSTokenLogin)
 	g.POST("/email/password-key", minute4, controller.SendPasswordEmailKey)
 	g.POST("/email/password", minute80, controller.SetPasswordByEmail)
 	g.POST("/picture", minute80, controller.PostPicture)

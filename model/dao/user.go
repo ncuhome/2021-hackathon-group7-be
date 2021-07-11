@@ -50,12 +50,38 @@ func (s *User) Create() error {
 	}
 	userInfo := &UserInfo{
 		UserID:       s.ID,
-		Nickname:     "",
+		Nickname:     s.Username,
 		Avatar:       "",
 		Digest:       "",
 		Verification: "",
 	}
 	if err := userInfo.Create(); err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit().Error
+}
+
+// userInfo 的相关信息写入数据库
+func (s *User) CreateWith(userInfo *UserInfo) error {
+	tx := DB.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+
+	if err := tx.Error; err != nil {
+		return err
+	}
+
+	if err := tx.Create(s).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+	userInfo.UserID = s.ID
+	if err := tx.Create(userInfo).Error; err != nil {
 		tx.Rollback()
 		return err
 	}

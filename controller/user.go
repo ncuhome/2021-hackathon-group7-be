@@ -42,6 +42,24 @@ func Login(c *gin.Context) {
 	return
 }
 
+func NCUOSTokenLogin(c *gin.Context) {
+	req := &dto.Token{}
+	err := c.ShouldBind(req)
+	if err != nil {
+		RespondError(c, service.CommitDataError)
+		return
+	}
+
+	data, code := service.NCUOSTokenLogin(req)
+	if code != service.SuccessCode {
+		RespondError(c, code)
+		return
+	}
+
+	RespondSuccess(c, data)
+	return
+}
+
 func Verify(c *gin.Context) {
 	_, err := GetClaimsSubAsID(c)
 	if err != nil {

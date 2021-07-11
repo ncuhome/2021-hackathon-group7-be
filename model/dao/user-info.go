@@ -8,6 +8,7 @@ import (
 type UserInfo struct {
 	gorm.Model
 	UserID       uint   `json:",omitempty" gorm:"index;not null"`
+	Sex          string `json:",omitempty" gorm:"not null"`
 	Nickname     string `json:",omitempty" gorm:"type:varchar(64);index"`
 	Avatar       string `json:",omitempty" gorm:"type:varchar(255);"`
 	Digest       string `json:",omitempty" gorm:"type:varchar(10000);"`
@@ -16,6 +17,7 @@ type UserInfo struct {
 
 type UserInfoDigest struct {
 	UserID       uint   `json:"user_id,omitempty"`
+	Sex          string `json:"sex,omitempty"`
 	Nickname     string `json:"nickname,omitempty"`
 	Avatar       string `json:"avatar,omitempty"`
 	Verification string `json:"verification,omitempty"`
@@ -23,6 +25,7 @@ type UserInfoDigest struct {
 
 type UserInfoProfile struct {
 	UserID       uint   `json:"user_id,omitempty"`
+	Sex          string `json:"sex,omitempty"`
 	Nickname     string `json:"nickname,omitempty"`
 	Avatar       string `json:"avatar,omitempty"`
 	Digest       string `json:",omitempty" gorm:"type:varchar(10000);"`

@@ -13,6 +13,10 @@ type Login struct {
 	Password string `json:"password" form:"password" binding:"required"`
 }
 
+type Token struct {
+	Token     string `json:"token" form:"token" binding:"required"`
+}
+
 type SetPassword struct {
 	Password    string `json:"password" form:"password" binding:"required"`
 	NewPassword string `json:"new_password" form:"new_password" binding:"required"`

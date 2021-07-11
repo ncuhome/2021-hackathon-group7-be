@@ -2,6 +2,8 @@ package service
 
 import (
 	"encoding/hex"
+	"errors"
+	"gorm.io/gorm"
 	"strconv"
 	"strings"
 	"tudo/model"
@@ -66,7 +68,6 @@ func Register(req *dto.Register) uint {
 	}
 
 	password := hex.EncodeToString(util.SHA512([]byte(req.Password + salt)))
-
 	user = &dao.User{
 		Username:    req.Username,
 		Password:    password,
@@ -85,9 +86,10 @@ func Register(req *dto.Register) uint {
 func Login(req *dto.Login) (*map[string]interface{}, uint) {
 	user := &dao.User{}
 	if strings.Contains(req.User, "@") {
-		user.Email = req.User
-	} else {
 		user.Username = req.User
+	} else {
+		// 非邮箱账号即云家园账号
+		return NCUOSLogin(req)
 	}
 	_ = user.Retrieve()
 	if user.ID == 0 {
@@ -111,6 +113,96 @@ func Login(req *dto.Login) (*map[string]interface{}, uint) {
 		"username": user.Username,
 	}
 
+	return data, SuccessCode
+}
+
+func NCUOSLogin(req *dto.Login) (*map[string]interface{}, uint) {
+	NCUOS := &model.NCUOSOauth{}
+	err := NCUOS.GetAccess(req.User, req.Password)
+	if err != nil {
+		return nil, LoginError
+	}
+
+	return NCUOSTokenLogin(&dto.Token{Token: NCUOS.Token})
+}
+
+func NCUOSRegister(NCUOSUser *model.NCUOSUserProfileBasic) (*map[string]interface{}, uint) {
+	// 注册操作;密码没用，随机生成
+	password, err := util.RandHexStr(8)
+	if err != nil {
+		model.ErrLog.Println(err)
+		return nil, ServerError
+	}
+
+	salt, err := util.RandHexStr(64)
+	if err != nil {
+		model.ErrLog.Println(err)
+		return nil, ServerError
+	}
+
+	password = hex.EncodeToString(util.SHA512([]byte(password + salt)))
+	user := &dao.User{
+		Username:    NCUOSUser.Username,
+		Password:    password,
+		Salt:        salt,
+		LoginStatus: "0",
+	}
+	err = user.CreateWith(&dao.UserInfo{
+		Nickname: NCUOSUser.Name,
+		Sex:      NCUOSUser.Sex,
+	})
+	if err != nil {
+		model.ErrLog.Println(err)
+		return nil, ServerError
+	}
+
+	token, err := model.Jwt.GenerateToken(strconv.Itoa(int(user.ID)), user.LoginStatus)
+	if err != nil {
+		model.ErrLog.Println(err)
+		return nil, ServerError
+	}
+
+	data := &map[string]interface{}{
+		"id":       user.ID,
+		"token":    token,
+		"username": NCUOSUser.Username,
+	}
+	return data, SuccessCode
+}
+
+func NCUOSTokenLogin(req *dto.Token) (*map[string]interface{}, uint) {
+	NCUOS := model.NCUOSOauth{
+		Token: req.Token,
+	}
+	NCUOSUser, err := NCUOS.GetUserProfileBasic()
+	if err != nil {
+		return nil, TokenError
+	}
+
+	user := &dao.User{
+		Username: NCUOSUser.Username,
+	}
+	err = user.Retrieve()
+	if err != nil {
+		// 首次登录进行注册操作,并返回相关信息
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return NCUOSRegister(NCUOSUser)
+		}
+		model.ErrLog.Println(err)
+		return nil, ServerError
+	}
+
+	token, err := model.Jwt.GenerateToken(strconv.Itoa(int(user.ID)), user.LoginStatus)
+	if err != nil {
+		model.ErrLog.Println(err)
+		return nil, ServerError
+	}
+
+	data := &map[string]interface{}{
+		"id":       user.ID,
+		"token":    token,
+		"username": NCUOSUser.Username,
+	}
 	return data, SuccessCode
 }
 
