@@ -32,6 +32,11 @@ const (
 )
 
 func SendRegisterEmailKey(req *dto.Email) uint {
+	_, ok := EmailMap[req.Email]
+	if !ok {
+		return UnauthorizedEmail
+	}
+
 	key, err := util.RandDecStr(6)
 	if err != nil {
 		model.ErrLog.Println(err)

@@ -6,6 +6,7 @@ import (
 	"tudo/model"
 	"tudo/model/dao"
 	"tudo/root"
+	"tudo/service"
 )
 
 func main() {
@@ -18,6 +19,7 @@ func main() {
 	//model.PictureInit("/etc/share/nginx/html/picture/")
 	model.OssInit()
 	model.LogInit()
+	service.SyncTencentDoc()
 
 	gin.SetMode(gin.ReleaseMode)
 	root.Run()

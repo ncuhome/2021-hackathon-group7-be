@@ -26,6 +26,7 @@ var Message = map[uint]string{
 	service.OldPasswordError:  "旧密码错误",
 	service.EmailNotBinding:   "该邮箱未绑定任何用户",
 	service.RequestRateError:  "请求频繁，稍后重试",
+	service.UnauthorizedEmail: "邮箱未授权，请先联系家园工作室",
 }
 
 func GetClaimsSubAsID(c *gin.Context) (uint, error) {
