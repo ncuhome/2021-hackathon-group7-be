@@ -5,6 +5,7 @@ import (
 	"tudo/controller"
 	"tudo/model"
 	"tudo/model/dao"
+	"tudo/root"
 )
 
 func main() {
@@ -19,6 +20,6 @@ func main() {
 	model.LogInit()
 
 	gin.SetMode(gin.ReleaseMode)
-	controller.Run()
+	root.Run()
 	return
 }

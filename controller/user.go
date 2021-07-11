@@ -53,6 +53,24 @@ func Verify(c *gin.Context) {
 	return
 }
 
+func SendRegisterEmailKey(c *gin.Context) {
+	req := &dto.Email{}
+	err := c.ShouldBind(req)
+	if err != nil {
+		RespondError(c, service.CommitDataError)
+		return
+	}
+
+	code := service.SendRegisterEmailKey(req)
+	if code != service.SuccessCode {
+		RespondError(c, code)
+		return
+	}
+
+	RespondSuccess(c, nil)
+	return
+}
+
 func SendBindEmailKey(c *gin.Context) {
 	req := &dto.Email{}
 	err := c.ShouldBind(req)

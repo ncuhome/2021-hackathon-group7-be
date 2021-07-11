@@ -11,7 +11,7 @@ import (
 	"tudo/service"
 )
 
-func cors(c *gin.Context) { // 预检
+func Cors(c *gin.Context) { // 预检
 	origin := c.Request.Header.Get("Origin")
 	c.Header("Access-Control-Allow-Origin", origin)      // 允许cookie不能使用*，必须有明确的origin
 	c.Header("Access-Control-Allow-Credentials", "true") // 允许cookie
@@ -26,7 +26,7 @@ func cors(c *gin.Context) { // 预检
 	c.Next()
 }
 
-func token(c *gin.Context) { // token验证
+func Token(c *gin.Context) { // token验证
 	token := c.Request.Header.Get("Token")
 	claims, err := model.Jwt.ParseToken(token)
 	if err != nil {
@@ -62,7 +62,7 @@ func token(c *gin.Context) { // token验证
 	return
 }
 
-func limitIP(interval time.Duration, limit int) gin.HandlerFunc {
+func LimitIP(interval time.Duration, limit int) gin.HandlerFunc {
 	limiter := new(model.Limiter)
 	limiter.Init(interval)
 	return func(c *gin.Context) {

@@ -3,30 +3,62 @@ package service
 import (
 	"encoding/hex"
 	"strconv"
+	"strings"
 	"tudo/model"
 	"tudo/model/dao"
 	"tudo/model/dto"
 	"tudo/util"
 )
 
+// 邮箱注册
 func Register(req *dto.Register) uint {
-	code := CheckUsername(req.Username)
-	if code != SuccessCode {
-		return code
-	}
-	code = CheckPassword(req.Password)
+	// 账号检查交给邮箱和验证码
+	code := CheckPassword(req.Password)
 	if code != SuccessCode {
 		return code
 	}
 
 	user := &dao.User{
-		Username: req.Username,
+		Email: req.Username,
 	}
 	_ = user.Retrieve()
 	if user.ID != 0 {
-		return UsernameRepeated
+		return EmailUsed
 	}
 
+	// 获取邮箱验证码数据
+	data := &dao.EmailBindCache{}
+	cacheObj := &dao.JsonCache{
+		Data: data,
+		ID:   req.Username,
+	}
+	err := cacheObj.GetData()
+
+	if err != nil {
+		if err == dao.CacheNil {
+			return CodeError
+		} else {
+			model.ErrLog.Println(err)
+			return CommitDataError
+		}
+	}
+
+	// 检验验证码
+	if req.Key != data.Key {
+		return CodeError
+	}
+	if req.Username != data.Email {
+		return CodeError
+	}
+
+	//删缓存
+	err = cacheObj.DelData()
+	if err != nil {
+		model.ErrLog.Println(err)
+		return ServerError
+	}
+
+	// 予以注册
 	salt, err := util.RandHexStr(64)
 	if err != nil {
 		model.ErrLog.Println(err)
@@ -38,6 +70,7 @@ func Register(req *dto.Register) uint {
 	user = &dao.User{
 		Username:    req.Username,
 		Password:    password,
+		Email:       req.Username,
 		Salt:        salt,
 		LoginStatus: "0",
 	}
@@ -50,17 +83,8 @@ func Register(req *dto.Register) uint {
 }
 
 func Login(req *dto.Login) (*map[string]interface{}, uint) {
-	isEmail := false
-	length := len(req.User)
-	for i := 0; i < length; i++ {
-		if req.User[i] == '@' {
-			isEmail = true
-			break
-		}
-	}
-
 	user := &dao.User{}
-	if isEmail {
+	if strings.Contains(req.User, "@") {
 		user.Email = req.User
 	} else {
 		user.Username = req.User
@@ -177,7 +201,6 @@ func updatePassword(newPassword string, id uint) uint {
 
 	return SuccessCode
 }
-
 
 func GetEmail(id uint) (*map[string]interface{}, uint) {
 	user := &dao.User{}

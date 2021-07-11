@@ -1,8 +1,10 @@
 package dto
 
+// Username即是Emmail
 type Register struct {
 	Username string `json:"username" form:"username" binding:"required"`
 	Password string `json:"password" form:"password" binding:"required"`
+	Key   string `json:"key" form:"key" binding:"required"`
 }
 
 type Login struct {

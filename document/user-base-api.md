@@ -18,6 +18,42 @@ port：11000
 | ---  | ---  | ---  |
 |  Token  |    |  用户token |
 
+## 方法描述：注册时发送邮箱验证码
+
+URL地址：/register/email-key
+
+请求方法：POST
+
+请求体：
+
+| 字段 | 类型 | 说明 |
+| ---  | ---  | ---  |
+|  email  |  string  |  注册用的邮箱,required |
+
+请求体示例
+
+```
+{
+    "email":"316851756@qq.com"
+}
+```
+
+响应体：
+
+| 字段 | 类型 | 说明 |
+| ---  | ---  | ---  |
+|  code  |  int  |  状态码  |
+|  message  |  string  |  状态码描述  |
+
+响应体示例
+
+```
+{
+    "code": 0,
+    "message": "成功"
+}
+```
+
 ## 方法描述：用户注册
 
 URL地址：/register
@@ -28,15 +64,17 @@ URL地址：/register
 
 | 字段 | 类型 | 说明 |
 | ---  | ---  | ---  |
-|  username  |  string  |  用户名,required,min=2,max=16 |
+|  username  |  string  |  邮箱,required,min=2,max=16 |
 |  password  |  string  |  密码,required,min=8,max=32  |
+|  key       |  string  |  验证码,required  |
 
 请求体示例
 
 ```
 {
-    "username":"abc",
-    "password":"12345678"
+    "username":"316851756@qq.com",
+    "password":"12345678",
+    "key":"123456",
 }
 ```
 

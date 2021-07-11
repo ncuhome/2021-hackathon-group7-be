@@ -31,6 +31,51 @@ const (
 	SetPasswordByEmailPage = "https://nspyf.top/tudo/password"
 )
 
+func SendRegisterEmailKey(req *dto.Email) uint {
+	key, err := util.RandDecStr(6)
+	if err != nil {
+		model.ErrLog.Println(err)
+		return ServerError
+	}
+
+	content := fmt.Sprintf(BindEmailFormat, req.Email, req.Email, key)
+
+	go func() {
+		_ = model.Email.Send(
+			req.Email,
+			req.Email,
+			"邮箱注册",
+			"text/html",
+
+			//TODO frontend url
+			//TODO html template
+
+			content,
+		)
+	}()
+
+	//删除缓存并设置新缓存
+	cacheObj := &dao.JsonCache{
+		Data: &dao.EmailBindCache{
+			Email: req.Email,
+			Key:   key,
+		},
+		ID: req.Email,
+	}
+	err = cacheObj.DelData()
+	if err != nil {
+		model.ErrLog.Println(err)
+		return ServerError
+	}
+	err = cacheObj.SetData(10 * time.Minute)
+	if err != nil {
+		model.ErrLog.Println(err)
+		return ServerError
+	}
+
+	return SuccessCode
+}
+
 func SendBindEmailKey(req *dto.Email, id uint) uint {
 	user := &dao.User{
 		ID: id,
