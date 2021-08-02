@@ -13,7 +13,8 @@ type User struct {
 	ID          uint `gorm:"primarykey"`
 	CreatedAt   time.Time
 	Email       string `json:",omitempty" gorm:"index"`
-	Username    string `json:",omitempty" gorm:"type:varchar(16);not null;unique_index"`
+	Phone		string `json:",omitempty" gorm:"index"`
+	Username    string `json:",omitempty" gorm:"type:varchar(255);not null;unique_index"`
 	Password    string `json:",omitempty" gorm:"type:varchar(128);not null"`
 	Salt        string `json:",omitempty" gorm:"type:varchar(128);not null"`
 	LoginStatus string `json:",omitempty" gorm:"type:varchar(16);not null"`

@@ -1,5 +1,6 @@
 package controller
 
+/*
 import (
 	"github.com/gin-gonic/gin"
 	"strconv"
@@ -76,3 +77,6 @@ func GetCommentByUser(c *gin.Context) {
 	RespondSuccess(c, data)
 	return
 }
+
+
+*/

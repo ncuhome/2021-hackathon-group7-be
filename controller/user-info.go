@@ -48,6 +48,7 @@ func GetUserInfo(c *gin.Context) {
 	return
 }
 
+/*
 func PutV(c *gin.Context) {
 	req := &dto.PutV{}
 	err := c.ShouldBind(req)
@@ -71,6 +72,8 @@ func PutV(c *gin.Context) {
 	RespondSuccess(c, nil)
 	return
 }
+
+ */
 
 func GetUserByV(c *gin.Context) {
 	preInt, err := strconv.Atoi(c.DefaultQuery("pre", "0"))

@@ -13,11 +13,26 @@ var DocSource = &DocBaseData{
 	Url: "https://docs.qq.com/dop-api/opendoc?tab=BB08J2&id=DS3B5S2h6bktxZHJr&outformat=1&normal=1",
 }
 
-var EmailMap = map[string]int{}
+type Leader struct {
+	Organization string
+	LeaderName   string
+}
+
+var LeaderMap = map[string]Leader{} // 电话：leader
 
 type DocBaseData struct {
 	Url          string
 	JsonCacheMD5 string
+}
+
+func GetCell(tableData *gjson.Result, x int64, y int64) string {
+	place := strconv.FormatInt(x*26+y, 10)
+	arr := tableData.Map()[place].Map()["2"].Array()
+	if len(arr) < 2 {
+		return ""
+	}
+	data := arr[1].String()
+	return data
 }
 
 func JsonToEmailMap(table *gjson.Result) uint {
@@ -27,22 +42,26 @@ func JsonToEmailMap(table *gjson.Result) uint {
 	}
 	tableData := arr[1]
 
-	EmailMap = map[string]int{}
+	LeaderMap = map[string]Leader{}
 	for i := int64(1); ; i++ {
-		place := strconv.FormatInt(i*26+0, 10)
-		arr = tableData.Map()[place].Map()["2"].Array()
-		if len(arr) < 2 {
-			break
-		}
-		email := arr[1].String()
-		if email == "" {
+		organization := GetCell(&tableData, i, 0)
+		if organization ==  "" {
 			break
 		}
 
-		EmailMap[email] = 1
+		leaderName := GetCell(&tableData, i, 1)
+		phone := GetCell(&tableData, i, 2)
+
+		LeaderMap[phone] = Leader{
+			Organization: organization,
+			LeaderName: leaderName,
+		}
+
+		// TODO
+		fmt.Println(LeaderMap)
 	}
 
-	fmt.Println("ToEmailMap OK")
+	fmt.Println("ToMap OK")
 	return SuccessCode
 }
 
@@ -100,7 +119,7 @@ func GetDocs(docBaseData *DocBaseData) (*gjson.Result, uint) {
 	return &table, SuccessCode
 }
 
-func TencentDocToES(docBaseData *DocBaseData) uint {
+func TencentDocToMap(docBaseData *DocBaseData) uint {
 	table, code := GetDocs(docBaseData)
 
 	if code != SuccessCode {
@@ -121,9 +140,9 @@ func TencentDocToES(docBaseData *DocBaseData) uint {
 func SyncTencentDoc() {
 	go func() {
 		for ; ; {
-			TencentDocToES(DocSource)
-			time.Sleep(time.Second * 5)
-			// time.Sleep(time.Minute * 5)
+			TencentDocToMap(DocSource)
+			time.Sleep(time.Hour)
+			// time.Sleep(time.Second * 5)
 		}
 	}()
 }

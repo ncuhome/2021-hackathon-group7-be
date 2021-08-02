@@ -1,5 +1,7 @@
 package service
 
+/*
+
 import (
 	"gorm.io/gorm"
 	"tudo/model/dao"
@@ -90,3 +92,5 @@ func GetCommentByUser(id uint, pre uint) (*map[string]interface{}, uint) {
 	}
 	return data, SuccessCode
 }
+
+ */

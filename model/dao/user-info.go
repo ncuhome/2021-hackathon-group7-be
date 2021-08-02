@@ -9,7 +9,7 @@ type UserInfo struct {
 	gorm.Model
 	UserID       uint   `json:",omitempty" gorm:"index;not null"`
 	Sex          string `json:",omitempty" gorm:"not null"`
-	Nickname     string `json:",omitempty" gorm:"type:varchar(64);index"`
+	Nickname     string `json:",omitempty" gorm:"type:varchar(255);index"`
 	Avatar       string `json:",omitempty" gorm:"type:varchar(255);"`
 	Digest       string `json:",omitempty" gorm:"type:varchar(10000);"`
 	Verification string `json:",omitempty" gorm:"type:varchar(255);index"`

@@ -2,7 +2,6 @@ package service
 
 import (
 	"gorm.io/gorm"
-	"strconv"
 	"tudo/model"
 	"tudo/model/dao"
 	"tudo/model/dto"
@@ -44,26 +43,6 @@ func GetUserInfo(id uint) (*map[string]interface{}, uint) {
 		"verification": userInfoDao.Profile.Verification,
 	}
 	return data, SuccessCode
-}
-
-func PutV(req *dto.PutV, id uint) uint {
-	idStr := strconv.Itoa(int(id))
-	if model.Admin[idStr] != "right-add-v" {
-		return TokenError
-	}
-
-	userInfo := &dao.UserInfo{
-		UserID: req.ID,
-	}
-	newInfo := &map[string]interface{}{
-		"verification": req.Verification,
-	}
-	err := userInfo.Update(newInfo)
-	if err != nil {
-		model.ErrLog.Println(err)
-		return ServerError
-	}
-	return SuccessCode
 }
 
 func GetUserByV(pre uint) (*map[string]interface{}, uint) {

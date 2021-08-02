@@ -1,13 +1,6 @@
 package service
 
 import (
-	"fmt"
-	"strconv"
-	"time"
-	"tudo/model"
-	"tudo/model/dao"
-	"tudo/model/dto"
-	"tudo/util"
 )
 
 const (
@@ -31,6 +24,7 @@ const (
 	SetPasswordByEmailPage = "https://nspyf.top/tudo/password"
 )
 
+/*
 func SendRegisterEmailKey(req *dto.Email) uint {
 	_, ok := EmailMap[req.Email]
 	if !ok {
@@ -301,3 +295,6 @@ func SetPasswordByEmail(req *dto.SetPasswordByEmailReq) uint {
 
 	return updatePassword(req.NewPassword, data.ID)
 }
+
+
+ */

@@ -17,9 +17,10 @@ type XbInfo struct {
 	Dm string `json:"dm"`
 }
 type BaseInfo struct {
-	Xm string `json:"xm"`
-	Xh string `json:"xh"`
-	Xb XbInfo `json:"xb"`
+	Xm   string `json:"xm"`
+	Xh   string `json:"xh"`
+	Xb   XbInfo `json:"xb"`
+	Yddh string `json:"yddh"`
 }
 type NCUOSUserProfileBasicInfo struct {
 	BaseInfo BaseInfo `json:"base_info"`
@@ -28,6 +29,7 @@ type NCUOSUserProfileBasic struct {
 	Username string `json:"username"`
 	Name     string `json:"name"`
 	Sex      string `json:"sex"`
+	Phone    string `json:"phone"`
 }
 
 func (s *NCUOSOauth) GetAccess(username string, password string) error {
@@ -112,8 +114,9 @@ func (s *NCUOSOauth) GetUserProfileBasic() (*NCUOSUserProfileBasic, error) {
 
 	user := &NCUOSUserProfileBasic{
 		Username: userInfo.BaseInfo.Xh,
-		Name: userInfo.BaseInfo.Xm,
-		Sex:  userInfo.BaseInfo.Xb.Dm,
+		Name:     userInfo.BaseInfo.Xm,
+		Sex:      userInfo.BaseInfo.Xb.Dm,
+		Phone:    userInfo.BaseInfo.Yddh,
 	}
 	if user.Name == "" {
 		return nil, errors.New("NCUOSOauth.GETGetUserProfileBasic error")

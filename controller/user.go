@@ -6,15 +6,21 @@ import (
 	"tudo/service"
 )
 
-func Register(c *gin.Context) {
-	req := &dto.Register{}
+func OrgPostInfo(c *gin.Context) {
+	req := &dto.OrgInfo{}
 	err := c.ShouldBind(req)
 	if err != nil {
 		RespondError(c, service.CommitDataError)
 		return
 	}
 
-	code := service.Register(req)
+	id, err := GetClaimsSubAsID(c)
+	if err != nil {
+		RespondError(c, service.TokenError)
+		return
+	}
+
+	code := service.OrgPostInfo(req, id)
 	if code != service.SuccessCode {
 		RespondError(c, code)
 		return
@@ -71,6 +77,7 @@ func Verify(c *gin.Context) {
 	return
 }
 
+/*
 func SendRegisterEmailKey(c *gin.Context) {
 	req := &dto.Email{}
 	err := c.ShouldBind(req)
@@ -230,3 +237,5 @@ func GetEmail(c *gin.Context) {
 	RespondSuccess(c, data)
 	return
 }
+
+*/

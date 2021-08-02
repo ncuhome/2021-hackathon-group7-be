@@ -5,62 +5,18 @@ import (
 	"errors"
 	"gorm.io/gorm"
 	"strconv"
-	"strings"
 	"tudo/model"
 	"tudo/model/dao"
 	"tudo/model/dto"
 	"tudo/util"
 )
 
-// 邮箱注册
-func Register(req *dto.Register) uint {
-	// 账号检查交给邮箱和验证码
+func orgRegister(org string, req *dto.OrgInfo) uint {
 	code := CheckPassword(req.Password)
 	if code != SuccessCode {
 		return code
 	}
 
-	user := &dao.User{
-		Email: req.Username,
-	}
-	_ = user.Retrieve()
-	if user.ID != 0 {
-		return EmailUsed
-	}
-
-	// 获取邮箱验证码数据
-	data := &dao.EmailBindCache{}
-	cacheObj := &dao.JsonCache{
-		Data: data,
-		ID:   req.Username,
-	}
-	err := cacheObj.GetData()
-
-	if err != nil {
-		if err == dao.CacheNil {
-			return CodeError
-		} else {
-			model.ErrLog.Println(err)
-			return CommitDataError
-		}
-	}
-
-	// 检验验证码
-	if req.Key != data.Key {
-		return CodeError
-	}
-	if req.Username != data.Email {
-		return CodeError
-	}
-
-	//删缓存
-	err = cacheObj.DelData()
-	if err != nil {
-		model.ErrLog.Println(err)
-		return ServerError
-	}
-
-	// 予以注册
 	salt, err := util.RandHexStr(64)
 	if err != nil {
 		model.ErrLog.Println(err)
@@ -68,14 +24,19 @@ func Register(req *dto.Register) uint {
 	}
 
 	password := hex.EncodeToString(util.SHA512([]byte(req.Password + salt)))
-	user = &dao.User{
-		Username:    req.Username,
+	user := &dao.User{
+		Username:    org,
 		Password:    password,
-		Email:       req.Username,
 		Salt:        salt,
 		LoginStatus: "0",
 	}
-	err = user.Create()
+
+	userInfo := &dao.UserInfo{
+		Nickname:     org,
+		Avatar:       req.LogoUrl,
+		Verification: "v",
+	}
+	err = user.CreateWith(userInfo)
 	if err != nil {
 		model.ErrLog.Println(err)
 		return ServerError
@@ -83,19 +44,86 @@ func Register(req *dto.Register) uint {
 	return SuccessCode
 }
 
-func Login(req *dto.Login) (*map[string]interface{}, uint) {
-	user := &dao.User{}
-	if strings.Contains(req.User, "@") {
-		user.Username = req.User
-	} else {
-		// 非邮箱账号即云家园账号
-		return NCUOSLogin(req)
-	}
-	_ = user.Retrieve()
-	if user.ID == 0 {
-		return nil, LoginError
+func orgPut(req *dto.OrgInfo, id uint) uint {
+	code := CheckPassword(req.Password)
+	if code != SuccessCode {
+		return code
 	}
 
+	updatePassword(req.Password, id)
+
+	orgUserInfo := &dao.UserInfo{}
+	orgUserInfo.ID = id
+
+	change := &dao.UserInfo{
+		Avatar: req.LogoUrl,
+	}
+	err := orgUserInfo.Update(change)
+	if err != nil {
+		model.ErrLog.Println(err)
+		return ServerError
+	}
+	return SuccessCode
+}
+
+// 社团激活(注册)、修改资料
+func OrgPostInfo(req *dto.OrgInfo, id uint) uint {
+	ncuUser := &dao.User{ID: id}
+	err := ncuUser.Retrieve()
+	if err != nil {
+		return CommitDataError
+	}
+
+	org := LeaderMap[ncuUser.Phone].Organization
+	if org == "" {
+		return CommitDataError
+	}
+
+	orgUser := &dao.User{Username: org}
+	err = orgUser.Retrieve()
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return orgRegister(org, req)
+		} else {
+			model.ErrLog.Println(err)
+			return ServerError
+		}
+	}
+
+	orgPut(req, orgUser.ID)
+	return SuccessCode
+}
+
+func Login(req *dto.Login) (*map[string]interface{}, uint) {
+	user := &dao.User{Username: req.User}
+	err := user.Retrieve()
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, LoginError
+		} else {
+			model.ErrLog.Println(err)
+			return nil, ServerError
+		}
+	}
+
+	userInfo := &dao.UserInfo{
+		UserID: user.ID,
+	}
+	err = userInfo.Retrieve()
+	if err != nil {
+		model.ErrLog.Println(err)
+		return nil, ServerError
+	}
+
+	if userInfo.Verification == "v" {
+		return orgLogin(req, user)
+	}
+
+	// 非社团账号即云家园账号
+	return NCUOSLogin(req)
+}
+
+func orgLogin(req *dto.Login, user *dao.User) (*map[string]interface{}, uint) {
 	password := hex.EncodeToString(util.SHA512([]byte(req.Password + user.Salt)))
 	if user.Password != password {
 		return nil, LoginError
@@ -108,9 +136,10 @@ func Login(req *dto.Login) (*map[string]interface{}, uint) {
 	}
 
 	data := &map[string]interface{}{
-		"id":       user.ID,
-		"token":    token,
-		"username": user.Username,
+		"id":           user.ID,
+		"token":        token,
+		"username":     user.Username,
+		"verification": "v",
 	}
 
 	return data, SuccessCode
@@ -146,6 +175,7 @@ func NCUOSRegister(NCUOSUser *model.NCUOSUserProfileBasic) (*map[string]interfac
 		Password:    password,
 		Salt:        salt,
 		LoginStatus: "0",
+		Phone:       NCUOSUser.Phone,
 	}
 	err = user.CreateWith(&dao.UserInfo{
 		Nickname: NCUOSUser.Name,
@@ -233,6 +263,7 @@ func CheckPassword(password string) uint {
 	return SuccessCode
 }
 
+/*
 func SetPassword(req *dto.SetPassword, id uint) uint {
 	code := CheckPassword(req.NewPassword)
 	if code != SuccessCode {
@@ -254,6 +285,7 @@ func SetPassword(req *dto.SetPassword, id uint) uint {
 
 	return updatePassword(req.NewPassword, id)
 }
+*/
 
 //更新盐、个人登录状态、密码
 func updatePassword(newPassword string, id uint) uint {
@@ -294,6 +326,7 @@ func updatePassword(newPassword string, id uint) uint {
 	return SuccessCode
 }
 
+/*
 func GetEmail(id uint) (*map[string]interface{}, uint) {
 	user := &dao.User{}
 	user.ID = id
@@ -307,3 +340,5 @@ func GetEmail(id uint) (*map[string]interface{}, uint) {
 	}
 	return data, SuccessCode
 }
+
+*/

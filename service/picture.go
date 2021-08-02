@@ -14,7 +14,6 @@ func PostPicture(file io.Reader, name string) (*map[string]string, uint) {
 
 	filename := randStr + name
 
-	//err = model.PictureObj.Post(file, filename)
 	err = model.OssObj.PutBytes(file, filename)
 	if err != nil {
 		return nil, ServerError
