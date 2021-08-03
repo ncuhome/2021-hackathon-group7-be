@@ -45,6 +45,20 @@ func GetUserInfo(id uint) (*map[string]interface{}, uint) {
 	return data, SuccessCode
 }
 
+func GetLeaderOrg(id uint) (*map[string]interface{}, uint) {
+	ncuUser := &dao.User{ID: id}
+	err := ncuUser.Retrieve()
+	if err != nil {
+		return nil, CommitDataError
+	}
+
+	org := LeaderMap[ncuUser.Phone].Organization
+	data := &map[string]interface{}{
+		"organization": org,
+	}
+	return data, SuccessCode
+}
+
 func GetUserByV(pre uint) (*map[string]interface{}, uint) {
 	list := &dao.UserInfoProfileList{}
 	err := list.RetrieveByV(pre)

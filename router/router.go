@@ -37,6 +37,7 @@ func Run() {
 
 	a.GET("/token", minute80, controller.Verify)
 	//a.GET("/email", minute80, controller.GetEmail)
+	a.GET("/org", minute80, controller.GetLeaderOrg)
 
 	//a.POST("/password", minute80, controller.SetPassword)
 	//a.POST("/email/binding-key", minute4, controller.SendBindEmailKey)

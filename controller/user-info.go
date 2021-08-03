@@ -48,6 +48,23 @@ func GetUserInfo(c *gin.Context) {
 	return
 }
 
+func GetLeaderOrg(c *gin.Context) {
+	id, err := GetClaimsSubAsID(c)
+	if err != nil {
+		RespondError(c, service.TokenError)
+		return
+	}
+
+	data, code := service.GetLeaderOrg(id)
+	if code != service.SuccessCode {
+		RespondError(c, code)
+		return
+	}
+
+	RespondSuccess(c, data)
+	return
+}
+
 /*
 func PutV(c *gin.Context) {
 	req := &dto.PutV{}
