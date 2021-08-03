@@ -6,6 +6,8 @@ import (
 	"tudo/util"
 )
 
+const pictureBaseUrl = "https://nspyf.oss-cn-shanghai.aliyuncs.com/"
+
 func PostPicture(file io.Reader, name string) (*map[string]string, uint) {
 	randStr, err := util.RandHexStr(4)
 	if err != nil {
@@ -20,7 +22,7 @@ func PostPicture(file io.Reader, name string) (*map[string]string, uint) {
 	}
 
 	data := &map[string]string{
-		"filename": randStr + filename,
+		"file": pictureBaseUrl + filename,
 	}
 	return data, SuccessCode
 }
