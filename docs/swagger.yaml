@@ -24,7 +24,7 @@ definitions:
     required:
     - token
     type: object
-host: 127.0.0.1:21000
+host: tudo-api.nspyf.top
 info:
   contact:
     email: 316851756@qq.com

@@ -56,7 +56,7 @@ func Run() {
 
 	//a.DELETE("/email/binding", minute80, controller.RemoveEmail)
 
-	err := g.Run(":" + controller.GinConfigObj.Port)
+	err := g.Run(":21001")
 	if err != nil {
 		panic(err)
 	}

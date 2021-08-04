@@ -18,4 +18,4 @@ services:
     restart: always
     volumes:
       - /etc/localtime:/etc/localtime
-      - /root/docker/save/hackathon/logs:/data/logs
+      - /root/docker/save/tudo/logs:/data/logs

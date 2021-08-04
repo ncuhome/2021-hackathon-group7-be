@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"tudo/controller"
 	"tudo/model"
 	"tudo/model/dao"
 	"tudo/router"
@@ -18,13 +17,11 @@ import (
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host 127.0.0.1:21000
-// @BasePath
+// @host tudo-api.nspyf.top
 
 func main() {
 	dao.DBInit("./config/db.json")
 	dao.CacheInit("./config/cache.json")
-	controller.GinInit("./config/gin.json")
 	model.JwtInit("./config/jwt.json")
 	model.EmailInit("./config/email.json")
 	model.AdminInit("./config/admin.json")
