@@ -1,0 +1,122 @@
+definitions:
+  dto.Login:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  dto.OrgInfo:
+    properties:
+      logo_url:
+        type: string
+      password:
+        description: 长度大于8
+        type: string
+    type: object
+  dto.Token:
+    properties:
+      token:
+        type: string
+    required:
+    - token
+    type: object
+host: 127.0.0.1:21000
+info:
+  contact:
+    email: 316851756@qq.com
+  description: |-
+    给出了请求方法，点击Model可以查看请求体模型及备注。
+    查看响应体需要打开浏览器开发者工具，在页面接口初Try it out，然后Execute。
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Swagger API
+  version: "1.0"
+paths:
+  /auth/organization:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 用户令牌
+        in: header
+        name: Token
+        required: true
+        type: string
+      produces:
+      - application/json
+      summary: 判断用户是否是某个组织的负责人
+      tags:
+      - 用户系统
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 用户令牌
+        in: header
+        name: Token
+        required: true
+        type: string
+      - description: ' '
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/dto.OrgInfo'
+      produces:
+      - application/json
+      summary: 社团账号激活（注册）、修改
+      tags:
+      - 用户系统
+  /auth/token:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 用户令牌
+        in: header
+        name: Token
+        required: true
+        type: string
+      produces:
+      - application/json
+      summary: 检验token是否有效
+      tags:
+      - 用户系统
+  /login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Login'
+      produces:
+      - application/json
+      summary: 云家园账号或社团账号登录
+      tags:
+      - 用户系统
+  /login/ncuos-token:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: ' '
+        in: body
+        name: object
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Token'
+      produces:
+      - application/json
+      summary: 云家园账号token登录
+      tags:
+      - 用户系统
+swagger: "2.0"

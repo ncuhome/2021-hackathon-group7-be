@@ -52,13 +52,13 @@ func JsonToEmailMap(table *gjson.Result) uint {
 		leaderName := GetCell(&tableData, i, 1)
 		phone := GetCell(&tableData, i, 2)
 
+		if phone == "" {
+			continue
+		}
 		LeaderMap[phone] = Leader{
 			Organization: organization,
 			LeaderName: leaderName,
 		}
-
-		// TODO
-		fmt.Println(LeaderMap)
 	}
 
 	fmt.Println("ToMap OK")

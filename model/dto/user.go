@@ -8,12 +8,12 @@ type Register struct {
 
 type OrgInfo struct {
 	LogoUrl	 string `json:"logo_url" form:"logo_url"`
+	// 长度大于8
 	Password string `json:"password" form:"password"`
 }
 
 type Login struct {
-	//user may be username or email
-	User     string `json:"user" form:"user" binding:"required"`
+	Username     string `json:"username" form:"username" binding:"required"`
 	Password string `json:"password" form:"password" binding:"required"`
 }
 

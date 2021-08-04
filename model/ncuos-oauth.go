@@ -112,6 +112,7 @@ func (s *NCUOSOauth) GetUserProfileBasic() (*NCUOSUserProfileBasic, error) {
 		return nil, err
 	}
 
+	fmt.Println(userInfo.BaseInfo)
 	user := &NCUOSUserProfileBasic{
 		Username: userInfo.BaseInfo.Xh,
 		Name:     userInfo.BaseInfo.Xm,

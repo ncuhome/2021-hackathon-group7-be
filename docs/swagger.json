@@ -1,0 +1,184 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "给出了请求方法，点击Model可以查看请求体模型及备注。\n查看响应体需要打开浏览器开发者工具，在页面接口初Try it out，然后Execute。",
+        "title": "Swagger API",
+        "contact": {
+            "email": "316851756@qq.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "127.0.0.1:21000",
+    "paths": {
+        "/auth/organization": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户系统"
+                ],
+                "summary": "判断用户是否是某个组织的负责人",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "用户令牌",
+                        "name": "Token",
+                        "in": "header",
+                        "required": true
+                    }
+                ]
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户系统"
+                ],
+                "summary": "社团账号激活（注册）、修改",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "用户令牌",
+                        "name": "Token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": " ",
+                        "name": "object",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.OrgInfo"
+                        }
+                    }
+                ]
+            }
+        },
+        "/auth/token": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户系统"
+                ],
+                "summary": "检验token是否有效",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "用户令牌",
+                        "name": "Token",
+                        "in": "header",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        "/login": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户系统"
+                ],
+                "summary": "云家园账号或社团账号登录",
+                "parameters": [
+                    {
+                        "description": " ",
+                        "name": "object",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.Login"
+                        }
+                    }
+                ]
+            }
+        },
+        "/login/ncuos-token": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户系统"
+                ],
+                "summary": "云家园账号token登录",
+                "parameters": [
+                    {
+                        "description": " ",
+                        "name": "object",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.Token"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "definitions": {
+        "dto.Login": {
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.OrgInfo": {
+            "type": "object",
+            "properties": {
+                "logo_url": {
+                    "type": "string"
+                },
+                "password": {
+                    "description": "长度大于8",
+                    "type": "string"
+                }
+            }
+        },
+        "dto.Token": {
+            "type": "object",
+            "required": [
+                "token"
+            ],
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

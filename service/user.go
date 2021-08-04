@@ -76,7 +76,7 @@ func OrgPostInfo(req *dto.OrgInfo, id uint) uint {
 
 	org := LeaderMap[ncuUser.Phone].Organization
 	if org == "" {
-		return CommitDataError
+		return TokenError
 	}
 
 	orgUser := &dao.User{Username: org}
@@ -95,11 +95,12 @@ func OrgPostInfo(req *dto.OrgInfo, id uint) uint {
 }
 
 func Login(req *dto.Login) (*map[string]interface{}, uint) {
-	user := &dao.User{Username: req.User}
+	user := &dao.User{Username: req.Username}
 	err := user.Retrieve()
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return nil, LoginError
+			// 这里没记录，调云家园接口，如果是云家园账号，就注册
+			return NCUOSLogin(req)
 		} else {
 			model.ErrLog.Println(err)
 			return nil, ServerError
@@ -115,6 +116,7 @@ func Login(req *dto.Login) (*map[string]interface{}, uint) {
 		return nil, ServerError
 	}
 
+	// 社团账号
 	if userInfo.Verification == "v" {
 		return orgLogin(req, user)
 	}
@@ -147,7 +149,7 @@ func orgLogin(req *dto.Login, user *dao.User) (*map[string]interface{}, uint) {
 
 func NCUOSLogin(req *dto.Login) (*map[string]interface{}, uint) {
 	NCUOS := &model.NCUOSOauth{}
-	err := NCUOS.GetAccess(req.User, req.Password)
+	err := NCUOS.GetAccess(req.Username, req.Password)
 	if err != nil {
 		return nil, LoginError
 	}

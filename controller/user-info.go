@@ -2,11 +2,10 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"strconv"
-	"tudo/model/dto"
 	"tudo/service"
 )
 
+/*
 func PutUserInfo(c *gin.Context) {
 	req := &dto.UserInfo{}
 	err := c.ShouldBind(req)
@@ -30,6 +29,9 @@ func PutUserInfo(c *gin.Context) {
 	RespondSuccess(c, data)
 	return
 }
+ */
+
+/*
 
 func GetUserInfo(c *gin.Context) {
 	idInt, err := strconv.Atoi(c.Query("id"))
@@ -48,6 +50,14 @@ func GetUserInfo(c *gin.Context) {
 	return
 }
 
+ */
+
+// @Summary 判断用户是否是某个组织的负责人
+// @Tags 用户系统
+// @Accept json
+// @Produce application/json
+// @Param Token header string true "用户令牌"
+// @Router /auth/organization [get]
 func GetLeaderOrg(c *gin.Context) {
 	id, err := GetClaimsSubAsID(c)
 	if err != nil {
@@ -92,6 +102,7 @@ func PutV(c *gin.Context) {
 
  */
 
+/*
 func GetUserByV(c *gin.Context) {
 	preInt, err := strconv.Atoi(c.DefaultQuery("pre", "0"))
 	if err != nil || preInt < 0 {
@@ -108,3 +119,5 @@ func GetUserByV(c *gin.Context) {
 	RespondSuccess(c, data)
 	return
 }
+
+ */

@@ -24,7 +24,6 @@ var Jwt JWT
 var Email GoMail
 var ErrLog *log.Logger
 var Admin map[string]string
-var PictureObj *Picture
 var OssObj *OssType
 
 func JwtInit(path string) {
@@ -67,18 +66,6 @@ func AdminInit(path string) {
 	if err := util.ReadJSON(path, &Admin); err != nil {
 		panic(err)
 	}
-	return
-}
-
-func PictureInit(path string) {
-	_, err := os.Stat(path)
-	if err != nil {
-		err := os.Mkdir(path, os.ModePerm)
-		if err != nil {
-			panic(err)
-		}
-	}
-	PictureObj.Path = path
 	return
 }
 
