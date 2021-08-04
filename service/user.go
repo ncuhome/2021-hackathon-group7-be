@@ -265,30 +265,6 @@ func CheckPassword(password string) uint {
 	return SuccessCode
 }
 
-/*
-func SetPassword(req *dto.SetPassword, id uint) uint {
-	code := CheckPassword(req.NewPassword)
-	if code != SuccessCode {
-		return code
-	}
-
-	user := &dao.User{
-		ID: id,
-	}
-	err := user.Retrieve()
-	if err != nil {
-		return ErrorServer
-	}
-
-	shaPassword := hex.EncodeToString(util.SHA512([]byte(req.Password + user.Salt)))
-	if user.Password != shaPassword {
-		return OldPasswordError
-	}
-
-	return updatePassword(req.NewPassword, id)
-}
-*/
-
 //更新盐、个人登录状态、密码
 func updatePassword(newPassword string, id uint) uint {
 	saltStr, err := util.RandHexStr(64)
@@ -327,20 +303,3 @@ func updatePassword(newPassword string, id uint) uint {
 
 	return SuccessCode
 }
-
-/*
-func GetEmail(id uint) (*map[string]interface{}, uint) {
-	user := &dao.User{}
-	user.ID = id
-	err := user.Retrieve()
-	if err != nil {
-		return nil, ErrorServer
-	}
-
-	data := &map[string]interface{}{
-		"email": user.Email,
-	}
-	return data, SuccessCode
-}
-
-*/

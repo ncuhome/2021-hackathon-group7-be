@@ -17,8 +17,8 @@ import (
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
-// host tudo-api.nspyf.top
-// @host localhost:21001
+// @host tudo-api.nspyf.top
+// host localhost:21001
 
 func main() {
 	dao.DBInit("./config/db.json")

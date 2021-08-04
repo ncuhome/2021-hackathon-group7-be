@@ -243,11 +243,11 @@ type swaggerInfo struct {
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
 	Version:     "1.0",
-	Host:        "localhost:21001",
+	Host:        "tudo-api.nspyf.top",
 	BasePath:    "",
 	Schemes:     []string{},
 	Title:       "Swagger API",
-	Description: "给出了请求方法，点击Model可以查看请求体模型及备注。\n查看响应体需要打开浏览器开发者工具，在页面接口初Try it out，然后Execute。",
+	Description: "给出了请求方法，点击Model可以查看请求体模型及备注。\n查看响应体需要打开浏览器开发者工具，在页面接口初Try it out，填写数据然后Execute。",
 }
 
 type s struct{}

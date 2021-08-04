@@ -76,33 +76,6 @@ func GetLeaderOrg(c *gin.Context) {
 }
 
 /*
-func PutV(c *gin.Context) {
-	req := &dto.PutV{}
-	err := c.ShouldBind(req)
-	if err != nil {
-		RespondError(c, service.ErrorCommitData)
-		return
-	}
-
-	id, err := GetClaimsSubAsID(c)
-	if err != nil {
-		RespondError(c, service.ErrorToken)
-		return
-	}
-
-	code := service.PutV(req, id)
-	if code != service.SuccessCode {
-		RespondError(c, code)
-		return
-	}
-
-	RespondSuccess(c, nil)
-	return
-}
-
- */
-
-/*
 func GetUserByV(c *gin.Context) {
 	preInt, err := strconv.Atoi(c.DefaultQuery("pre", "0"))
 	if err != nil || preInt < 0 {
