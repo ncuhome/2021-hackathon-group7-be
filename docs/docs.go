@@ -73,7 +73,7 @@ var doc = `{
                     },
                     {
                         "description": " ",
-                        "name": "object",
+                        "name": "JSON",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -153,7 +153,7 @@ var doc = `{
                 "parameters": [
                     {
                         "description": " ",
-                        "name": "object",
+                        "name": "JSON",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -178,7 +178,7 @@ var doc = `{
                 "parameters": [
                     {
                         "description": " ",
-                        "name": "object",
+                        "name": "JSON",
                         "in": "body",
                         "required": true,
                         "schema": {

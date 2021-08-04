@@ -52,7 +52,7 @@ func DBInit(path string) {
 	if err != nil {
 		panic(err)
 	}
-	err = DB.AutoMigrate(&User{}, &UserInfo{}, &Comment{}, &Activity{})
+	err = DB.AutoMigrate(&User{}, &UserInfo{}, &Activity{})
 	if err != nil {
 		panic(err)
 	}

@@ -10,7 +10,7 @@ import (
 // @Tags 用户系统
 // @Accept application/json
 // @Produce application/json
-// @Param object body dto.Login true " "
+// @Param JSON body dto.Login true " "
 // @Router /login [post]
 func Login(c *gin.Context) {
 	req := &dto.Login{}
@@ -34,7 +34,7 @@ func Login(c *gin.Context) {
 // @Tags 用户系统
 // @Accept application/json
 // @Produce application/json
-// @Param object body dto.Token true " "
+// @Param JSON body dto.Token true " "
 // @Router /login/ncuos-token [post]
 func NCUOSTokenLogin(c *gin.Context) {
 	req := &dto.Token{}
@@ -76,7 +76,7 @@ func Verify(c *gin.Context) {
 // @Accept application/json
 // @Produce application/json
 // @Param Token header string true "用户令牌"
-// @Param object body dto.OrgInfo true " "
+// @Param JSON body dto.OrgInfo true " "
 // @Router /auth/organization [post]
 func OrgPostInfo(c *gin.Context) {
 	req := &dto.OrgInfo{}
