@@ -17,14 +17,13 @@ import (
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host tudo-api.nspyf.top
+// host tudo-api.nspyf.top
+// @host localhost:21001
 
 func main() {
 	dao.DBInit("./config/db.json")
 	dao.CacheInit("./config/cache.json")
 	model.JwtInit("./config/jwt.json")
-	model.EmailInit("./config/email.json")
-	model.AdminInit("./config/admin.json")
 	model.OssInit()
 	model.LogInit()
 	service.SyncTencentDoc()

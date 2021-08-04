@@ -10,13 +10,13 @@ func PutUserInfo(c *gin.Context) {
 	req := &dto.UserInfo{}
 	err := c.ShouldBind(req)
 	if err != nil {
-		RespondError(c, service.CommitDataError)
+		RespondError(c, service.ErrorCommitData)
 		return
 	}
 
 	id, err := GetClaimsSubAsID(c)
 	if err != nil {
-		RespondError(c, service.TokenError)
+		RespondError(c, service.ErrorToken)
 		return
 	}
 
@@ -36,7 +36,7 @@ func PutUserInfo(c *gin.Context) {
 func GetUserInfo(c *gin.Context) {
 	idInt, err := strconv.Atoi(c.Query("id"))
 	if err != nil || idInt <= 0 {
-		RespondError(c, service.CommitDataError)
+		RespondError(c, service.ErrorCommitData)
 		return
 	}
 
@@ -61,7 +61,7 @@ func GetUserInfo(c *gin.Context) {
 func GetLeaderOrg(c *gin.Context) {
 	id, err := GetClaimsSubAsID(c)
 	if err != nil {
-		RespondError(c, service.TokenError)
+		RespondError(c, service.ErrorToken)
 		return
 	}
 
@@ -80,13 +80,13 @@ func PutV(c *gin.Context) {
 	req := &dto.PutV{}
 	err := c.ShouldBind(req)
 	if err != nil {
-		RespondError(c, service.CommitDataError)
+		RespondError(c, service.ErrorCommitData)
 		return
 	}
 
 	id, err := GetClaimsSubAsID(c)
 	if err != nil {
-		RespondError(c, service.TokenError)
+		RespondError(c, service.ErrorToken)
 		return
 	}
 
@@ -106,7 +106,7 @@ func PutV(c *gin.Context) {
 func GetUserByV(c *gin.Context) {
 	preInt, err := strconv.Atoi(c.DefaultQuery("pre", "0"))
 	if err != nil || preInt < 0 {
-		RespondError(c, service.CommitDataError)
+		RespondError(c, service.ErrorCommitData)
 		return
 	}
 

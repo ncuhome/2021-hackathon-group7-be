@@ -12,13 +12,13 @@ func CreateActivity(c *gin.Context) {
 	err := c.ShouldBind(req)
 
 	if err != nil {
-		RespondError(c, service.CommitDataError)
+		RespondError(c, service.ErrorCommitData)
 		return
 	}
 
 	id, err := GetClaimsSubAsID(c)
 	if err != nil {
-		RespondError(c, service.TokenError)
+		RespondError(c, service.ErrorToken)
 		return
 	}
 
@@ -72,7 +72,7 @@ func GetActivitiesByPlace(c *gin.Context) {
 func GetActivitiesByHost(c *gin.Context) {
 	hostInt, err := strconv.Atoi(c.PostForm("host"))
 	if err != nil || hostInt <= 0 {
-		RespondError(c, service.CommitDataError)
+		RespondError(c, service.ErrorCommitData)
 		return
 	}
 

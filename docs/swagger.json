@@ -12,7 +12,7 @@
         },
         "version": "1.0"
     },
-    "host": "tudo-api.nspyf.top",
+    "host": "localhost:21001",
     "paths": {
         "/auth/organization": {
             "get": {
@@ -62,6 +62,38 @@
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/dto.OrgInfo"
+                        }
+                    }
+                ]
+            }
+        },
+        "/auth/picture": {
+            "post": {
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "其它"
+                ],
+                "summary": "图片上传接口",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "用户令牌",
+                        "name": "Token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "file字段放图片数据",
+                        "name": "formData",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object"
                         }
                     }
                 ]

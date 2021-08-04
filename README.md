@@ -1,4 +1,4 @@
-# 2021-hackathon-backend
+# tudo-be
 
 ## 工程结构
 + .github
@@ -41,24 +41,9 @@
 
 访问/swagger/index.html
 
-## 技术选择
-
-### 主要使用的技术/工具/框架
-+ git、github、github actions
+## 主要使用的技术/工具/框架
++ git
 + docker、docker-compose
 + MySQL、redis
 + Nginx
-+ gin、gorm、go-redis
-
-### 功能细节
-+ https
-+ token鉴权,并具有主动废除token的能力
-+ 密码加盐哈希存储
-+ 使用redis对适当的数据缓存
-+ 容器化测试/部署
-+ 利用github actions和docker做CI/CD，持续集成、持续交付、持续部署
-+ 部分功能模块化，可复用性强
-+ 代码分层，整体耦合度低，易扩展易维护
-+ 保存错误日志方便Debug
-+ Nginx反向代理
-+ 阿里云oss对象存储
++ gin、gorm、go-redis、gin-swagger

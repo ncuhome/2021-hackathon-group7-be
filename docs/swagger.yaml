@@ -24,7 +24,7 @@ definitions:
     required:
     - token
     type: object
-host: tudo-api.nspyf.top
+host: localhost:21001
 info:
   contact:
     email: 316851756@qq.com
@@ -72,6 +72,27 @@ paths:
       summary: 社团账号激活（注册）、修改
       tags:
       - 用户系统
+  /auth/picture:
+    post:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: 用户令牌
+        in: header
+        name: Token
+        required: true
+        type: string
+      - description: file字段放图片数据
+        in: body
+        name: formData
+        required: true
+        schema:
+          type: object
+      produces:
+      - application/json
+      summary: 图片上传接口
+      tags:
+      - 其它
   /auth/token:
     get:
       consumes:

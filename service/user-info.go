@@ -20,7 +20,7 @@ func PutUserInfo(req *dto.UserInfo, id uint) (*map[string]interface{}, uint) {
 	err := userInfo.Update(newInfo)
 	if err != nil {
 		model.ErrLog.Println(err)
-		return nil, ServerError
+		return nil, ErrorServer
 	}
 	return newInfo, SuccessCode
 }
@@ -31,10 +31,10 @@ func GetUserInfo(id uint) (*map[string]interface{}, uint) {
 	err := userInfoDao.GetProfile(id)
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return nil, CommitDataError
+			return nil, ErrorCommitData
 		}
 		model.ErrLog.Println(err)
-		return nil, ServerError
+		return nil, ErrorServer
 	}
 
 	data := &map[string]interface{}{
@@ -50,7 +50,7 @@ func GetLeaderOrg(id uint) (*map[string]interface{}, uint) {
 	ncuUser := &dao.User{ID: id}
 	err := ncuUser.Retrieve()
 	if err != nil {
-		return nil, CommitDataError
+		return nil, ErrorCommitData
 	}
 
 	org := LeaderMap[ncuUser.Phone].Organization
@@ -66,7 +66,7 @@ func GetUserByV(pre uint) (*map[string]interface{}, uint) {
 	err := list.RetrieveByV(pre)
 	if err != nil {
 		if err != gorm.ErrRecordNotFound {
-			return nil, ServerError
+			return nil, ErrorServer
 		}
 	}
 

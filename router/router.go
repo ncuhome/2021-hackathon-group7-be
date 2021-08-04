@@ -38,7 +38,7 @@ func Run() {
 
 	a := g.Group("/auth", controller.Token)
 
-	//a.POST("/picture", minute80, controller.PostPicture)
+	a.POST("/picture", minute80, controller.PostPicture)
 
 	a.GET("/token", minute80, controller.Verify)
 	//a.GET("/email", minute80, controller.GetEmail)

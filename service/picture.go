@@ -1,28 +1,28 @@
 package service
 
 import (
+	"fmt"
 	"io"
 	"tudo/model"
 	"tudo/util"
 )
 
-const pictureBaseUrl = "https://nspyf.oss-cn-shanghai.aliyuncs.com/"
-
 func PostPicture(file io.Reader, name string) (*map[string]string, uint) {
-	randStr, err := util.RandHexStr(4)
+	randStr, err := util.RandHexStr(8)
 	if err != nil {
-		return nil, ServerError
+		return nil, ErrorServer
 	}
 
 	filename := randStr + name
 
 	err = model.OssObj.PutBytes(file, filename)
 	if err != nil {
-		return nil, ServerError
+		fmt.Println(err)
+		return nil, ErrorServer
 	}
 
 	data := &map[string]string{
-		"file": pictureBaseUrl + filename,
+		"file": model.OssBaseUrl + filename,
 	}
 	return data, SuccessCode
 }

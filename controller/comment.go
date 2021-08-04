@@ -12,13 +12,13 @@ func PostComment(c *gin.Context) {
 	req := &dto.PostComment{}
 	err := c.ShouldBind(req)
 	if err != nil {
-		RespondError(c, service.CommitDataError)
+		RespondError(c, service.ErrorCommitData)
 		return
 	}
 
 	id, err := GetClaimsSubAsID(c)
 	if err != nil {
-		RespondError(c, service.TokenError)
+		RespondError(c, service.ErrorToken)
 		return
 	}
 
@@ -35,13 +35,13 @@ func PostComment(c *gin.Context) {
 func GetCommentByActivity(c *gin.Context) {
 	idInt, err := strconv.Atoi(c.Query("id"))
 	if err != nil || idInt <= 0 {
-		RespondError(c, service.CommitDataError)
+		RespondError(c, service.ErrorCommitData)
 		return
 	}
 
 	preInt, err := strconv.Atoi(c.DefaultQuery("pre", "0"))
 	if err != nil || preInt < 0 {
-		RespondError(c, service.CommitDataError)
+		RespondError(c, service.ErrorCommitData)
 		return
 	}
 
@@ -58,13 +58,13 @@ func GetCommentByActivity(c *gin.Context) {
 func GetCommentByUser(c *gin.Context) {
 	idInt, err := strconv.Atoi(c.Query("id"))
 	if err != nil || idInt <= 0 {
-		RespondError(c, service.CommitDataError)
+		RespondError(c, service.ErrorCommitData)
 		return
 	}
 
 	preInt, err := strconv.Atoi(c.DefaultQuery("pre", "0"))
 	if err != nil || preInt < 0 {
-		RespondError(c, service.CommitDataError)
+		RespondError(c, service.ErrorCommitData)
 		return
 	}
 

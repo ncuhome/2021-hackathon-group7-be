@@ -38,7 +38,7 @@ func GetCell(tableData *gjson.Result, x int64, y int64) string {
 func JsonToEmailMap(table *gjson.Result) uint {
 	arr := table.Map()["c"].Array()
 	if len(arr) < 2 {
-		return ServerError
+		return ErrorServer
 	}
 	tableData := arr[1]
 
@@ -89,7 +89,7 @@ func GetDocs(docBaseData *DocBaseData) (*gjson.Result, uint) {
 	data, err := util.HttpReq(option)
 	if err != nil {
 		fmt.Println(err)
-		return nil, ServerError
+		return nil, ErrorServer
 	}
 
 	// ? 不知道为啥json可能不一样，根据能否获取第一行第一列来选
@@ -102,7 +102,7 @@ func GetDocs(docBaseData *DocBaseData) (*gjson.Result, uint) {
 
 	if A1 == "" {
 		fmt.Println("json格式有问题")
-		return nil, ServerError
+		return nil, ErrorServer
 	}
 
 	// 暂停同步

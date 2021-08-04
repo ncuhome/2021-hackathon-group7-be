@@ -30,12 +30,12 @@ func Token(c *gin.Context) { // token验证
 	token := c.Request.Header.Get("Token")
 	claims, err := model.Jwt.ParseToken(token)
 	if err != nil {
-		RespondError(c, service.TokenError)
+		RespondError(c, service.ErrorToken)
 		return
 	}
 
 	if claims == nil {
-		RespondError(c, service.TokenError)
+		RespondError(c, service.ErrorToken)
 		return
 	}
 
@@ -44,16 +44,16 @@ func Token(c *gin.Context) { // token验证
 	user := &dao.UserDao{}
 	id, err := strconv.Atoi(claims.Subject)
 	if err != nil {
-		RespondError(c, service.TokenError)
+		RespondError(c, service.ErrorToken)
 		return
 	}
 	err = user.GetData(uint(id))
 	if err != nil {
-		RespondError(c, service.TokenError)
+		RespondError(c, service.ErrorToken)
 		return
 	}
 	if user.Data.LoginStatus != claims.Id {
-		RespondError(c, service.TokenError)
+		RespondError(c, service.ErrorToken)
 		return
 	}
 
@@ -69,7 +69,7 @@ func LimitIP(interval time.Duration, limit int) gin.HandlerFunc {
 		ip := c.ClientIP()
 		if limiter.LogAndCheck(ip, limit) == false {
 			message := fmt.Sprintf("请求频繁，请%v后重试", interval.String())
-			RespondErrorWith(c, service.RequestRateError, message)
+			RespondErrorWith(c, service.ErrorRequestRate, message)
 			return
 		}
 		c.Next()

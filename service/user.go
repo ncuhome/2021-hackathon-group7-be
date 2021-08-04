@@ -20,7 +20,7 @@ func orgRegister(org string, req *dto.OrgInfo) uint {
 	salt, err := util.RandHexStr(64)
 	if err != nil {
 		model.ErrLog.Println(err)
-		return ServerError
+		return ErrorServer
 	}
 
 	password := hex.EncodeToString(util.SHA512([]byte(req.Password + salt)))
@@ -39,7 +39,7 @@ func orgRegister(org string, req *dto.OrgInfo) uint {
 	err = user.CreateWith(userInfo)
 	if err != nil {
 		model.ErrLog.Println(err)
-		return ServerError
+		return ErrorServer
 	}
 	return SuccessCode
 }
@@ -61,7 +61,7 @@ func orgPut(req *dto.OrgInfo, id uint) uint {
 	err := orgUserInfo.Update(change)
 	if err != nil {
 		model.ErrLog.Println(err)
-		return ServerError
+		return ErrorServer
 	}
 	return SuccessCode
 }
@@ -71,12 +71,12 @@ func OrgPostInfo(req *dto.OrgInfo, id uint) uint {
 	ncuUser := &dao.User{ID: id}
 	err := ncuUser.Retrieve()
 	if err != nil {
-		return CommitDataError
+		return ErrorCommitData
 	}
 
 	org := LeaderMap[ncuUser.Phone].Organization
 	if org == "" {
-		return TokenError
+		return ErrorToken
 	}
 
 	orgUser := &dao.User{Username: org}
@@ -86,7 +86,7 @@ func OrgPostInfo(req *dto.OrgInfo, id uint) uint {
 			return orgRegister(org, req)
 		} else {
 			model.ErrLog.Println(err)
-			return ServerError
+			return ErrorServer
 		}
 	}
 
@@ -103,7 +103,7 @@ func Login(req *dto.Login) (*map[string]interface{}, uint) {
 			return NCUOSLogin(req)
 		} else {
 			model.ErrLog.Println(err)
-			return nil, ServerError
+			return nil, ErrorServer
 		}
 	}
 
@@ -113,7 +113,7 @@ func Login(req *dto.Login) (*map[string]interface{}, uint) {
 	err = userInfo.Retrieve()
 	if err != nil {
 		model.ErrLog.Println(err)
-		return nil, ServerError
+		return nil, ErrorServer
 	}
 
 	// 社团账号
@@ -128,13 +128,13 @@ func Login(req *dto.Login) (*map[string]interface{}, uint) {
 func orgLogin(req *dto.Login, user *dao.User) (*map[string]interface{}, uint) {
 	password := hex.EncodeToString(util.SHA512([]byte(req.Password + user.Salt)))
 	if user.Password != password {
-		return nil, LoginError
+		return nil, ErrorLogin
 	}
 
 	token, err := model.Jwt.GenerateToken(strconv.Itoa(int(user.ID)), user.LoginStatus)
 	if err != nil {
 		model.ErrLog.Println(err)
-		return nil, ServerError
+		return nil, ErrorServer
 	}
 
 	data := &map[string]interface{}{
@@ -151,7 +151,7 @@ func NCUOSLogin(req *dto.Login) (*map[string]interface{}, uint) {
 	NCUOS := &model.NCUOSOauth{}
 	err := NCUOS.GetAccess(req.Username, req.Password)
 	if err != nil {
-		return nil, LoginError
+		return nil, ErrorLogin
 	}
 
 	return NCUOSTokenLogin(&dto.Token{Token: NCUOS.Token})
@@ -162,13 +162,13 @@ func NCUOSRegister(NCUOSUser *model.NCUOSUserProfileBasic) (*map[string]interfac
 	password, err := util.RandHexStr(8)
 	if err != nil {
 		model.ErrLog.Println(err)
-		return nil, ServerError
+		return nil, ErrorServer
 	}
 
 	salt, err := util.RandHexStr(64)
 	if err != nil {
 		model.ErrLog.Println(err)
-		return nil, ServerError
+		return nil, ErrorServer
 	}
 
 	password = hex.EncodeToString(util.SHA512([]byte(password + salt)))
@@ -185,13 +185,13 @@ func NCUOSRegister(NCUOSUser *model.NCUOSUserProfileBasic) (*map[string]interfac
 	})
 	if err != nil {
 		model.ErrLog.Println(err)
-		return nil, ServerError
+		return nil, ErrorServer
 	}
 
 	token, err := model.Jwt.GenerateToken(strconv.Itoa(int(user.ID)), user.LoginStatus)
 	if err != nil {
 		model.ErrLog.Println(err)
-		return nil, ServerError
+		return nil, ErrorServer
 	}
 
 	data := &map[string]interface{}{
@@ -208,7 +208,7 @@ func NCUOSTokenLogin(req *dto.Token) (*map[string]interface{}, uint) {
 	}
 	NCUOSUser, err := NCUOS.GetUserProfileBasic()
 	if err != nil {
-		return nil, TokenError
+		return nil, ErrorToken
 	}
 
 	user := &dao.User{
@@ -221,13 +221,13 @@ func NCUOSTokenLogin(req *dto.Token) (*map[string]interface{}, uint) {
 			return NCUOSRegister(NCUOSUser)
 		}
 		model.ErrLog.Println(err)
-		return nil, ServerError
+		return nil, ErrorServer
 	}
 
 	token, err := model.Jwt.GenerateToken(strconv.Itoa(int(user.ID)), user.LoginStatus)
 	if err != nil {
 		model.ErrLog.Println(err)
-		return nil, ServerError
+		return nil, ErrorServer
 	}
 
 	data := &map[string]interface{}{
@@ -241,11 +241,11 @@ func NCUOSTokenLogin(req *dto.Token) (*map[string]interface{}, uint) {
 func CheckUsername(username string) uint {
 	usernameLen := len(username)
 	if usernameLen < 2 || usernameLen > 16 {
-		return CommitDataError
+		return ErrorCommitData
 	}
 	for i := 0; i < usernameLen; i++ {
 		if (username[i] < 'a' || 'z' < username[i]) && (username[i] < 'A' || 'Z' < username[i]) && (username[i] < '0' || '9' < username[i]) {
-			return CommitDataError
+			return ErrorCommitData
 		}
 	}
 	return SuccessCode
@@ -254,12 +254,12 @@ func CheckUsername(username string) uint {
 func CheckPassword(password string) uint {
 	passwordLen := len(password)
 	if passwordLen < 8 || passwordLen > 32 {
-		return CommitDataError
+		return ErrorCommitData
 	}
 	//[33,126]覆盖了大小写字母、数字、普通可见符号
 	for i := 0; i < passwordLen; i++ {
 		if password[i] < 33 || password[i] > 126 {
-			return CommitDataError
+			return ErrorCommitData
 		}
 	}
 	return SuccessCode
@@ -277,7 +277,7 @@ func SetPassword(req *dto.SetPassword, id uint) uint {
 	}
 	err := user.Retrieve()
 	if err != nil {
-		return ServerError
+		return ErrorServer
 	}
 
 	shaPassword := hex.EncodeToString(util.SHA512([]byte(req.Password + user.Salt)))
@@ -294,13 +294,13 @@ func updatePassword(newPassword string, id uint) uint {
 	saltStr, err := util.RandHexStr(64)
 	if err != nil {
 		model.ErrLog.Println(err)
-		return ServerError
+		return ErrorServer
 	}
 	shaNewPassword := hex.EncodeToString(util.SHA512([]byte(newPassword + saltStr)))
 	loginStatus, err := util.RandHexStr(8)
 	if err != nil {
 		model.ErrLog.Println(err)
-		return ServerError
+		return ErrorServer
 	}
 
 	user := &dao.User{
@@ -313,7 +313,7 @@ func updatePassword(newPassword string, id uint) uint {
 	})
 	if err != nil {
 		model.ErrLog.Println(err)
-		return ServerError
+		return ErrorServer
 	}
 
 	//删用户缓存
@@ -334,7 +334,7 @@ func GetEmail(id uint) (*map[string]interface{}, uint) {
 	user.ID = id
 	err := user.Retrieve()
 	if err != nil {
-		return nil, ServerError
+		return nil, ErrorServer
 	}
 
 	data := &map[string]interface{}{

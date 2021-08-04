@@ -16,10 +16,10 @@ func CheckV(id uint) uint {
 	}
 	err := userInfo.Retrieve()
 	if err != nil {
-		return ServerError
+		return ErrorServer
 	}
 	if userInfo.Verification != "v" {
-		return TokenError
+		return ErrorToken
 	}
 	return SuccessCode
 }
@@ -43,20 +43,20 @@ func CreateActivity(req *dto.Activities, id uint) uint {
 	}
 	err := activity.Create()
 	if err != nil {
-		return ServerError
+		return ErrorServer
 	}
 	_ = activity.SetCacheActivity()
 	err = activity.DelCacheList("list")
 	if err != nil {
-		return ServerError
+		return ErrorServer
 	}
 	err = activity.DelCacheList("place")
 	if err != nil {
-		return ServerError
+		return ErrorServer
 	}
 	err = activity.DelCacheList("host")
 	if err != nil {
-		return ServerError
+		return ErrorServer
 	}
 	return SuccessCode
 }
@@ -76,7 +76,7 @@ func GetAllActivities() (interface{}, uint) {
 				p, err := activity.GetActivity()
 				_ = p.SetCacheActivity()
 				if err != nil {
-					return nil, ServerError
+					return nil, ErrorServer
 				}
 				data = append(data, p)
 			} else {
@@ -91,7 +91,7 @@ func GetAllActivities() (interface{}, uint) {
 		DataReturn, err = activity.GetAllActivities()
 		if err != nil {
 			fmt.Println(err)
-			return nil, ServerError
+			return nil, ErrorServer
 		}
 	}
 	return DataReturn, SuccessCode
@@ -103,7 +103,7 @@ func GetActivity(id string) (interface{}, uint) {
 
 	if err != nil {
 		fmt.Println(err)
-		return dao.Activity{}, ServerError
+		return dao.Activity{}, ErrorServer
 	}
 
 	ID := uint(temp)
@@ -122,7 +122,7 @@ func GetActivity(id string) (interface{}, uint) {
 	data1.SetCacheActivity()
 	if err != nil {
 		fmt.Println(err)
-		return data1, ServerError
+		return data1, ErrorServer
 	}
 	return data1, SuccessCode
 }
@@ -144,7 +144,7 @@ func GetActivitiesByPlace(place string) (interface{}, uint) {
 				p, err := activity.GetActivity()
 				p.SetCacheActivity()
 				if err != nil {
-					return nil, ServerError
+					return nil, ErrorServer
 				}
 				data = append(data, p)
 			} else {
@@ -159,7 +159,7 @@ func GetActivitiesByPlace(place string) (interface{}, uint) {
 		DataReturn, err = activity.GetActivitiesByPlace()
 		if err != nil {
 			fmt.Println(err)
-			return nil, ServerError
+			return nil, ErrorServer
 		}
 	}
 	return DataReturn, SuccessCode
@@ -182,7 +182,7 @@ func GetActivitiesByHost(host uint) (interface{}, uint) {
 				p, err := activity.GetActivity()
 				p.SetCacheActivity()
 				if err != nil {
-					return nil, ServerError
+					return nil, ErrorServer
 				}
 				data = append(data, p)
 			} else {
@@ -197,7 +197,7 @@ func GetActivitiesByHost(host uint) (interface{}, uint) {
 		DataReturn, err = activity.GetActivitiesByHost()
 		if err != nil {
 			fmt.Println(err)
-			return nil, ServerError
+			return nil, ErrorServer
 		}
 	}
 	return DataReturn, SuccessCode

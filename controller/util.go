@@ -8,25 +8,18 @@ import (
 )
 
 var HttpStatus = map[uint]int{
-	service.ServerError:     500,
-	service.CommitDataError: 400,
-	service.TokenError:      401,
+	service.ErrorServer:     500,
+	service.ErrorCommitData: 400,
+	service.ErrorToken:      401,
 }
 
 var Message = map[uint]string{
-	service.ServerError:       "服务端错误",
-	service.CommitDataError:   "提交的数据错误",
-	service.TokenError:        "无权访问",
-	service.UsernameRepeated:  "用户名已经被注册",
-	service.LoginError:        "用户名或密码错误",
-	service.EmailRepeated:     "已经绑定了邮箱",
-	service.EmailSendingError: "邮件发送失败",
-	service.CodeError:         "验证码错误",
-	service.EmailUsed:         "邮箱已被其它用户绑定",
-	service.OldPasswordError:  "旧密码错误",
-	service.EmailNotBinding:   "该邮箱未绑定任何用户",
-	service.RequestRateError:  "请求频繁，稍后重试",
-	service.UnauthorizedEmail: "邮箱未授权，请先联系家园工作室",
+	service.ErrorServer:           "服务端错误",
+	service.ErrorCommitData:       "提交的数据错误",
+	service.ErrorToken:            "无权访问",
+	service.ErrorUsernameRepeated: "用户名已经被注册",
+	service.ErrorLogin:            "用户名或密码错误",
+	service.ErrorRequestRate:      "请求频繁，稍后重试",
 }
 
 func GetClaimsSubAsID(c *gin.Context) (uint, error) {

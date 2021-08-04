@@ -10,21 +10,12 @@ type JwtConfig struct {
 	JwtTime int64 `json:"jwt_time"`
 }
 
-type EmailConfig struct {
-	Host     string `json:"host"`
-	Port     int    `json:"port"`
-	Username string `json:"username"`
-	Name     string `json:"name"`
-}
-
 var JwtConfigObj JwtConfig
-var EmailConfigObj EmailConfig
 
 var Jwt JWT
-var Email GoMail
 var ErrLog *log.Logger
-var Admin map[string]string
 var OssObj *OssType
+var OssBaseUrl string
 
 func JwtInit(path string) {
 	if err := util.ReadJSON(path, &JwtConfigObj); err != nil {
@@ -32,14 +23,6 @@ func JwtInit(path string) {
 	}
 
 	Jwt.Init(os.Getenv("JWT_SIGN_KEY"), JwtConfigObj.JwtTime)
-	return
-}
-
-func EmailInit(path string) {
-	if err := util.ReadJSON(path, &EmailConfigObj); err != nil {
-		panic(err)
-	}
-	Email.Init(EmailConfigObj.Host, EmailConfigObj.Port, EmailConfigObj.Username, os.Getenv("EMAIL_PASSWORD"), EmailConfigObj.Name)
 	return
 }
 
@@ -62,13 +45,6 @@ func LogInit() {
 	return
 }
 
-func AdminInit(path string) {
-	if err := util.ReadJSON(path, &Admin); err != nil {
-		panic(err)
-	}
-	return
-}
-
 func OssInit() {
 	OssObj = &OssType{
 		Endpoint:        os.Getenv("OSS_ENDPOINT"),
@@ -76,5 +52,6 @@ func OssInit() {
 		AccessKeySecret: os.Getenv("OSS_ACCESS_KEY_SECRET"),
 		Bucket:          os.Getenv("OSS_BUCKET"),
 	}
+	OssBaseUrl = "https://" + OssObj.Bucket + "." + OssObj.Endpoint + "/"
 	return
 }

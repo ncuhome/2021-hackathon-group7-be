@@ -83,6 +83,38 @@ var doc = `{
                 ]
             }
         },
+        "/auth/picture": {
+            "post": {
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "其它"
+                ],
+                "summary": "图片上传接口",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "用户令牌",
+                        "name": "Token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "file字段放图片数据",
+                        "name": "formData",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                ]
+            }
+        },
         "/auth/token": {
             "get": {
                 "consumes": [
@@ -211,7 +243,7 @@ type swaggerInfo struct {
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
 	Version:     "1.0",
-	Host:        "tudo-api.nspyf.top",
+	Host:        "localhost:21001",
 	BasePath:    "",
 	Schemes:     []string{},
 	Title:       "Swagger API",
