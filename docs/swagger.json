@@ -14,6 +14,38 @@
     },
     "host": "tudo-api.nspyf.top",
     "paths": {
+        "/auth/activity": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "活动系统"
+                ],
+                "summary": "社团账号发布活动",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "用户令牌",
+                        "name": "Token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": " ",
+                        "name": "JSON",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.Activity"
+                        }
+                    }
+                ]
+            }
+        },
         "/auth/organization": {
             "get": {
                 "consumes": [
@@ -174,6 +206,33 @@
         }
     },
     "definitions": {
+        "dto.Activity": {
+            "type": "object",
+            "required": [
+                "content",
+                "end_time",
+                "place",
+                "start_time",
+                "title"
+            ],
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "end_time": {
+                    "type": "string"
+                },
+                "place": {
+                    "type": "string"
+                },
+                "start_time": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.Login": {
             "type": "object",
             "required": [

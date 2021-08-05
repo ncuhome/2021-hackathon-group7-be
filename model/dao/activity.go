@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	ActivityCacheTime = 10 * time.Minute
+	ActivityCacheTime = 3 * time.Minute
 )
 
 type Activity struct {
@@ -28,6 +28,15 @@ type Activity struct {
 //添加新活动
 func (s *Activity) Create() error {
 	return DB.Create(s).Error
+}
+
+// 必须传id
+func (s *Activity) Delete() error {
+	return DB.Model(s).Delete(s).Error
+}
+
+func (s *Activity) Retrieve() error {
+	return DB.Model(s).Where(s).First(s).Error
 }
 
 //获取所有活动列表

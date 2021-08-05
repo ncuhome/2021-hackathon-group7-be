@@ -2,15 +2,20 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"strconv"
 	"tudo/model/dto"
 	"tudo/service"
 )
 
+// @Summary 社团账号发布活动
+// @Tags 活动系统
+// @Accept application/json
+// @Produce application/json
+// @Param Token header string true "用户令牌"
+// @Param JSON body dto.Activity true " "
+// @Router /auth/activity [post]
 func CreateActivity(c *gin.Context) {
-	req := &dto.Activities{}
+	req := &dto.Activity{}
 	err := c.ShouldBind(req)
-
 	if err != nil {
 		RespondError(c, service.ErrorCommitData)
 		return
@@ -23,7 +28,6 @@ func CreateActivity(c *gin.Context) {
 	}
 
 	code := service.CreateActivity(req, id)
-
 	if code != 0 {
 		RespondError(c, code)
 		return
@@ -33,6 +37,38 @@ func CreateActivity(c *gin.Context) {
 	return
 }
 
+// @Summary 社团账号删除活动
+// @Tags 活动系统
+// @Accept application/json
+// @Produce application/json
+// @Param Token header string true "用户令牌"
+// @Param JSON body dto.Entity true " "
+// @Router /auth/activity [delete]
+func DeleteActivity(c *gin.Context) {
+	req := &dto.Entity{}
+	err := c.ShouldBind(req)
+	if err != nil {
+		RespondError(c, service.ErrorCommitData)
+		return
+	}
+
+	id, err := GetClaimsSubAsID(c)
+	if err != nil {
+		RespondError(c, service.ErrorToken)
+		return
+	}
+
+	code := service.DeleteActivity(req, id)
+	if code != 0 {
+		RespondError(c, code)
+		return
+	}
+
+	RespondSuccess(c, nil)
+	return
+}
+
+/*
 func GetAllActivities(c *gin.Context) {
 	respond, code := service.GetAllActivities()
 
@@ -85,3 +121,6 @@ func GetActivitiesByHost(c *gin.Context) {
 	RespondSuccess(c, respond)
 	return
 }
+
+
+ */

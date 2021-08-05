@@ -1,10 +1,9 @@
 package service
 
 import (
-	"fmt"
-	"gorm.io/gorm"
 	"math"
 	"strconv"
+	"tudo/model"
 	"tudo/model/dao"
 	"tudo/model/dto"
 	"unicode/utf8"
@@ -24,7 +23,7 @@ func CheckV(id uint) uint {
 	return SuccessCode
 }
 
-func CreateActivity(req *dto.Activities, id uint) uint {
+func CreateActivity(req *dto.Activity, id uint) uint {
 	code := CheckV(id)
 	if code != SuccessCode {
 		return code
@@ -45,22 +44,31 @@ func CreateActivity(req *dto.Activities, id uint) uint {
 	if err != nil {
 		return ErrorServer
 	}
-	_ = activity.SetCacheActivity()
-	err = activity.DelCacheList("list")
+	return SuccessCode
+}
+
+func DeleteActivity(entity *dto.Entity, userID uint) uint {
+	act := &dao.Activity{}
+	idInt, err := strconv.Atoi(entity.ID)
+	act.ID = uint(idInt)
+	err = act.Retrieve()
 	if err != nil {
-		return ErrorServer
+		return ErrorCommitData
 	}
-	err = activity.DelCacheList("place")
-	if err != nil {
-		return ErrorServer
+
+	if act.UserId != userID {
+		return ErrorToken
 	}
-	err = activity.DelCacheList("host")
+
+	err = act.Delete()
 	if err != nil {
+		model.ErrLog.Println(err)
 		return ErrorServer
 	}
 	return SuccessCode
 }
 
+/*
 func GetAllActivities() (interface{}, uint) {
 	activity := &dao.Activity{}
 	var data []interface{}
@@ -202,3 +210,5 @@ func GetActivitiesByHost(host uint) (interface{}, uint) {
 	}
 	return DataReturn, SuccessCode
 }
+
+ */

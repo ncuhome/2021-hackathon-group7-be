@@ -48,13 +48,14 @@ func Run() {
 	//a.POST("/email/binding-key", minute4, controller.SendBindEmailKey)
 	//a.POST("/email/binding", minute80, controller.BindEmail)
 	//a.POST("/comment", minute80, controller.PostComment)
-	//a.POST("/activity", minute80, controller.CreateActivity)
+	a.POST("/activity", minute80, controller.CreateActivity)
 	a.POST("/organization", hour30, controller.OrgPostInfo)
 
 	//a.PUT("/user-info", minute80, controller.PutUserInfo)
 	//a.PUT("/verification", minute80, controller.PutV)
 
 	//a.DELETE("/email/binding", minute80, controller.RemoveEmail)
+	a.DELETE("/activity", minute80, controller.DeleteActivity)
 
 	err := g.Run(":21001")
 	if err != nil {

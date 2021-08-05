@@ -1,4 +1,23 @@
 definitions:
+  dto.Activity:
+    properties:
+      content:
+        type: string
+      end_time:
+        type: string
+      place:
+        type: string
+      start_time:
+        type: string
+      title:
+        type: string
+    required:
+    - content
+    - end_time
+    - place
+    - start_time
+    - title
+    type: object
   dto.Login:
     properties:
       password:
@@ -37,6 +56,27 @@ info:
   title: Swagger API
   version: "1.0"
 paths:
+  /auth/activity:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 用户令牌
+        in: header
+        name: Token
+        required: true
+        type: string
+      - description: ' '
+        in: body
+        name: JSON
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Activity'
+      produces:
+      - application/json
+      summary: 社团账号发布活动
+      tags:
+      - 活动系统
   /auth/organization:
     get:
       consumes:
