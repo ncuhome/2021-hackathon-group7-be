@@ -31,6 +31,43 @@ var doc = `{
     "basePath": "{{.BasePath}}",
     "paths": {
         "/auth/activity": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "活动系统"
+                ],
+                "summary": "社团账号修改活动",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "用户令牌",
+                        "name": "Token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "Query",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "description": " ",
+                        "name": "JSON",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.Activity"
+                        }
+                    }
+                ]
+            },
             "post": {
                 "consumes": [
                     "application/json"
@@ -58,6 +95,34 @@ var doc = `{
                         "schema": {
                             "$ref": "#/definitions/dto.Activity"
                         }
+                    }
+                ]
+            },
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "活动系统"
+                ],
+                "summary": "社团账号删除活动",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "用户令牌",
+                        "name": "Token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "Query",
+                        "in": "query",
+                        "required": true
                     }
                 ]
             }
@@ -242,6 +307,7 @@ var doc = `{
                     "type": "string"
                 },
                 "start_time": {
+                    "description": "Time：自1970年1月1日00:00:00 UTC以来经过的毫秒数",
                     "type": "string"
                 },
                 "title": {

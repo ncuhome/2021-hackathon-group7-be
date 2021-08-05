@@ -8,6 +8,7 @@ definitions:
       place:
         type: string
       start_time:
+        description: Time：自1970年1月1日00:00:00 UTC以来经过的毫秒数
         type: string
       title:
         type: string
@@ -57,6 +58,25 @@ info:
   version: "1.0"
 paths:
   /auth/activity:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: 用户令牌
+        in: header
+        name: Token
+        required: true
+        type: string
+      - description: id
+        in: query
+        name: Query
+        required: true
+        type: string
+      produces:
+      - application/json
+      summary: 社团账号删除活动
+      tags:
+      - 活动系统
     post:
       consumes:
       - application/json
@@ -75,6 +95,31 @@ paths:
       produces:
       - application/json
       summary: 社团账号发布活动
+      tags:
+      - 活动系统
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: 用户令牌
+        in: header
+        name: Token
+        required: true
+        type: string
+      - description: id
+        in: query
+        name: Query
+        required: true
+        type: string
+      - description: ' '
+        in: body
+        name: JSON
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Activity'
+      produces:
+      - application/json
+      summary: 社团账号修改活动
       tags:
       - 活动系统
   /auth/organization:

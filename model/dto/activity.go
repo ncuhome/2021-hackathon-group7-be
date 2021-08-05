@@ -8,7 +8,3 @@ type Activity struct {
 	EndTime   string `json:"end_time" form:"end_time" binding:"required"`
 	Place     string `json:"place" form:"place" binding:"required"`
 }
-
-type Entity struct {
-	ID     string `json:"id" form:"id" binding:"required"`
-}

@@ -2,6 +2,7 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"strconv"
 	"tudo/model/dto"
 	"tudo/service"
 )
@@ -37,16 +38,23 @@ func CreateActivity(c *gin.Context) {
 	return
 }
 
-// @Summary 社团账号删除活动
+// @Summary 社团账号修改活动
 // @Tags 活动系统
 // @Accept application/json
 // @Produce application/json
 // @Param Token header string true "用户令牌"
-// @Param JSON body dto.Entity true " "
-// @Router /auth/activity [delete]
-func DeleteActivity(c *gin.Context) {
-	req := &dto.Entity{}
-	err := c.ShouldBind(req)
+// @Param Query query string true "id"
+// @Param JSON body dto.Activity true " "
+// @Router /auth/activity [put]
+func UpdateActivity(c *gin.Context) {
+	actIDInt, err := strconv.Atoi(c.Query("id"))
+	if err != nil || actIDInt <= 0 {
+		RespondError(c, service.ErrorCommitData)
+		return
+	}
+
+	req := &dto.Activity{}
+	err = c.ShouldBind(req)
 	if err != nil {
 		RespondError(c, service.ErrorCommitData)
 		return
@@ -58,7 +66,37 @@ func DeleteActivity(c *gin.Context) {
 		return
 	}
 
-	code := service.DeleteActivity(req, id)
+	code := service.UpdateActivity(req, uint(actIDInt), id)
+	if code != 0 {
+		RespondError(c, code)
+		return
+	}
+
+	RespondSuccess(c, nil)
+	return
+}
+
+// @Summary 社团账号删除活动
+// @Tags 活动系统
+// @Accept application/json
+// @Produce application/json
+// @Param Token header string true "用户令牌"
+// @Param Query query string true "id"
+// @Router /auth/activity [delete]
+func DeleteActivity(c *gin.Context) {
+	idInt, err := strconv.Atoi(c.Query("id"))
+	if err != nil || idInt <= 0 {
+		RespondError(c, service.ErrorCommitData)
+		return
+	}
+
+	id, err := GetClaimsSubAsID(c)
+	if err != nil {
+		RespondError(c, service.ErrorToken)
+		return
+	}
+
+	code := service.DeleteActivity(uint(idInt), id)
 	if code != 0 {
 		RespondError(c, code)
 		return

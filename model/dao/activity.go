@@ -1,11 +1,7 @@
 package dao
 
 import (
-	"encoding/json"
-	"errors"
-	"fmt"
 	"gorm.io/gorm"
-	"strconv"
 	"time"
 )
 
@@ -38,6 +34,12 @@ func (s *Activity) Delete() error {
 func (s *Activity) Retrieve() error {
 	return DB.Model(s).Where(s).First(s).Error
 }
+
+func (s *Activity) Update(change interface{}) error {
+	return DB.Model(s).Where(s).Updates(change).Error
+}
+
+/*
 
 //获取所有活动列表
 func (s *Activity) GetAllActivities() ([]Activity, error) {
@@ -208,3 +210,5 @@ func (s *Activity) DelCacheList(name string) error {
 	_, err := Cache.Del(key).Result()
 	return err
 }
+
+ */

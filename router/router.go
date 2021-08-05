@@ -53,6 +53,7 @@ func Run() {
 
 	//a.PUT("/user-info", minute80, controller.PutUserInfo)
 	//a.PUT("/verification", minute80, controller.PutV)
+	a.PUT("/activity", minute80, controller.UpdateActivity)
 
 	//a.DELETE("/email/binding", minute80, controller.RemoveEmail)
 	a.DELETE("/activity", minute80, controller.DeleteActivity)

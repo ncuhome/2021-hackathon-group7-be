@@ -2,14 +2,13 @@ package service
 
 import (
 	"math"
-	"strconv"
 	"tudo/model"
 	"tudo/model/dao"
 	"tudo/model/dto"
 	"unicode/utf8"
 )
 
-func CheckV(id uint) uint {
+func checkV(id uint) uint {
 	userInfo := &dao.UserInfo{
 		UserID: id,
 	}
@@ -24,7 +23,7 @@ func CheckV(id uint) uint {
 }
 
 func CreateActivity(req *dto.Activity, id uint) uint {
-	code := CheckV(id)
+	code := checkV(id)
 	if code != SuccessCode {
 		return code
 	}
@@ -47,11 +46,42 @@ func CreateActivity(req *dto.Activity, id uint) uint {
 	return SuccessCode
 }
 
-func DeleteActivity(entity *dto.Entity, userID uint) uint {
+func UpdateActivity(req *dto.Activity, actID uint, userID uint) uint {
 	act := &dao.Activity{}
-	idInt, err := strconv.Atoi(entity.ID)
-	act.ID = uint(idInt)
-	err = act.Retrieve()
+	act.ID = actID
+	err := act.Retrieve()
+	if err != nil {
+		return ErrorCommitData
+	}
+
+	if act.UserId != userID {
+		return ErrorToken
+	}
+
+	contentLen := utf8.RuneCountInString(req.Content)
+	minn := math.Min(60, float64(contentLen))
+	dig := string([]rune(req.Content)[:int(minn)])
+	change := &dao.Activity{
+		Title:     req.Title,
+		Content:   req.Content,
+		StartTime: req.StartTime,
+		EndTime:   req.EndTime,
+		Place:     req.Place,
+		Digest:    dig,
+	}
+
+	err = act.Update(change)
+	if err != nil {
+		model.ErrLog.Println(err)
+		return ErrorServer
+	}
+	return SuccessCode
+}
+
+func DeleteActivity(actID uint, userID uint) uint {
+	act := &dao.Activity{}
+	act.ID = actID
+	err := act.Retrieve()
 	if err != nil {
 		return ErrorCommitData
 	}
@@ -67,6 +97,7 @@ func DeleteActivity(entity *dto.Entity, userID uint) uint {
 	}
 	return SuccessCode
 }
+
 
 /*
 func GetAllActivities() (interface{}, uint) {
@@ -211,4 +242,4 @@ func GetActivitiesByHost(host uint) (interface{}, uint) {
 	return DataReturn, SuccessCode
 }
 
- */
+*/
