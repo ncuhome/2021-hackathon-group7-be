@@ -21,20 +21,20 @@ func Run() {
 	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	//g.GET("/user-info", minute80, controller.GetUserInfo)
-	//g.GET("/activity/comment", minute80, controller.GetCommentByActivity)
-	//g.GET("/user/comment", minute80, controller.GetCommentByUser)
 	//g.GET("/verification/user", minute80, controller.GetUserByV)
 
 	//g.GET("/activities/all", minute80, controller.GetAllActivities)
 	//g.GET("/activities/detail", minute80, controller.GetActivity)
 	//g.GET("/activities/place", minute80, controller.GetActivitiesByPlace)
 	//g.GET("/activities/host", minute80, controller.GetActivitiesByHost)
+	g.GET("/activity", minute80, controller.RetrieveActivity)
+	g.GET("/not-start-activity", minute80, controller.RetrieveActivityNotStart)
+	g.GET("/during-activity", minute80, controller.RetrieveActivityDuring)
+	g.GET("/ended-activity", minute80, controller.RetrieveActivityEnded)
+	g.GET("/recommend-activity", minute80, controller.RetrieveActivityRecommend)
 
-	//g.POST("/register/email-key", minute4, controller.SendRegisterEmailKey)
 	g.POST("/login", hour30, controller.Login)
 	g.POST("/login/ncuos-token", hour30, controller.NCUOSTokenLogin)
-	//g.POST("/email/password-key", minute4, controller.SendPasswordEmailKey)
-	//g.POST("/email/password", minute80, controller.SetPasswordByEmail)
 
 	a := g.Group("/auth", controller.Token)
 
@@ -45,17 +45,12 @@ func Run() {
 	a.GET("/organization", minute80, controller.GetLeaderOrg)
 
 	//a.POST("/password", minute80, controller.SetPassword)
-	//a.POST("/email/binding-key", minute4, controller.SendBindEmailKey)
-	//a.POST("/email/binding", minute80, controller.BindEmail)
-	//a.POST("/comment", minute80, controller.PostComment)
 	a.POST("/activity", minute80, controller.CreateActivity)
 	a.POST("/organization", hour30, controller.OrgPostInfo)
 
 	//a.PUT("/user-info", minute80, controller.PutUserInfo)
-	//a.PUT("/verification", minute80, controller.PutV)
 	a.PUT("/activity", minute80, controller.UpdateActivity)
 
-	//a.DELETE("/email/binding", minute80, controller.RemoveEmail)
 	a.DELETE("/activity", minute80, controller.DeleteActivity)
 
 	err := g.Run(":21001")

@@ -11,13 +11,37 @@ const (
 
 type Activity struct {
 	gorm.Model
-	UserId    uint
+	UserId    uint   `gorm:"index"`
 	Title     string `gorm:"varchar(128)"`
 	Content   string `gorm:"text"`
-	StartTime string `gorm:"varchar(64)"`
-	EndTime   string `gorm:"varchar(64)"`
-	Place     string `gorm:"varchar(128)"`
+	StartTime string `gorm:"varchar(64);index"`
+	EndTime   string `gorm:"varchar(64);index"`
+	Place     string `gorm:"varchar(128);index"`
 	Digest    string `gorm:"varchar(255)"`
+}
+
+type ActivityFull struct {
+	ID        uint   `json:"id"`
+	UserID    uint   `json:"user_id"`
+	Title     string `json:"title"`
+	Content   string `json:"content"`
+	StartTime string `json:"start_time"`
+	EndTime   string `gorm:"end_time"`
+	Place     string `gorm:"place"`
+}
+
+type ActivityDigest struct {
+	ID        uint   `json:"id"`
+	UserID    uint   `json:"user_id"`
+	Title     string `json:"title"`
+	Digest    string `json:"digest"`
+	StartTime string `json:"start_time"`
+	EndTime   string `gorm:"end_time"`
+	Place     string `gorm:"place"`
+}
+
+type ActivityDigestArr struct {
+	Data []ActivityDigest
 }
 
 //mysql
@@ -37,6 +61,22 @@ func (s *Activity) Retrieve() error {
 
 func (s *Activity) Update(change interface{}) error {
 	return DB.Model(s).Where(s).Updates(change).Error
+}
+
+func (s *ActivityFull) Retrieve() error {
+	return DB.Model(&Activity{}).Where(s).First(s).Error
+}
+
+func (s *ActivityDigestArr) RetrieveNotStart(pre int, size int) error {
+	return DB.Model(&Activity{}).Where("start_time > ?", pre).Order("start_time asc").Limit(size).Find(&(s.Data)).Error
+}
+
+func (s *ActivityDigestArr) RetrieveDuring(now int, pre int, size int) error {
+	return DB.Model(&Activity{}).Where("start_time < ? and end_time > ?", pre, now).Order("start_time asc").Limit(size).Find(&(s.Data)).Error
+}
+
+func (s *ActivityDigestArr) RetrieveEnded(pre int, size int) error {
+	return DB.Model(&Activity{}).Where("end_time < ?", pre).Order("end_time desc").Limit(size).Find(&(s.Data)).Error
 }
 
 /*
@@ -211,4 +251,4 @@ func (s *Activity) DelCacheList(name string) error {
 	return err
 }
 
- */
+*/

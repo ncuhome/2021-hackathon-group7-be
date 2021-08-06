@@ -57,6 +57,19 @@ info:
   title: Swagger API
   version: "1.0"
 paths:
+  /activity:
+    get:
+      parameters:
+      - description: 活动id
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      summary: 获取活动详情
+      tags:
+      - 活动系统
   /auth/activity:
     delete:
       consumes:
@@ -67,9 +80,9 @@ paths:
         name: Token
         required: true
         type: string
-      - description: id
+      - description: 活动id
         in: query
-        name: Query
+        name: id
         required: true
         type: string
       produces:
@@ -106,9 +119,9 @@ paths:
         name: Token
         required: true
         type: string
-      - description: id
+      - description: 活动id
         in: query
-        name: Query
+        name: id
         required: true
         type: string
       - description: ' '
@@ -193,6 +206,37 @@ paths:
       summary: 检验token是否有效
       tags:
       - 用户系统
+  /during-activity:
+    get:
+      parameters:
+      - description: 上一次调用本接口得到的活动列表的最后一个活动的开始时间戳，第一次调用用当前时间戳
+        in: query
+        name: pre
+        required: true
+        type: string
+      - description: 当前时间戳
+        in: query
+        name: now
+        required: true
+        type: string
+      produces:
+      - application/json
+      summary: 分页获取正在进行的活动列表
+      tags:
+      - 活动系统
+  /ended-activity:
+    get:
+      parameters:
+      - description: 上一次调用本接口得到的活动列表的最后一个活动的结束时间戳，第一次调用用当前时间戳
+        in: query
+        name: pre
+        required: true
+        type: string
+      produces:
+      - application/json
+      summary: 分页获取历史活动列表
+      tags:
+      - 活动系统
   /login:
     post:
       consumes:
@@ -225,4 +269,30 @@ paths:
       summary: 云家园账号token登录
       tags:
       - 用户系统
+  /not-start-activity:
+    get:
+      parameters:
+      - description: 上一次调用本接口得到的活动列表的最后一个活动的开始时间戳，第一次调用用当前时间戳
+        in: query
+        name: pre
+        required: true
+        type: string
+      produces:
+      - application/json
+      summary: 分页获取未开始的活动列表
+      tags:
+      - 活动系统
+  /recommend-activity:
+    get:
+      parameters:
+      - description: 上一次调用本接口得到的活动列表的最后一个活动的开始时间戳，第一次调用用当前时间戳
+        in: query
+        name: pre
+        required: true
+        type: string
+      produces:
+      - application/json
+      summary: 分页获取推荐活动列表
+      tags:
+      - 活动系统
 swagger: "2.0"

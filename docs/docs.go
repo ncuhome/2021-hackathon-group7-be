@@ -30,6 +30,26 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/activity": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "活动系统"
+                ],
+                "summary": "获取活动详情",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "活动id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ]
+            }
+        },
         "/auth/activity": {
             "put": {
                 "consumes": [
@@ -52,8 +72,8 @@ var doc = `{
                     },
                     {
                         "type": "string",
-                        "description": "id",
-                        "name": "Query",
+                        "description": "活动id",
+                        "name": "id",
                         "in": "query",
                         "required": true
                     },
@@ -119,8 +139,8 @@ var doc = `{
                     },
                     {
                         "type": "string",
-                        "description": "id",
-                        "name": "Query",
+                        "description": "活动id",
+                        "name": "id",
                         "in": "query",
                         "required": true
                     }
@@ -235,6 +255,53 @@ var doc = `{
                 ]
             }
         },
+        "/during-activity": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "活动系统"
+                ],
+                "summary": "分页获取正在进行的活动列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "上一次调用本接口得到的活动列表的最后一个活动的开始时间戳，第一次调用用当前时间戳",
+                        "name": "pre",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "当前时间戳",
+                        "name": "now",
+                        "in": "query",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        "/ended-activity": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "活动系统"
+                ],
+                "summary": "分页获取历史活动列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "上一次调用本接口得到的活动列表的最后一个活动的结束时间戳，第一次调用用当前时间戳",
+                        "name": "pre",
+                        "in": "query",
+                        "required": true
+                    }
+                ]
+            }
+        },
         "/login": {
             "post": {
                 "consumes": [
@@ -281,6 +348,46 @@ var doc = `{
                         "schema": {
                             "$ref": "#/definitions/dto.Token"
                         }
+                    }
+                ]
+            }
+        },
+        "/not-start-activity": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "活动系统"
+                ],
+                "summary": "分页获取未开始的活动列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "上一次调用本接口得到的活动列表的最后一个活动的开始时间戳，第一次调用用当前时间戳",
+                        "name": "pre",
+                        "in": "query",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        "/recommend-activity": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "活动系统"
+                ],
+                "summary": "分页获取推荐活动列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "上一次调用本接口得到的活动列表的最后一个活动的开始时间戳，第一次调用用当前时间戳",
+                        "name": "pre",
+                        "in": "query",
+                        "required": true
                     }
                 ]
             }

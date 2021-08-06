@@ -98,6 +98,60 @@ func DeleteActivity(actID uint, userID uint) uint {
 	return SuccessCode
 }
 
+func RetrieveActivity(id uint) (interface{}, uint) {
+	act := &dao.ActivityFull{}
+	act.ID = id
+	err := act.Retrieve()
+	if err != nil {
+		return nil, ErrorCommitData
+	}
+
+	return act, SuccessCode
+}
+
+func RetrieveActivityListNotStart(pre int) (interface{}, uint) {
+	actList := &dao.ActivityDigestArr{}
+	err := actList.RetrieveNotStart(pre, 10)
+	if err != nil {
+		model.ErrLog.Println(err)
+		return nil, ErrorServer
+	}
+
+	return actList, SuccessCode
+}
+
+func RetrieveActivityListDuring(now int, pre int) (interface{}, uint) {
+	actList := &dao.ActivityDigestArr{}
+	err := actList.RetrieveDuring(now, pre, 10)
+	if err != nil {
+		model.ErrLog.Println(err)
+		return nil, ErrorServer
+	}
+
+	return actList, SuccessCode
+}
+
+func RetrieveActivityListEnded(pre int) (interface{}, uint) {
+	actList := &dao.ActivityDigestArr{}
+	err := actList.RetrieveEnded(pre, 10)
+	if err != nil {
+		model.ErrLog.Println(err)
+		return nil, ErrorServer
+	}
+
+	return actList, SuccessCode
+}
+
+func RetrieveActivityListRecommend(pre int) (interface{}, uint) {
+	actList := &dao.ActivityDigestArr{}
+	err := actList.RetrieveNotStart(pre, 10)
+	if err != nil {
+		model.ErrLog.Println(err)
+		return nil, ErrorServer
+	}
+
+	return actList, SuccessCode
+}
 
 /*
 func GetAllActivities() (interface{}, uint) {
