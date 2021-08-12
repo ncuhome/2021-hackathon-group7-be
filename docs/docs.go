@@ -221,13 +221,11 @@ var doc = `{
                         "required": true
                     },
                     {
+                        "type": "file",
                         "description": "file字段放图片数据",
-                        "name": "formData",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "object"
-                        }
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
                     }
                 ]
             }

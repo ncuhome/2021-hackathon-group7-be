@@ -181,11 +181,10 @@ paths:
         required: true
         type: string
       - description: file字段放图片数据
-        in: body
-        name: formData
+        in: formData
+        name: file
         required: true
-        schema:
-          type: object
+        type: file
       produces:
       - application/json
       summary: 图片上传接口
