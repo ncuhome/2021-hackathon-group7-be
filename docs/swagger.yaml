@@ -210,7 +210,7 @@ paths:
       produces:
       - application/json
       responses: {}
-      summary: 检验token是否有效并返回用户角色
+      summary: 检验token是否有效，若有效返回用户角色和新token
       tags:
       - 用户系统
   /during-activity:

@@ -54,7 +54,7 @@ func NCUOSTokenLogin(c *gin.Context) {
 	return
 }
 
-// @Summary 检验token是否有效并返回用户角色
+// @Summary 检验token是否有效，若有效返回用户角色和新token
 // @Tags 用户系统
 // @Accept application/json
 // @Produce application/json
@@ -72,7 +72,7 @@ func Verify(c *gin.Context) {
 		RespondError(c, code)
 		return 
 	}
-	
+
 	RespondSuccess(c, data)
 	return
 }

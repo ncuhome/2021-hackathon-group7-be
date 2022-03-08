@@ -304,28 +304,44 @@ func updatePassword(newPassword string, id uint) uint {
 	return SuccessCode
 }
 
-// 获取用户角色 user, admin, team
+// 获取用户角色 user, admin, team，并返回新token
 func GetRole(id uint) (*map[string]interface{}, uint) {
+	user := &dao.User{
+		ID: id,
+	}
+	err := user.Retrieve()
+	if err != nil {
+		model.ErrLog.Println(err)
+		return nil, ErrorServer
+	}
+
+	token, err := model.Jwt.GenerateToken(strconv.Itoa(int(id)), user.LoginStatus)
+	if err != nil {
+		model.ErrLog.Println(err)
+		return nil, ErrorServer
+	}
+
+	data := &map[string]interface{}{
+		"role": "",
+		"token": token,
+	}
+
 	if(checkV(id) == SuccessCode) {
-		return &map[string]interface{}{
-			"role": "team",
-		}, SuccessCode
+		(*data)["role"] = "team"
+		return data, SuccessCode
 	}
 
 	ncuUser := &dao.User{ID: id}
-	err := ncuUser.Retrieve()
+	err = ncuUser.Retrieve()
 	if err != nil {
 		return nil, ErrorCommitData
 	}
 
-	org := LeaderMap[ncuUser.Phone].Organization
-	if org != "" {
-		return &map[string]interface{}{
-			"role": "admin",
-		}, SuccessCode
+	if _, ok := LeaderMap[user.Phone]; ok {
+		(*data)["role"] = "admin"
+		return data, SuccessCode
 	}
 
-	return &map[string]interface{}{
-		"role": "user",
-	}, SuccessCode
+	(*data)["role"] = "user"
+	return data, SuccessCode
 }
