@@ -54,20 +54,26 @@ func NCUOSTokenLogin(c *gin.Context) {
 	return
 }
 
-// @Summary 检验token是否有效
+// @Summary 检验token是否有效并返回用户角色
 // @Tags 用户系统
 // @Accept application/json
 // @Produce application/json
 // @Param Token header string true "用户令牌"
 // @Router /auth/token [get]
 func Verify(c *gin.Context) {
-	_, err := GetClaimsSubAsID(c)
+	id, err := GetClaimsSubAsID(c)
 	if err != nil {
 		RespondError(c, service.ErrorToken)
 		return
 	}
 
-	RespondSuccess(c, nil)
+	data, code := service.GetRole(id)
+	if(code != service.SuccessCode) {
+		RespondError(c, code)
+		return 
+	}
+	
+	RespondSuccess(c, data)
 	return
 }
 

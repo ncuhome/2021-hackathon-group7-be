@@ -44,7 +44,7 @@ definitions:
     required:
     - token
     type: object
-host: tudo-api.nspyf.top
+host: tudo-api-test.ncuos.com
 info:
   contact:
     email: 316851756@qq.com
@@ -67,6 +67,7 @@ paths:
         type: string
       produces:
       - application/json
+      responses: {}
       summary: 获取活动详情
       tags:
       - 活动系统
@@ -87,6 +88,7 @@ paths:
         type: string
       produces:
       - application/json
+      responses: {}
       summary: 社团账号删除活动
       tags:
       - 活动系统
@@ -107,6 +109,7 @@ paths:
           $ref: '#/definitions/dto.Activity'
       produces:
       - application/json
+      responses: {}
       summary: 社团账号发布活动
       tags:
       - 活动系统
@@ -132,6 +135,7 @@ paths:
           $ref: '#/definitions/dto.Activity'
       produces:
       - application/json
+      responses: {}
       summary: 社团账号修改活动
       tags:
       - 活动系统
@@ -147,6 +151,7 @@ paths:
         type: string
       produces:
       - application/json
+      responses: {}
       summary: 判断用户是否是某个组织的负责人
       tags:
       - 用户系统
@@ -167,6 +172,7 @@ paths:
           $ref: '#/definitions/dto.OrgInfo'
       produces:
       - application/json
+      responses: {}
       summary: 社团账号激活（注册）、修改
       tags:
       - 用户系统
@@ -187,6 +193,7 @@ paths:
         type: file
       produces:
       - application/json
+      responses: {}
       summary: 图片上传接口
       tags:
       - 其它
@@ -202,7 +209,8 @@ paths:
         type: string
       produces:
       - application/json
-      summary: 检验token是否有效
+      responses: {}
+      summary: 检验token是否有效并返回用户角色
       tags:
       - 用户系统
   /during-activity:
@@ -220,6 +228,7 @@ paths:
         type: string
       produces:
       - application/json
+      responses: {}
       summary: 分页获取正在进行的活动列表
       tags:
       - 活动系统
@@ -233,6 +242,7 @@ paths:
         type: string
       produces:
       - application/json
+      responses: {}
       summary: 分页获取历史活动列表
       tags:
       - 活动系统
@@ -249,6 +259,7 @@ paths:
           $ref: '#/definitions/dto.Login'
       produces:
       - application/json
+      responses: {}
       summary: 云家园账号或社团账号登录
       tags:
       - 用户系统
@@ -265,6 +276,7 @@ paths:
           $ref: '#/definitions/dto.Token'
       produces:
       - application/json
+      responses: {}
       summary: 云家园账号token登录
       tags:
       - 用户系统
@@ -278,6 +290,7 @@ paths:
         type: string
       produces:
       - application/json
+      responses: {}
       summary: 分页获取未开始的活动列表
       tags:
       - 活动系统
@@ -291,6 +304,7 @@ paths:
         type: string
       produces:
       - application/json
+      responses: {}
       summary: 分页获取推荐活动列表
       tags:
       - 活动系统

@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"gorm.io/gorm"
 	"tudo/model"
 	"tudo/model/dao"
@@ -54,7 +53,6 @@ func GetLeaderOrg(id uint) (*map[string]interface{}, uint) {
 	}
 
 	org := LeaderMap[ncuUser.Phone].Organization
-	fmt.Println(ncuUser.Phone)
 	data := &map[string]interface{}{
 		"organization": org,
 	}

@@ -17,7 +17,7 @@ import (
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host tudo-api.nspyf.top
+// @host tudo-api-test.ncuos.com
 // host localhost:21001
 
 func main() {
@@ -26,7 +26,7 @@ func main() {
 	model.JwtInit("./config/jwt.json")
 	model.OssInit()
 	model.LogInit()
-	service.SyncTencentDoc()
+	service.TestTencentDoc()
 
 	gin.SetMode(gin.ReleaseMode)
 	router.Run()

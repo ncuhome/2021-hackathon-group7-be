@@ -303,3 +303,29 @@ func updatePassword(newPassword string, id uint) uint {
 
 	return SuccessCode
 }
+
+// 获取用户角色 user, admin, team
+func GetRole(id uint) (*map[string]interface{}, uint) {
+	if(checkV(id) == SuccessCode) {
+		return &map[string]interface{}{
+			"role": "team",
+		}, SuccessCode
+	}
+
+	ncuUser := &dao.User{ID: id}
+	err := ncuUser.Retrieve()
+	if err != nil {
+		return nil, ErrorCommitData
+	}
+
+	org := LeaderMap[ncuUser.Phone].Organization
+	if org != "" {
+		return &map[string]interface{}{
+			"role": "admin",
+		}, SuccessCode
+	}
+
+	return &map[string]interface{}{
+		"role": "user",
+	}, SuccessCode
+}

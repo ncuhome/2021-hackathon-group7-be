@@ -95,9 +95,12 @@ func GetDocs(docBaseData *DocBaseData) (*gjson.Result, uint) {
 	// ? 不知道为啥json可能不一样，根据能否获取第一行第一列来选
 	table := gjson.GetBytes(data, "clientVars.collab_client_vars.initialAttributedText.text.0.1.0")
 	A1 := GetTableA1(&table)
-	if A1 == "" {
-		table = gjson.GetBytes(data, "clientVars.collab_client_vars.initialAttributedText.text.0.2.0")
+	for i := 0; i < 10; i++ {
+		table = gjson.GetBytes(data, "clientVars.collab_client_vars.initialAttributedText.text.0."+strconv.Itoa(i)+".0")
 		A1 = GetTableA1(&table)
+		if A1 != "" {
+			break
+		}
 	}
 
 	if A1 == "" {
@@ -145,4 +148,15 @@ func SyncTencentDoc() {
 			// time.Sleep(time.Second * 5)
 		}
 	}()
+}
+
+func TestTencentDoc() {
+	LeaderMap["15797702607"] = Leader{
+		Organization: "前端测试",
+		LeaderName: "黄",
+	}
+	LeaderMap["15107076230"] = Leader{
+		Organization: "后端测试",
+		LeaderName: "彭",
+	}
 }

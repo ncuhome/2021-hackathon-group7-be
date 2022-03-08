@@ -12,7 +12,7 @@
         },
         "version": "1.0"
     },
-    "host": "tudo-api.nspyf.top",
+    "host": "tudo-api-test.ncuos.com",
     "paths": {
         "/activity": {
             "get": {
@@ -31,7 +31,8 @@
                         "in": "query",
                         "required": true
                     }
-                ]
+                ],
+                "responses": {}
             }
         },
         "/auth/activity": {
@@ -70,7 +71,8 @@
                             "$ref": "#/definitions/dto.Activity"
                         }
                     }
-                ]
+                ],
+                "responses": {}
             },
             "post": {
                 "consumes": [
@@ -100,7 +102,8 @@
                             "$ref": "#/definitions/dto.Activity"
                         }
                     }
-                ]
+                ],
+                "responses": {}
             },
             "delete": {
                 "consumes": [
@@ -128,7 +131,8 @@
                         "in": "query",
                         "required": true
                     }
-                ]
+                ],
+                "responses": {}
             }
         },
         "/auth/organization": {
@@ -151,7 +155,8 @@
                         "in": "header",
                         "required": true
                     }
-                ]
+                ],
+                "responses": {}
             },
             "post": {
                 "consumes": [
@@ -181,7 +186,8 @@
                             "$ref": "#/definitions/dto.OrgInfo"
                         }
                     }
-                ]
+                ],
+                "responses": {}
             }
         },
         "/auth/picture": {
@@ -211,7 +217,8 @@
                         "in": "formData",
                         "required": true
                     }
-                ]
+                ],
+                "responses": {}
             }
         },
         "/auth/token": {
@@ -225,7 +232,7 @@
                 "tags": [
                     "用户系统"
                 ],
-                "summary": "检验token是否有效",
+                "summary": "检验token是否有效并返回用户角色",
                 "parameters": [
                     {
                         "type": "string",
@@ -234,7 +241,8 @@
                         "in": "header",
                         "required": true
                     }
-                ]
+                ],
+                "responses": {}
             }
         },
         "/during-activity": {
@@ -261,7 +269,8 @@
                         "in": "query",
                         "required": true
                     }
-                ]
+                ],
+                "responses": {}
             }
         },
         "/ended-activity": {
@@ -281,7 +290,8 @@
                         "in": "query",
                         "required": true
                     }
-                ]
+                ],
+                "responses": {}
             }
         },
         "/login": {
@@ -306,7 +316,8 @@
                             "$ref": "#/definitions/dto.Login"
                         }
                     }
-                ]
+                ],
+                "responses": {}
             }
         },
         "/login/ncuos-token": {
@@ -331,7 +342,8 @@
                             "$ref": "#/definitions/dto.Token"
                         }
                     }
-                ]
+                ],
+                "responses": {}
             }
         },
         "/not-start-activity": {
@@ -351,7 +363,8 @@
                         "in": "query",
                         "required": true
                     }
-                ]
+                ],
+                "responses": {}
             }
         },
         "/recommend-activity": {
@@ -371,7 +384,8 @@
                         "in": "query",
                         "required": true
                     }
-                ]
+                ],
+                "responses": {}
             }
         }
     },
