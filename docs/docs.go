@@ -161,7 +161,7 @@ var doc = `{
                 "tags": [
                     "用户系统"
                 ],
-                "summary": "判断用户是否是某个组织的负责人",
+                "summary": "获取组织的负责人管理的组织名称",
                 "parameters": [
                     {
                         "type": "string",
@@ -396,6 +396,30 @@ var doc = `{
                         "type": "string",
                         "description": "上一次调用本接口得到的活动列表的最后一个活动的开始时间戳，第一次调用用当前时间戳",
                         "name": "pre",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/user-info": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户系统"
+                ],
+                "summary": "获取用户信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "用户id",
+                        "name": "id",
                         "in": "query",
                         "required": true
                     }

@@ -11,16 +11,20 @@ import (
 
 func Run() {
 	// 注意，handler使用同一个limit，会共同受到限制
-	minute80 := controller.LimitIP(time.Minute, 80)
+	//minute80 := controller.LimitIP(time.Minute, 80)
 	//minute4 := controller.LimitIP(time.Minute, 4)
-	hour30 := controller.LimitIP(time.Hour, 30)
+	//hour30 := controller.LimitIP(time.Hour, 30)
+
+	// test
+	minute80 := controller.LimitIP(time.Minute, 80000)
+	hour30 := controller.LimitIP(time.Hour, 30000)
 
 	g := gin.New()
 	g.Use(gin.Logger(), gin.Recovery(), controller.Cors)
 
 	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	//g.GET("/user-info", minute80, controller.GetUserInfo)
+	g.GET("/user-info", minute80, controller.GetUserInfo)
 	//g.GET("/verification/user", minute80, controller.GetUserByV)
 
 	//g.GET("/activities/all", minute80, controller.GetAllActivities)

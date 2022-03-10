@@ -3,6 +3,7 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 	"tudo/service"
+	"strconv"
 )
 
 /*
@@ -31,8 +32,13 @@ func PutUserInfo(c *gin.Context) {
 }
  */
 
-/*
 
+// @Summary 获取用户信息
+// @Tags 用户系统
+// @Accept json
+// @Produce application/json
+// @Param id query string true "用户id"
+// @Router /user-info [get]
 func GetUserInfo(c *gin.Context) {
 	idInt, err := strconv.Atoi(c.Query("id"))
 	if err != nil || idInt <= 0 {
@@ -50,9 +56,7 @@ func GetUserInfo(c *gin.Context) {
 	return
 }
 
- */
-
-// @Summary 判断用户是否是某个组织的负责人
+// @Summary 获取组织的负责人管理的组织名称
 // @Tags 用户系统
 // @Accept json
 // @Produce application/json
