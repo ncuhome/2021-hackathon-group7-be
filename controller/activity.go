@@ -224,6 +224,35 @@ func RetrieveActivityRecommend(c *gin.Context) {
 	return
 }
 
+// @Summary 分页获取组织历史活动列表
+// @Tags 活动系统
+// @Produce application/json
+// @Param Token header string true "用户令牌"
+// @Param pre query string true "上一次调用本接口得到的活动列表的最后一个活动的结束时间戳，第一次调用用当前时间戳"
+// @Router /auth/org/ended-activity [get]
+func RetrieveActivityEndedByHost(c *gin.Context) {
+	id, err := GetClaimsSubAsID(c)
+	if err != nil {
+		RespondError(c, service.ErrorToken)
+		return
+	}
+
+	pre, err := strconv.Atoi(c.Query("pre"))
+	if err != nil || pre <= 0 {
+		RespondError(c, service.ErrorCommitData)
+		return
+	}
+
+	data, code := service.RetrieveActivityListEndedByHost(id, pre)
+	if code != 0 {
+		RespondError(c, code)
+		return
+	}
+
+	RespondSuccess(c, data)
+	return
+}
+
 /*
 func GetAllActivities(c *gin.Context) {
 	respond, code := service.GetAllActivities()

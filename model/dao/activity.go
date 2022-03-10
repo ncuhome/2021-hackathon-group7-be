@@ -79,6 +79,10 @@ func (s *ActivityDigestArr) RetrieveEnded(pre int, size int) error {
 	return DB.Model(&Activity{}).Where("end_time < ?", pre).Order("end_time desc").Limit(size).Find(&(s.Data)).Error
 }
 
+func (s *ActivityDigestArr) RetrieveEndedByHost(id uint, pre int, size int) error {
+	return DB.Model(&Activity{}).Where("id = ? and end_time < ?", id, pre).Order("end_time desc").Limit(size).Find(&(s.Data)).Error
+}
+
 /*
 
 //获取所有活动列表

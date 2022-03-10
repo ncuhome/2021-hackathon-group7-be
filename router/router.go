@@ -47,6 +47,7 @@ func Run() {
 	a.GET("/token", minute80, controller.Verify)
 	//a.GET("/email", minute80, controller.GetEmail)
 	a.GET("/organization", minute80, controller.GetLeaderOrg)
+	a.GET("/org/ended-activity", minute80, controller.RetrieveActivityEndedByHost)
 
 	//a.POST("/password", minute80, controller.SetPassword)
 	a.POST("/activity", minute80, controller.CreateActivity)

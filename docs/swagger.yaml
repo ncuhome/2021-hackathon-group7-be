@@ -139,6 +139,25 @@ paths:
       summary: 社团账号修改活动
       tags:
       - 活动系统
+  /auth/org/ended-activity:
+    get:
+      parameters:
+      - description: 用户令牌
+        in: header
+        name: Token
+        required: true
+        type: string
+      - description: 上一次调用本接口得到的活动列表的最后一个活动的结束时间戳，第一次调用用当前时间戳
+        in: query
+        name: pre
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: 分页获取组织历史活动列表
+      tags:
+      - 活动系统
   /auth/organization:
     get:
       consumes:
