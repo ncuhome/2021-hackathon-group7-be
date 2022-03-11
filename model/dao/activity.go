@@ -34,7 +34,6 @@ type ActivityDigest struct {
 	ID        uint   `json:"id"`
 	UserID    uint   `json:"user_id"`
 	Title     string `json:"title"`
-	Digest    string `json:"digest"`
 	StartTime string `json:"start_time"`
 	EndTime   string `gorm:"end_time"`
 	Place     string `gorm:"place"`
