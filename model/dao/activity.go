@@ -80,7 +80,11 @@ func (s *ActivityDigestArr) RetrieveEnded(pre int, size int) error {
 }
 
 func (s *ActivityDigestArr) RetrieveEndedByHost(id uint, pre int, size int) error {
-	return DB.Model(&Activity{}).Where("id = ? and end_time < ?", id, pre).Order("end_time desc").Limit(size).Find(&(s.Data)).Error
+	return DB.Model(&Activity{}).Where("UserId = ? and end_time < ?", id, pre).Order("end_time desc").Limit(size).Find(&(s.Data)).Error
+}
+
+func (s *ActivityDigestArr) RetrieveNotEndedByHost(id uint, pre int, size int) error {
+	return DB.Model(&Activity{}).Where("UserId = ? and end_time > ?", id, pre).Order("end_time asc").Limit(size).Find(&(s.Data)).Error
 }
 
 /*

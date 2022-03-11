@@ -178,6 +178,34 @@ var doc = `{
                 "responses": {}
             }
         },
+        "/auth/org/not-ended-activity": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "活动系统"
+                ],
+                "summary": "分页获取组织非历史活动列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "用户令牌",
+                        "name": "Token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "上一次调用本接口得到的活动列表的最后一个活动的结束时间戳，第一次调用用当前时间戳",
+                        "name": "pre",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
         "/auth/organization": {
             "get": {
                 "consumes": [

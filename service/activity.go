@@ -153,6 +153,17 @@ func RetrieveActivityListEndedByHost(id uint, pre int) (interface{}, uint) {
 	return actList, SuccessCode
 }
 
+func RetrieveActivityListNotEndedByHost(id uint, pre int) (interface{}, uint) {
+	actList := &dao.ActivityDigestArr{}
+	err := actList.RetrieveNotEndedByHost(id, pre, 10)
+	if err != nil {
+		model.ErrLog.Println(err)
+		return nil, ErrorServer
+	}
+
+	return actList, SuccessCode
+}
+
 func RetrieveActivityListRecommend(pre int) (interface{}, uint) {
 	actList := &dao.ActivityDigestArr{}
 	err := actList.RetrieveNotStart(pre, 10)
