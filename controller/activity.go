@@ -134,11 +134,7 @@ func RetrieveActivity(c *gin.Context) {
 // @Param pre query string true "上一次调用本接口得到的活动列表的最后一个活动的开始时间戳，第一次调用用当前时间戳"
 // @Router /not-start-activity [get]
 func RetrieveActivityNotStart(c *gin.Context) {
-	pre, err := strconv.Atoi(c.Query("pre"))
-	if err != nil || pre <= 0 {
-		RespondError(c, service.ErrorCommitData)
-		return
-	}
+	pre := c.Query("pre")
 
 	data, code := service.RetrieveActivityListNotStart(pre)
 	if code != 0 {
@@ -157,17 +153,8 @@ func RetrieveActivityNotStart(c *gin.Context) {
 // @Param now query string true "当前时间戳"
 // @Router /during-activity [get]
 func RetrieveActivityDuring(c *gin.Context) {
-	now, err := strconv.Atoi(c.Query("now"))
-	if err != nil || now <= 0 {
-		RespondError(c, service.ErrorCommitData)
-		return
-	}
-
-	pre, err := strconv.Atoi(c.Query("pre"))
-	if err != nil || pre <= 0 {
-		RespondError(c, service.ErrorCommitData)
-		return
-	}
+	now := c.Query("now")
+	pre := c.Query("pre")
 
 	data, code := service.RetrieveActivityListDuring(now, pre)
 	if code != 0 {
@@ -185,11 +172,7 @@ func RetrieveActivityDuring(c *gin.Context) {
 // @Param pre query string true "上一次调用本接口得到的活动列表的最后一个活动的结束时间戳，第一次调用用当前时间戳"
 // @Router /ended-activity [get]
 func RetrieveActivityEnded(c *gin.Context) {
-	pre, err := strconv.Atoi(c.Query("pre"))
-	if err != nil || pre <= 0 {
-		RespondError(c, service.ErrorCommitData)
-		return
-	}
+	pre := c.Query("pre")
 
 	data, code := service.RetrieveActivityListEnded(pre)
 	if code != 0 {
@@ -207,11 +190,7 @@ func RetrieveActivityEnded(c *gin.Context) {
 // @Param pre query string true "上一次调用本接口得到的活动列表的最后一个活动的开始时间戳，第一次调用用当前时间戳"
 // @Router /recommend-activity [get]
 func RetrieveActivityRecommend(c *gin.Context) {
-	pre, err := strconv.Atoi(c.Query("pre"))
-	if err != nil || pre <= 0 {
-		RespondError(c, service.ErrorCommitData)
-		return
-	}
+	pre := c.Query("pre")
 
 	//TODO 暂时用未进行活动，以后改其它
 	data, code := service.RetrieveActivityListRecommend(pre)
@@ -237,11 +216,7 @@ func RetrieveActivityEndedByHost(c *gin.Context) {
 		return
 	}
 
-	pre, err := strconv.Atoi(c.Query("pre"))
-	if err != nil || pre <= 0 {
-		RespondError(c, service.ErrorCommitData)
-		return
-	}
+	pre := c.Query("pre")
 
 	data, code := service.RetrieveActivityListEndedByHost(id, pre)
 	if code != 0 {
@@ -266,11 +241,7 @@ func RetrieveActivityNotEndedByHost(c *gin.Context) {
 		return
 	}
 
-	pre, err := strconv.Atoi(c.Query("pre"))
-	if err != nil || pre <= 0 {
-		RespondError(c, service.ErrorCommitData)
-		return
-	}
+	pre := c.Query("pre")
 
 	data, code := service.RetrieveActivityListNotEndedByHost(id, pre)
 	if code != 0 {

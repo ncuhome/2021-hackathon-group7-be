@@ -109,7 +109,7 @@ func RetrieveActivity(id uint) (interface{}, uint) {
 	return act, SuccessCode
 }
 
-func RetrieveActivityListNotStart(pre int) (interface{}, uint) {
+func RetrieveActivityListNotStart(pre string) (interface{}, uint) {
 	actList := &dao.ActivityDigestArr{}
 	err := actList.RetrieveNotStart(pre, 10)
 	if err != nil {
@@ -120,7 +120,7 @@ func RetrieveActivityListNotStart(pre int) (interface{}, uint) {
 	return actList, SuccessCode
 }
 
-func RetrieveActivityListDuring(now int, pre int) (interface{}, uint) {
+func RetrieveActivityListDuring(now string, pre string) (interface{}, uint) {
 	actList := &dao.ActivityDigestArr{}
 	err := actList.RetrieveDuring(now, pre, 10)
 	if err != nil {
@@ -131,7 +131,7 @@ func RetrieveActivityListDuring(now int, pre int) (interface{}, uint) {
 	return actList, SuccessCode
 }
 
-func RetrieveActivityListEnded(pre int) (interface{}, uint) {
+func RetrieveActivityListEnded(pre string) (interface{}, uint) {
 	actList := &dao.ActivityDigestArr{}
 	err := actList.RetrieveEnded(pre, 10)
 	if err != nil {
@@ -142,7 +142,7 @@ func RetrieveActivityListEnded(pre int) (interface{}, uint) {
 	return actList, SuccessCode
 }
 
-func RetrieveActivityListEndedByHost(id uint, pre int) (interface{}, uint) {
+func RetrieveActivityListEndedByHost(id uint, pre string) (interface{}, uint) {
 	actList := &dao.ActivityDigestArr{}
 	err := actList.RetrieveEndedByHost(id, pre, 10)
 	if err != nil {
@@ -153,7 +153,7 @@ func RetrieveActivityListEndedByHost(id uint, pre int) (interface{}, uint) {
 	return actList, SuccessCode
 }
 
-func RetrieveActivityListNotEndedByHost(id uint, pre int) (interface{}, uint) {
+func RetrieveActivityListNotEndedByHost(id uint, pre string) (interface{}, uint) {
 	actList := &dao.ActivityDigestArr{}
 	err := actList.RetrieveNotEndedByHost(id, pre, 10)
 	if err != nil {
@@ -164,7 +164,7 @@ func RetrieveActivityListNotEndedByHost(id uint, pre int) (interface{}, uint) {
 	return actList, SuccessCode
 }
 
-func RetrieveActivityListRecommend(pre int) (interface{}, uint) {
+func RetrieveActivityListRecommend(pre string) (interface{}, uint) {
 	actList := &dao.ActivityDigestArr{}
 	err := actList.RetrieveNotStart(pre, 10)
 	if err != nil {

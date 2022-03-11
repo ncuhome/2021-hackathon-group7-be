@@ -66,24 +66,24 @@ func (s *ActivityFull) Retrieve() error {
 	return DB.Model(&Activity{}).Where(s).First(s).Error
 }
 
-func (s *ActivityDigestArr) RetrieveNotStart(pre int, size int) error {
+func (s *ActivityDigestArr) RetrieveNotStart(pre string, size int) error {
 	return DB.Model(&Activity{}).Where("start_time > ?", pre).Order("start_time asc").Limit(size).Find(&(s.Data)).Error
 }
 
-func (s *ActivityDigestArr) RetrieveDuring(now int, pre int, size int) error {
+func (s *ActivityDigestArr) RetrieveDuring(now string, pre string, size int) error {
 	return DB.Model(&Activity{}).Where("start_time < ? and end_time > ?", pre, now).Order("start_time asc").Limit(size).Find(&(s.Data)).Error
 }
 
-func (s *ActivityDigestArr) RetrieveEnded(pre int, size int) error {
+func (s *ActivityDigestArr) RetrieveEnded(pre string, size int) error {
 	return DB.Model(&Activity{}).Where("end_time < ?", pre).Order("end_time desc").Limit(size).Find(&(s.Data)).Error
 }
 
-func (s *ActivityDigestArr) RetrieveEndedByHost(id uint, pre int, size int) error {
-	return DB.Model(&Activity{}).Where("UserId = ? and end_time < ?", id, pre).Order("end_time desc").Limit(size).Find(&(s.Data)).Error
+func (s *ActivityDigestArr) RetrieveEndedByHost(id uint, pre string, size int) error {
+	return DB.Model(&Activity{}).Where("user_id = ? and end_time < ?", id, pre).Order("end_time desc").Limit(size).Find(&(s.Data)).Error
 }
 
-func (s *ActivityDigestArr) RetrieveNotEndedByHost(id uint, pre int, size int) error {
-	return DB.Model(&Activity{}).Where("UserId = ? and end_time > ?", id, pre).Order("end_time asc").Limit(size).Find(&(s.Data)).Error
+func (s *ActivityDigestArr) RetrieveNotEndedByHost(id uint, pre string, size int) error {
+	return DB.Model(&Activity{}).Where("user_id = ? and end_time > ?", id, pre).Order("end_time asc").Limit(size).Find(&(s.Data)).Error
 }
 
 /*
