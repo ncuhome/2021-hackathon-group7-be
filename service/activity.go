@@ -117,7 +117,7 @@ func RetrieveActivityListNotStart(pre string) (interface{}, uint) {
 		return nil, ErrorServer
 	}
 
-	return actList, SuccessCode
+	return actList.Data, SuccessCode
 }
 
 func RetrieveActivityListDuring(now string, pre string) (interface{}, uint) {
@@ -128,7 +128,7 @@ func RetrieveActivityListDuring(now string, pre string) (interface{}, uint) {
 		return nil, ErrorServer
 	}
 
-	return actList, SuccessCode
+	return actList.Data, SuccessCode
 }
 
 func RetrieveActivityListEnded(pre string) (interface{}, uint) {
@@ -139,7 +139,7 @@ func RetrieveActivityListEnded(pre string) (interface{}, uint) {
 		return nil, ErrorServer
 	}
 
-	return actList, SuccessCode
+	return actList.Data, SuccessCode
 }
 
 func RetrieveActivityListEndedByHost(id uint, pre string) (interface{}, uint) {
@@ -150,7 +150,7 @@ func RetrieveActivityListEndedByHost(id uint, pre string) (interface{}, uint) {
 		return nil, ErrorServer
 	}
 
-	return actList, SuccessCode
+	return actList.Data, SuccessCode
 }
 
 func RetrieveActivityListNotEndedByHost(id uint, pre string) (interface{}, uint) {
@@ -161,7 +161,7 @@ func RetrieveActivityListNotEndedByHost(id uint, pre string) (interface{}, uint)
 		return nil, ErrorServer
 	}
 
-	return actList, SuccessCode
+	return actList.Data, SuccessCode
 }
 
 func RetrieveActivityListRecommend(pre string) (interface{}, uint) {
@@ -172,7 +172,7 @@ func RetrieveActivityListRecommend(pre string) (interface{}, uint) {
 		return nil, ErrorServer
 	}
 
-	return actList, SuccessCode
+	return actList.Data, SuccessCode
 }
 
 /*

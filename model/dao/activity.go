@@ -40,7 +40,7 @@ type ActivityDigest struct {
 }
 
 type ActivityDigestArr struct {
-	Data []ActivityDigest
+	Data []ActivityDigest `json:"data"`
 }
 
 //mysql
