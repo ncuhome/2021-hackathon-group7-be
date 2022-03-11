@@ -26,8 +26,8 @@ type ActivityFull struct {
 	Title     string `json:"title"`
 	Content   string `json:"content"`
 	StartTime string `json:"start_time"`
-	EndTime   string `gorm:"end_time"`
-	Place     string `gorm:"place"`
+	EndTime   string `json:"end_time" gorm:"end_time"`
+	Place     string `json:"place" gorm:"place"`
 }
 
 type ActivityDigest struct {
