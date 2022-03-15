@@ -53,8 +53,28 @@ func GetLeaderOrg(id uint) (*map[string]interface{}, uint) {
 	}
 
 	org := LeaderMap[ncuUser.Phone].Organization
+	if org == "" {
+		return nil, ErrorToken
+	}
+
+	orgUser := &dao.User{Username: org}
+	err = orgUser.Retrieve()
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			data := &map[string]interface{}{
+				"organization": org,
+				"register": false,
+			}
+			return data, SuccessCode
+		} else {
+			model.ErrLog.Println(err)
+			return nil, ErrorServer
+		}
+	}
+	
 	data := &map[string]interface{}{
 		"organization": org,
+		"register": true,
 	}
 	return data, SuccessCode
 }

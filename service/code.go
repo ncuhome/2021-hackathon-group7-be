@@ -8,4 +8,5 @@ const (
 	ErrorUsernameRepeated
 	ErrorLogin
 	ErrorRequestRate
+	ErrorExist
 )

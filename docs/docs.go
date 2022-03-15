@@ -217,7 +217,7 @@ var doc = `{
                 "tags": [
                     "用户系统"
                 ],
-                "summary": "获取组织的负责人管理的组织名称",
+                "summary": "获取组织的负责人管理的组织名称及是否激活",
                 "parameters": [
                     {
                         "type": "string",

@@ -56,7 +56,7 @@ func GetUserInfo(c *gin.Context) {
 	return
 }
 
-// @Summary 获取组织的负责人管理的组织名称
+// @Summary 获取组织的负责人管理的组织名称及是否激活
 // @Tags 用户系统
 // @Accept json
 // @Produce application/json

@@ -345,3 +345,30 @@ func GetRole(id uint) (*map[string]interface{}, uint) {
 	(*data)["role"] = "user"
 	return data, SuccessCode
 }
+
+// 查看社团是否注册
+func CheckOrgRegister(id uint) uint {
+	ncuUser := &dao.User{ID: id}
+	err := ncuUser.Retrieve()
+	if err != nil {
+		return ErrorCommitData
+	}
+
+	org := LeaderMap[ncuUser.Phone].Organization
+	if org == "" {
+		return ErrorToken
+	}
+
+	orgUser := &dao.User{Username: org}
+	err = orgUser.Retrieve()
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return ErrorExist
+		} else {
+			model.ErrLog.Println(err)
+			return ErrorServer
+		}
+	}
+
+	return SuccessCode
+}
