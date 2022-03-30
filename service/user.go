@@ -17,7 +17,7 @@ func orgRegister(org string, req *dto.OrgInfo) uint {
 		return code
 	}
 
-	salt, err := util.RandHexStr(64)
+	salt, err := util.RandHexStr(64) // desc 这里会随机 生成salt; salt 是2倍byteNum长度的乱码(只有数字和小写字母)
 	if err != nil {
 		model.ErrLog.Println(err)
 		return ErrorServer
@@ -94,7 +94,7 @@ func OrgPostInfo(req *dto.OrgInfo, id uint) uint {
 	return SuccessCode
 }
 
-func Login(req *dto.Login) (*map[string]interface{}, uint) {
+func Login(req *dto.Login) (*map[string]interface{}, uint) { //desc 这里 仅 区分 账号类型(云家园账号,社团账号)
 	user := &dao.User{Username: req.Username}
 	err := user.Retrieve()
 	if err != nil {
@@ -131,7 +131,7 @@ func orgLogin(req *dto.Login, user *dao.User) (*map[string]interface{}, uint) {
 		return nil, ErrorLogin
 	}
 
-	token, err := model.Jwt.GenerateToken(strconv.Itoa(int(user.ID)), user.LoginStatus)
+	token, err := model.Jwt.GenerateToken(user.LoginStatus, strconv.Itoa(int(user.ID)))
 	if err != nil {
 		model.ErrLog.Println(err)
 		return nil, ErrorServer
@@ -322,11 +322,11 @@ func GetRole(id uint) (*map[string]interface{}, uint) {
 	}
 
 	data := &map[string]interface{}{
-		"role": "",
+		"role":  "",
 		"token": token,
 	}
 
-	if(checkV(id) == SuccessCode) {
+	if checkV(id) == SuccessCode {
 		(*data)["role"] = "team"
 		return data, SuccessCode
 	}

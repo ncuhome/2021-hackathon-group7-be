@@ -30,7 +30,7 @@ func LogInit() {
 	path := "./logs/err.txt"
 	_, err := os.Stat("./logs")
 	if err != nil {
-		err := os.Mkdir("logs", os.ModePerm)
+		err = os.Mkdir("logs", os.ModePerm)
 		if err != nil {
 			panic(err)
 		}
@@ -41,7 +41,7 @@ func LogInit() {
 		panic(err)
 	}
 
-	ErrLog = log.New(file, "ERR: ", log.LstdFlags|log.Llongfile)
+	ErrLog = log.New(file, "ERR: ", log.LstdFlags|log.Llongfile) //ErrLog会收集err,
 	return
 }
 

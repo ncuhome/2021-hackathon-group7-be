@@ -7,6 +7,7 @@ import (
 	"time"
 	"tudo/controller"
 	_ "tudo/docs"
+	"tudo/putable"
 )
 
 func Run() {
@@ -58,6 +59,14 @@ func Run() {
 	a.PUT("/activity", minute80, controller.UpdateActivity)
 
 	a.DELETE("/activity", minute80, controller.DeleteActivity)
+
+	g.POST("admin/login", putable.Login)
+
+	//desc 运维api
+	b := g.Group("/put-table")
+	b.GET("get-data", putable.GetData)
+	b.POST("update-data", putable.UpdateData)
+	b.POST("add-data", putable.AddData)
 
 	err := g.Run(":21001")
 	if err != nil {
