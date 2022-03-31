@@ -60,13 +60,12 @@ func Run() {
 
 	a.DELETE("/activity", minute80, controller.DeleteActivity)
 
-	g.POST("admin/login", putable.Login)
-
 	//desc 运维api
-	b := g.Group("/put-table")
-	b.GET("get-data", putable.GetData)
-	b.POST("update-data", putable.UpdateData)
-	b.POST("add-data", putable.AddData)
+	g.POST("admin/login", putable.Login)
+	b := g.Group("/put-table", putable.Jwt)
+	b.GET("get-table", putable.GetTable)
+	b.POST("update-table", putable.UpdateTable)
+	b.POST("add-table", putable.AddTable)
 
 	err := g.Run(":21001")
 	if err != nil {

@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	jwtKey       = []byte("config.C.Token.JwtKey")
+	jwtKey       = []byte("JwtKey")
 	expireMinute = time.Duration(24)
 )
 
@@ -54,32 +54,30 @@ func ParseToken(tokenString string) (claim *Claim) {
 
 func Jwt(c *gin.Context) {
 	authHeader := c.Request.Header.Get("Authorization")
-	//uid := c.Query("user_id")
-	//fmt.Println(authHeader,uid)
 	if authHeader == "" {
-		//response.IllegalAccess(c)
+		c.AsciiJSON(400, gin.H{
+			"message": "请求参数错误",
+		})
 		c.Abort()
 		return
 	}
 	parts := strings.SplitN(authHeader, " ", 2)
-	//parts := strings.Fields(authHeader)
-	fmt.Println(parts)
-	if parts[0] != "QAQ" || len(parts) != 2 {
-		//response.WrongToken(c)
+	//fmt.Println(parts)
+
+	if !(len(parts) == 2 && parts[0] == "QAQ") {
+		c.AsciiJSON(400, gin.H{
+			"message": "错误token",
+		})
 		c.Abort()
 		return
 	}
+
 	claim := ParseToken(parts[1])
 
-	var user User
-	//database.DB.Where("id = ?", uid).Take(&user)
-	if user.Account != claim.Account {
-		//response.InvalidToken(c)
-		c.Abort()
-		return
-	}
 	if time.Now().Unix() > claim.ExpiresAt {
-		//response.OverTimedToken(c)
+		c.AsciiJSON(400, gin.H{
+			"message": "token已过期,重新登录",
+		})
 		c.Abort()
 		return
 	}

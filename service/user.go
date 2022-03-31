@@ -188,7 +188,7 @@ func NCUOSRegister(NCUOSUser *model.NCUOSUserProfileBasic) (*map[string]interfac
 		return nil, ErrorServer
 	}
 
-	token, err := model.Jwt.GenerateToken(strconv.Itoa(int(user.ID)), user.LoginStatus)
+	token, err := model.Jwt.GenerateToken(user.LoginStatus, strconv.Itoa(int(user.ID)))
 	if err != nil {
 		model.ErrLog.Println(err)
 		return nil, ErrorServer
@@ -212,7 +212,7 @@ func NCUOSTokenLogin(req *dto.Token) (*map[string]interface{}, uint) {
 	}
 
 	user := &dao.User{
-		Username: NCUOSUser.Username,
+		Username: NCUOSUser.Username, // tip 这里的username是学号
 	}
 	err = user.Retrieve()
 	if err != nil {
@@ -224,7 +224,7 @@ func NCUOSTokenLogin(req *dto.Token) (*map[string]interface{}, uint) {
 		return nil, ErrorServer
 	}
 
-	token, err := model.Jwt.GenerateToken(strconv.Itoa(int(user.ID)), user.LoginStatus)
+	token, err := model.Jwt.GenerateToken(user.LoginStatus, strconv.Itoa(int(user.ID)))
 	if err != nil {
 		model.ErrLog.Println(err)
 		return nil, ErrorServer

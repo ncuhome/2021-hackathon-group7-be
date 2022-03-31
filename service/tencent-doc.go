@@ -18,7 +18,7 @@ type Leader struct {
 	LeaderName   string
 }
 
-var LeaderMap = map[string]Leader{} // 电话：leader
+var LeaderMap = map[string]Leader{} // 电话：leader	// question 这是拿来干嘛的?
 
 type DocBaseData struct {
 	Url          string
@@ -45,7 +45,7 @@ func JsonToEmailMap(table *gjson.Result) uint {
 	LeaderMap = map[string]Leader{}
 	for i := int64(1); ; i++ {
 		organization := GetCell(&tableData, i, 0)
-		if organization ==  "" {
+		if organization == "" {
 			break
 		}
 
@@ -57,7 +57,7 @@ func JsonToEmailMap(table *gjson.Result) uint {
 		}
 		LeaderMap[phone] = Leader{
 			Organization: organization,
-			LeaderName: leaderName,
+			LeaderName:   leaderName,
 		}
 	}
 
@@ -142,7 +142,7 @@ func TencentDocToMap(docBaseData *DocBaseData) uint {
 
 func SyncTencentDoc() {
 	go func() {
-		for ; ; {
+		for {
 			TencentDocToMap(DocSource)
 			time.Sleep(time.Hour)
 			// time.Sleep(time.Second * 5)
@@ -153,10 +153,10 @@ func SyncTencentDoc() {
 func TestTencentDoc() {
 	LeaderMap["15797702607"] = Leader{
 		Organization: "前端测试",
-		LeaderName: "黄",
+		LeaderName:   "黄",
 	}
 	LeaderMap["15107076230"] = Leader{
 		Organization: "后端测试",
-		LeaderName: "彭",
+		LeaderName:   "彭",
 	}
 }
