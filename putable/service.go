@@ -59,6 +59,13 @@ func Login(c *gin.Context) {
 		return
 	}
 
+	if dao.DB.Model(&User{}).First(&user).Error != nil {
+		c.JSON(400, gin.H{
+			"message": "用户名或密码错误",
+		})
+		return
+	}
+
 	token := GenerateToken(user.Account)
 	fmt.Println(token)
 	if token == "" {
