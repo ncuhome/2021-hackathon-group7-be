@@ -65,7 +65,6 @@ func Run() {
 	b := g.Group("/put-table", putable.Jwt)
 	b.GET("get-table", putable.GetTable)
 	b.POST("update-table", putable.UpdateTable)
-	b.POST("add-table", putable.AddTable)
 
 	err := g.Run(":21001")
 	if err != nil {

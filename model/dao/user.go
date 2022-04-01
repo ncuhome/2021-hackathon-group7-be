@@ -65,7 +65,7 @@ func (s *User) Create() error {
 }
 
 // userInfo 的相关信息写入数据库
-func (s *User) CreateWith(userInfo *UserInfo) error { // desc 创建并关联 User.ID 到 UserInfo.UserID
+func (s *User) CreateWith(userInfo *UserInfo) error { // descp 创建并关联 User.ID 到 UserInfo.UserID
 	tx := DB.Begin()
 	defer func() {
 		if r := recover(); r != nil {

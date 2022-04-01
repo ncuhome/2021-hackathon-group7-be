@@ -7,12 +7,13 @@ import (
 	"tudo/model/dao"
 )
 
-type User struct { // desc 运维人员 tip 手动录入信息到数据库
+type User struct { // descp 运维人员 tip 手动录入信息到数据库
 	Account  string `json:"account" binding:"required"`
 	Password string `json:"password" binding:"required"`
 }
 
-type Leader struct { // desc 社团负责人
+type Leader struct { // descp 社团负责人
+	Code         int    // descp 用于标记 可更改信息
 	Organization string `json:"organization"`
 	LeaderName   string `json:"leader-name"`
 }
@@ -35,21 +36,19 @@ var (
 	columns = []column{{
 		HeaderName:  "organization",
 		Type:        "string",
-		Width:       100,
-		Editable:    false,
+		Width:       200,
+		Editable:    true,
 		Align:       "center",
 		HeaderAlign: "center",
 	}, {
 		HeaderName:  "leader-name",
 		Type:        "string",
-		Width:       100,
-		Editable:    false,
+		Width:       200,
+		Editable:    true,
 		Align:       "center",
 		HeaderAlign: "center",
 	}}
 )
-
-var LeaderMap = map[string]Leader{} // 电话：leader // question 这是拿来干嘛的?
 
 func Login(c *gin.Context) {
 	var user User
@@ -60,18 +59,14 @@ func Login(c *gin.Context) {
 	}
 
 	if dao.DB.Model(&User{}).First(&user).Error != nil {
-		c.JSON(400, gin.H{
-			"message": "用户名或密码错误",
-		})
+		ErrResponse(c, "用户名或密码错误")
 		return
 	}
 
 	token := GenerateToken(user.Account)
 	fmt.Println(token)
 	if token == "" {
-		c.AsciiJSON(400, gin.H{
-			"message": "token生成失败",
-		})
+		ErrResponse(c, "token生成失败")
 		return
 	}
 
@@ -91,7 +86,7 @@ func GetTable(c *gin.Context) {
 
 	dao.DB.Model(&Leader{}).Find(&tables)
 
-	for _, temp := range tables { // desc 转一下 []string
+	for _, temp := range tables { // descp 转一下 []string
 		data.Table = append(data.Table, []string{temp.Organization, temp.LeaderName})
 	}
 
@@ -102,10 +97,59 @@ func GetTable(c *gin.Context) {
 }
 
 func UpdateTable(c *gin.Context) {
-	//var tables [][]string
+
+	tx := dao.DB.Begin()
+	defer func() {
+		if recover() != nil {
+			tx.Rollback()
+			panic(recover())
+		}
+	}()
+
+	if tx.Error != nil {
+		ErrResponse(c, "errServer")
+		return
+	}
+
+	var tables struct {
+		Table [][]string `json:"table"`
+	}
+	err := c.BindJSON(&tables)
+	if err != nil {
+		ErrResponse(c, "ErrServer")
+
+		return
+	}
+
+	leaders := make([]Leader, len(tables.Table))
+	for i, temp := range tables.Table {
+		leaders[i].LeaderName = temp[0]
+		leaders[i].Organization = temp[1]
+		leaders[i].Code = 0
+	}
+
+	// tip 直接全删除再全写入
+	err = dao.DB.Delete(&User{}, "code = ?", '0').Error
+	if err != nil {
+		tx.Rollback()
+		ErrResponse(c, "更改失败")
+		return
+	}
+	err = dao.DB.Model(&Leader{}).Create(&leaders).Error
+	if err != nil {
+		tx.Rollback()
+		ErrResponse(c, "更改失败")
+		return
+	}
+
+	c.AsciiJSON(200, gin.H{
+		"message": "success",
+	})
 
 }
 
-func AddTable(c *gin.Context) {
-	//todo
+func ErrResponse(c *gin.Context, msg string) {
+	c.AsciiJSON(400, gin.H{
+		"message": msg,
+	})
 }
