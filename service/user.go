@@ -131,7 +131,7 @@ func orgLogin(req *dto.Login, user *dao.User) (*map[string]interface{}, uint) {
 		return nil, ErrorLogin
 	}
 
-	token, err := model.Jwt.GenerateToken(user.LoginStatus, strconv.Itoa(int(user.ID)))
+	token, err := model.Jwt.GenerateToken(strconv.Itoa(int(user.ID)), user.LoginStatus)
 	if err != nil {
 		model.ErrLog.Println(err)
 		return nil, ErrorServer
@@ -188,7 +188,7 @@ func NCUOSRegister(NCUOSUser *model.NCUOSUserProfileBasic) (*map[string]interfac
 		return nil, ErrorServer
 	}
 
-	token, err := model.Jwt.GenerateToken(user.LoginStatus, strconv.Itoa(int(user.ID)))
+	token, err := model.Jwt.GenerateToken(strconv.Itoa(int(user.ID)), user.LoginStatus)
 	if err != nil {
 		model.ErrLog.Println(err)
 		return nil, ErrorServer
@@ -224,7 +224,7 @@ func NCUOSTokenLogin(req *dto.Token) (*map[string]interface{}, uint) {
 		return nil, ErrorServer
 	}
 
-	token, err := model.Jwt.GenerateToken(user.LoginStatus, strconv.Itoa(int(user.ID)))
+	token, err := model.Jwt.GenerateToken(strconv.Itoa(int(user.ID)), user.LoginStatus)
 	if err != nil {
 		model.ErrLog.Println(err)
 		return nil, ErrorServer
