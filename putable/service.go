@@ -8,6 +8,11 @@ import (
 	_ "tudo/model/dto"
 )
 
+// tip 使用须知
+//  ①登录	/admin/longin
+//  ②必须先get一下table		/put-table/get-table
+//  ③再下载表格进行更改 或者直接传入完整的表格	/put-table/update-table
+
 type User struct { // descp 运维人员 tip 手动录入信息到数据库
 	Account  string `json:"account" binding:"required" gorm:"unique_index;not null"`
 	Password string `json:"password" binding:"required"`
