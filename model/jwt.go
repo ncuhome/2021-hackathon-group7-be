@@ -22,8 +22,8 @@ func (s *JWT) GenerateToken(subject string, id string) (string, error) {
 
 	claims := jwt.StandardClaims{
 		ExpiresAt: now + s.validTime,
-		Id:        id,
-		Subject:   subject,
+		Id:        id,      //descp jwt状态 		 为loginStatus
+		Subject:   subject, //descp token签发对象 为用户id gorm自动生成的
 	}
 
 	token, err := jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString([]byte(s.signKey))

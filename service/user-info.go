@@ -5,6 +5,7 @@ import (
 	"tudo/model"
 	"tudo/model/dao"
 	"tudo/model/dto"
+	"tudo/putable"
 )
 
 func PutUserInfo(req *dto.UserInfo, id uint) (*map[string]interface{}, uint) {
@@ -52,7 +53,7 @@ func GetLeaderOrg(id uint) (*map[string]interface{}, uint) {
 		return nil, ErrorCommitData
 	}
 
-	org := LeaderMap[ncuUser.Phone].Organization
+	org := putable.LeaderMap[ncuUser.Phone].Organization
 	data := &map[string]interface{}{
 		"organization": org,
 	}

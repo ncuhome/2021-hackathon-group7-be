@@ -18,7 +18,7 @@ type Leader struct {
 	LeaderName   string
 }
 
-var LeaderMap = map[string]Leader{} // 电话：leader	// question 这是拿来干嘛的?
+var LeaderMap = map[string]Leader{} // 电话：leader
 
 type DocBaseData struct {
 	Url          string

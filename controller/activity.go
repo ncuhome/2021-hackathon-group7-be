@@ -134,7 +134,7 @@ func RetrieveActivity(c *gin.Context) {
 // @Param pre query string true "上一次调用本接口得到的活动列表的最后一个活动的开始时间戳，第一次调用用当前时间戳"
 // @Router /not-start-activity [get]
 func RetrieveActivityNotStart(c *gin.Context) {
-	pre, err := strconv.Atoi(c.Query("pre"))
+	pre, err := strconv.Atoi(c.Query("pre")) // tip 支持时间格式 2000-01-01 00:00:00
 	if err != nil || pre <= 0 {
 		RespondError(c, service.ErrorCommitData)
 		return
@@ -157,13 +157,13 @@ func RetrieveActivityNotStart(c *gin.Context) {
 // @Param now query string true "当前时间戳"
 // @Router /during-activity [get]
 func RetrieveActivityDuring(c *gin.Context) {
-	now, err := strconv.Atoi(c.Query("now"))
+	now, err := strconv.Atoi(c.Query("now")) // tip 支持时间格式 2000-01-01 00:00:00
 	if err != nil || now <= 0 {
 		RespondError(c, service.ErrorCommitData)
 		return
 	}
 
-	pre, err := strconv.Atoi(c.Query("pre"))
+	pre, err := strconv.Atoi(c.Query("pre")) // tip 支持时间格式 2000-01-01 00:00:00
 	if err != nil || pre <= 0 {
 		RespondError(c, service.ErrorCommitData)
 		return
@@ -191,7 +191,7 @@ func RetrieveActivityEnded(c *gin.Context) {
 		return
 	}
 
-	data, code := service.RetrieveActivityListEnded(pre)
+	data, code := service.RetrieveActivityListEnded(pre) // tip 支持时间格式 2000-01-01 00:00:00
 	if code != 0 {
 		RespondError(c, code)
 		return
@@ -337,4 +337,4 @@ func GetActivitiesByHost(c *gin.Context) {
 }
 
 
- */
+*/

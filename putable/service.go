@@ -5,18 +5,21 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"tudo/model/dao"
+	_ "tudo/model/dto"
 )
 
 type User struct { // descp 运维人员 tip 手动录入信息到数据库
-	Account  string `json:"account" binding:"required"`
+	Account  string `json:"account" binding:"required" gorm:"unique_index;not null"`
 	Password string `json:"password" binding:"required"`
 }
 
 type Leader struct { // descp 社团负责人
-	Code         int    // descp 用于标记 可更改信息
+	Phone        string `json:"phone"`
 	Organization string `json:"organization"`
 	LeaderName   string `json:"leader-name"`
 }
+
+var LeaderMap = map[string]Leader{} // 电话：leader
 
 type column struct {
 	HeaderName  string `json:"headerName"`  //表头
@@ -42,6 +45,13 @@ var (
 		HeaderAlign: "center",
 	}, {
 		HeaderName:  "leader-name",
+		Type:        "string",
+		Width:       200,
+		Editable:    true,
+		Align:       "center",
+		HeaderAlign: "center",
+	}, {
+		HeaderName:  "phone",
 		Type:        "string",
 		Width:       200,
 		Editable:    true,
@@ -79,69 +89,35 @@ func Login(c *gin.Context) {
 
 }
 
-func GetTable(c *gin.Context) {
+func GetMap(c *gin.Context) {
 	var data SentData
 	data.ColumnOption = columns
-	var tables []Leader
-
-	dao.DB.Model(&Leader{}).Find(&tables)
-
-	for _, temp := range tables { // descp 转一下 []string
-		data.Table = append(data.Table, []string{temp.Organization, temp.LeaderName})
+	for _, temp := range LeaderMap { // descp 转一下 []string
+		data.Table = append(data.Table, []string{temp.Organization, temp.LeaderName, temp.Phone})
 	}
-
 	c.AsciiJSON(200, gin.H{
 		"data": data,
 	})
-
 }
 
-func UpdateTable(c *gin.Context) {
-
-	tx := dao.DB.Begin()
-	defer func() {
-		if recover() != nil {
-			tx.Rollback()
-			panic(recover())
-		}
-	}()
-
-	if tx.Error != nil {
-		ErrResponse(c, "errServer")
-		return
-	}
+func UpdateMap(c *gin.Context) {
 
 	var tables struct {
 		Table [][]string `json:"table"`
 	}
-	err := c.BindJSON(&tables)
+	err := c.ShouldBind(&tables)
 	if err != nil {
 		ErrResponse(c, "ErrServer")
 
 		return
 	}
-
-	leaders := make([]Leader, len(tables.Table))
-	for i, temp := range tables.Table {
-		leaders[i].LeaderName = temp[0]
-		leaders[i].Organization = temp[1]
-		leaders[i].Code = 0
+	m := make(map[string]Leader)
+	for _, list := range tables.Table {
+		m[list[2]] = Leader{Organization: list[0], LeaderName: list[1]}
 	}
-
-	// tip 直接全删除再全写入
-	err = dao.DB.Delete(&User{}, "code = ?", '0').Error
-	if err != nil {
-		tx.Rollback()
-		ErrResponse(c, "更改失败")
-		return
-	}
-	err = dao.DB.Model(&Leader{}).Create(&leaders).Error
-	if err != nil {
-		tx.Rollback()
-		ErrResponse(c, "更改失败")
-		return
-	}
-
+	//fmt.Println(LeaderMap)
+	LeaderMap = m
+	//fmt.Println(LeaderMap)
 	c.AsciiJSON(200, gin.H{
 		"message": "success",
 	})
@@ -152,4 +128,8 @@ func ErrResponse(c *gin.Context, msg string) {
 	c.AsciiJSON(400, gin.H{
 		"message": msg,
 	})
+}
+
+func (u User) retire(account string) error {
+	return dao.DB.Model(&User{}).Where("account = ", account).Error
 }

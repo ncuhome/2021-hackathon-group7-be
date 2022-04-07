@@ -39,7 +39,7 @@ func Token(c *gin.Context) { // token验证
 		return
 	}
 
-	//claims sub为用户id，claims id为loginStatus
+	//descp claims sub为用户id，claims id为loginStatus
 	//loginStatus校验
 	user := &dao.UserDao{}
 	id, err := strconv.Atoi(claims.Subject)

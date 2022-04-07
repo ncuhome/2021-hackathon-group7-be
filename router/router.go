@@ -32,18 +32,18 @@ func Run() {
 	//g.GET("/activities/detail", minute80, controller.GetActivity)
 	//g.GET("/activities/place", minute80, controller.GetActivitiesByPlace)
 	//g.GET("/activities/host", minute80, controller.GetActivitiesByHost)
-	g.GET("/activity", minute80, controller.RetrieveActivity)
-	g.GET("/not-start-activity", minute80, controller.RetrieveActivityNotStart)
+	g.GET("/activity", minute80, controller.RetrieveActivity)                   //descp 接收 活动id ,返回 活动
+	g.GET("/not-start-activity", minute80, controller.RetrieveActivityNotStart) //descp 接收 时间 ,返回活动列表
 	g.GET("/during-activity", minute80, controller.RetrieveActivityDuring)
 	g.GET("/ended-activity", minute80, controller.RetrieveActivityEnded)
 	g.GET("/recommend-activity", minute80, controller.RetrieveActivityRecommend)
 
-	g.POST("/login", hour30, controller.Login)
-	g.POST("/login/ncuos-token", hour30, controller.NCUOSTokenLogin)
+	g.POST("/login", hour30, controller.Login)                       //descp 接收 用户学号/社团账号 密码 .返回 登录信息 token
+	g.POST("/login/ncuos-token", hour30, controller.NCUOSTokenLogin) //descp 接收ncu-os的token ,返回 新token
 
 	a := g.Group("/auth", controller.Token)
 
-	a.POST("/picture", minute80, controller.PostPicture)
+	a.POST("/picture", minute80, controller.PostPicture) // descp 上传图片并返回图片地址
 
 	a.GET("/token", minute80, controller.Verify)
 	//a.GET("/email", minute80, controller.GetEmail)
@@ -63,8 +63,8 @@ func Run() {
 	//desc 运维api
 	g.POST("admin/login", putable.Login)
 	b := g.Group("/put-table", putable.Jwt)
-	b.GET("get-table", putable.GetTable)
-	b.POST("update-table", putable.UpdateTable)
+	b.GET("get-table", putable.GetMap)
+	b.POST("update-table", putable.UpdateMap)
 
 	err := g.Run(":21001")
 	if err != nil {

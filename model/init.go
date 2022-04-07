@@ -52,6 +52,6 @@ func OssInit() {
 		AccessKeySecret: os.Getenv("OSS_ACCESS_KEY_SECRET"),
 		Bucket:          os.Getenv("OSS_BUCKET"),
 	}
-	OssBaseUrl = "https://" + OssObj.Bucket + "." + OssObj.Endpoint + "/"
+	OssBaseUrl = "https://" + OssObj.Bucket + "." + OssObj.Endpoint + "/" //descp oss的基础url (在后面加上文件名即可)
 	return
 }

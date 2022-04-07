@@ -8,6 +8,7 @@ import (
 	"tudo/model"
 	"tudo/model/dao"
 	"tudo/model/dto"
+	"tudo/putable"
 	"tudo/util"
 )
 
@@ -17,7 +18,7 @@ func orgRegister(org string, req *dto.OrgInfo) uint {
 		return code
 	}
 
-	salt, err := util.RandHexStr(64) // desc 这里会随机 生成salt; salt 是2倍byteNum长度的乱码(只有数字和小写字母)
+	salt, err := util.RandHexStr(64) // descp 这里会随机 生成salt; salt 是2倍byteNum长度的乱码(只有数字和小写字母)
 	if err != nil {
 		model.ErrLog.Println(err)
 		return ErrorServer
@@ -74,7 +75,7 @@ func OrgPostInfo(req *dto.OrgInfo, id uint) uint {
 		return ErrorCommitData
 	}
 
-	org := LeaderMap[ncuUser.Phone].Organization
+	org := putable.LeaderMap[ncuUser.Phone].Organization
 	if org == "" {
 		return ErrorToken
 	}
@@ -94,7 +95,7 @@ func OrgPostInfo(req *dto.OrgInfo, id uint) uint {
 	return SuccessCode
 }
 
-func Login(req *dto.Login) (*map[string]interface{}, uint) { //desc 这里 仅 区分 账号类型(云家园账号,社团账号)
+func Login(req *dto.Login) (*map[string]interface{}, uint) { //descp 这里 仅 区分 账号类型(云家园账号,社团账号)
 	user := &dao.User{Username: req.Username}
 	err := user.Retrieve()
 	if err != nil {
@@ -337,7 +338,7 @@ func GetRole(id uint) (*map[string]interface{}, uint) {
 		return nil, ErrorCommitData
 	}
 
-	if _, ok := LeaderMap[user.Phone]; ok {
+	if _, ok := putable.LeaderMap[user.Phone]; ok {
 		(*data)["role"] = "admin"
 		return data, SuccessCode
 	}
