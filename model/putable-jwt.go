@@ -1,4 +1,4 @@
-package putable
+package model
 
 import (
 	"fmt"
@@ -52,7 +52,7 @@ func ParseToken(tokenString string) (claim *Claim) {
 	return token.Claims.(*Claim)
 }
 
-func Jwt(c *gin.Context) {
+func PutableJwt(c *gin.Context) {
 	authHeader := c.Request.Header.Get("Authorization")
 	if authHeader == "" {
 		c.AsciiJSON(400, gin.H{

@@ -7,7 +7,8 @@ import (
 	"time"
 	"tudo/controller"
 	_ "tudo/docs"
-	"tudo/putable"
+	"tudo/model"
+	"tudo/model/dao"
 )
 
 func Run() {
@@ -61,10 +62,10 @@ func Run() {
 	a.DELETE("/activity", minute80, controller.DeleteActivity)
 
 	//desc 运维api
-	g.POST("admin/login", putable.Login)
-	b := g.Group("/put-table", putable.Jwt)
-	b.GET("get-table", putable.GetMap)
-	b.POST("update-table", putable.UpdateMap)
+	g.POST("admin/login", dao.Login)
+	b := g.Group("/put-table", model.PutableJwt)
+	b.GET("get-table", dao.GetMap)
+	b.POST("update-table", dao.UpdateMap)
 
 	err := g.Run(":21001")
 	if err != nil {

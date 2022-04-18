@@ -1,10 +1,10 @@
-package putable
+package dao
 
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
-	"tudo/model/dao"
+	"tudo/model"
 	_ "tudo/model/dto"
 )
 
@@ -13,7 +13,7 @@ import (
 //  ②必须先get一下table		/put-table/get-table
 //  ③再下载表格进行更改 或者直接传入完整的表格	/put-table/update-table
 
-type User struct { // descp 运维人员 tip 手动录入信息到数据库
+type PutableUser struct { // descp 运维人员 tip 手动录入信息到数据库
 	Account  string `json:"account" binding:"required" gorm:"unique_index;not null"`
 	Password string `json:"password" binding:"required"`
 }
@@ -66,19 +66,19 @@ var (
 )
 
 func Login(c *gin.Context) {
-	var user User
+	var user PutableUser
 	err := c.ShouldBind(&user)
 	if err != nil {
 		log.Println(err)
 		return
 	}
 
-	if dao.DB.Model(&User{}).First(&user).Error != nil {
+	if DB.Model(&PutableUser{}).First(&user).Error != nil {
 		ErrResponse(c, "用户名或密码错误")
 		return
 	}
 
-	token := GenerateToken(user.Account)
+	token := model.GenerateToken(user.Account)
 	fmt.Println(token)
 	if token == "" {
 		ErrResponse(c, "token生成失败")
@@ -135,6 +135,6 @@ func ErrResponse(c *gin.Context, msg string) {
 	})
 }
 
-func (u User) retire(account string) error {
-	return dao.DB.Model(&User{}).Where("account = ", account).Error
+func (u PutableUser) retire(account string) error {
+	return DB.Model(&PutableUser{}).Where("account = ", account).Error
 }

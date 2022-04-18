@@ -8,7 +8,6 @@ import (
 	"tudo/model"
 	"tudo/model/dao"
 	"tudo/model/dto"
-	"tudo/putable"
 	"tudo/util"
 )
 
@@ -75,7 +74,7 @@ func OrgPostInfo(req *dto.OrgInfo, id uint) uint {
 		return ErrorCommitData
 	}
 
-	org := putable.LeaderMap[ncuUser.Phone].Organization
+	org := dao.LeaderMap[ncuUser.Phone].Organization
 	if org == "" {
 		return ErrorToken
 	}
@@ -338,7 +337,7 @@ func GetRole(id uint) (*map[string]interface{}, uint) {
 		return nil, ErrorCommitData
 	}
 
-	if _, ok := putable.LeaderMap[user.Phone]; ok {
+	if _, ok := dao.LeaderMap[user.Phone]; ok {
 		(*data)["role"] = "admin"
 		return data, SuccessCode
 	}

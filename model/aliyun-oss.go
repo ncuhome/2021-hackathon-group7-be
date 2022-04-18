@@ -14,6 +14,7 @@ type OssType struct {
 
 func (s *OssType) PutBytes(data io.Reader, fileName string) error {
 	// 创建OSSClient实例。
+
 	client, err := oss.New(s.Endpoint, s.AccessKeyID, s.AccessKeySecret)
 	if err != nil {
 		ErrLog.Println(err)

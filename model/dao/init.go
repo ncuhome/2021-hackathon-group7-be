@@ -6,7 +6,6 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"os"
-	"tudo/putable"
 	"tudo/util"
 )
 
@@ -53,7 +52,7 @@ func DBInit(path string) {
 	if err != nil {
 		panic(err)
 	}
-	err = DB.AutoMigrate(&User{}, &UserInfo{}, &Activity{}, &putable.User{})
+	err = DB.AutoMigrate(&User{}, &UserInfo{}, &Activity{}, &PutableUser{})
 	if err != nil {
 		panic(err)
 	}
